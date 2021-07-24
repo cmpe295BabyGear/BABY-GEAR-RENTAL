@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "babygearrental58f51476": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}
