@@ -7,6 +7,100 @@
   pointer-events: none;
 }
 
+header.MuiAppBar-colorPrimary {
+  color: #fff;
+  background-color: #fac290;
+  color: #2827279e;
+}
+
+/*Banner CSS*/
+.bannerContent {
+  xbackground: peachpuff;
+  /*Gray Banner*/
+  background: url(https://images.pexels.com/photos/1939485/pexels-photo-1939485.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500) 100%;
+  margin-top: 8px;
+}
+.bannerContent .image1{
+  background: url("./Components/Buy/stroller.png") no-repeat 50% 50%;
+  height: 250px;
+  padding: 50px 0;
+}
+.bannerContent .image2{
+  background: url("./Components/Buy/highchair.png") no-repeat 50% 50%;
+  height: 250px;
+  padding: 50px 0;
+}
+.bannerContent .image3{
+  background: url("./Components/Buy/jump.png") no-repeat 50% 50%;
+  height: 250px;
+  padding: 50px 0;
+}
+.bannerText .heading{
+  font-family: cursive;
+  font-size: 28px;
+  color: brown;
+}
+.bannerText {
+  text-align: center;
+  margin-top: 120px;
+}
+.bannerText > span {
+  display: block;
+  font-size: 18px;
+  padding:15px 0;
+}
+/*Categories CSS*/
+.Categories {
+  /*skyblue banner*/
+  background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY25zFbP_n9wPBHoH_XD_uMhQZpWIN-o27uQ&usqp=CAU") 60% 60%;
+  margin: 3px 0 10px;
+}
+.categoriesRow {
+  padding-top: 25px;
+}
+.Categories h1 {
+  text-align: center;
+  margin-top: 2px;
+  padding-top: 30px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.categoryImage {
+  height: 180px;
+  width: 180px;
+  border-radius: 180px;
+  margin: auto;
+  cursor: pointer;
+}
+.categoryImage img{
+  margin: 15px;
+}
+.Categories h2 {
+  width: 180px;
+  margin: auto;
+  text-align: center;
+  /* text-transform: uppercase;
+  font-weight: 500; */
+}
+.categoryImage.carSeatImage {
+  background: #efefcad9;
+}
+.categoryImage.bathImage {
+  background: #8fce8f8c;
+}
+.categoryImage.cribImage {
+  background: #efcccc;
+}
+.categoryImage.highChairImage {
+  background: #d3a6d6c9;
+}
+.categoryImage.safetyImage {
+  background: #289ece5c;
+}
+.categoryImage.strollerImage {
+  background: #d2d2d2cf;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
