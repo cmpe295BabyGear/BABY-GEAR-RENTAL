@@ -13,6 +13,9 @@ header.MuiAppBar-colorPrimary {
   color: #2827279e;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
 /*Banner CSS*/
 .bannerContent {
   xbackground: peachpuff;
@@ -44,6 +47,9 @@ header.MuiAppBar-colorPrimary {
   text-align: center;
   margin-top: 120px;
 }
+.bannerText a {
+  text-decoration: none;
+}
 .bannerText > span {
   display: block;
   font-size: 18px;
@@ -54,6 +60,7 @@ header.MuiAppBar-colorPrimary {
   /*skyblue banner*/
   background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY25zFbP_n9wPBHoH_XD_uMhQZpWIN-o27uQ&usqp=CAU") 60% 60%;
   margin: 3px 0 10px;
+  padding-bottom: 25px;
 }
 .categoriesRow {
   padding-top: 25px;
@@ -100,6 +107,25 @@ header.MuiAppBar-colorPrimary {
 .categoryImage.strollerImage {
   background: #d2d2d2cf;
 }
+
+/*Buy List CSS*/
+.buyPriceWrap, .rentPriceWrap {
+  display: flex;
+  justify-content: space-between;
+}
+
+.priceWrap span:nth-child(2){
+  font-weight: bold;
+}
+.priceWrap, .rentPriceWrap .priceWrap{
+  color: #8b6c52;
+  font-size: 18px;
+}
+.priceWrap span:nth-child(2), .rentPriceWrap span:nth-child(2) {
+  display: inline-block;
+  margin-left: 10px;
+}
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

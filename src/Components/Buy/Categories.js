@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 
 export const Categories = () => {
@@ -8,12 +9,14 @@ export const Categories = () => {
         <div>
           <Grid container direction="row" spacing={1} alignItems="center" justifyContent="center" className="categoriesRow">
             <Grid item xs={3} alignItems="center" justifyContent="center">
-              <div className="categoryImage carSeatImage">
-                <img src="https://prelovedbabyitems.s3.us-east-2.amazonaws.com/categories/carseat.png"
-                height="150"
-                width="150"
-                alt="Car Seat"/>
-              </div>
+              <Link to="/buyList/CarSeat">
+                <div className="categoryImage carSeatImage">
+                  <img src="https://prelovedbabyitems.s3.us-east-2.amazonaws.com/categories/carseat.png"
+                  height="150"
+                  width="150"
+                  alt="Car Seat"/>
+                </div>
+              </Link>
               <h2>Car Seats</h2>
             </Grid>
             <Grid item xs={3}>
