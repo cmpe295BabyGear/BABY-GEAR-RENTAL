@@ -23,12 +23,12 @@ exports.handler = (event, context, callback) => {
       return;
     }
 
-    var sqlQuery = `SELECT i.id as item_id, i.customer_id,item_name,i.description,baby_age,i.condition,brand,DATE_FORMAT(lease_startDT, '%m/%d/%Y') as lease_startDT, DATE_FORMAT(lease_endDT, '%m/%d/%Y') as lease_endDT, `
-      + `price, availability_status,ic.categoryName, item_status, seller_preference `
-      + `FROM items i `
-      + `join item_category ic `
-      + `on ic.id = i.item_category `
-      + `where ic.categoryName = ${event.queryStringParameters.item_category_name};`;
+    var sqlQuery = `SELECT i.id as item_id, i.customer_id,item_name,i.description,i.s3_label, i.rental_price,baby_age,i.condition,brand,DATE_FORMAT(lease_startDT, '%m/%d/%Y') as lease_startDT, DATE_FORMAT(lease_endDT, '%m/%d/%Y') as lease_endDT, ` +
+      `price, availability_status,ic.categoryName as categoryName, item_status, seller_preference ` +
+      `from items i ` +
+      `join item_category ic ` +
+      `on ic.id = i.item_category ` +
+      `where ic.categoryName = '${event.queryStringParameters.category_name}';`;
 
     pool.query(sqlQuery, function (error, results, fields) {
       connection.destroy();

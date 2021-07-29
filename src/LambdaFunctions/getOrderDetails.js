@@ -23,11 +23,9 @@ exports.handler = (event, context, callback) => {
       return;
     }
 
-    var sqlQuery = `select od.order_id, c.id as customer_id, i.id as item_id, date_format (od.order_date, '%m%d%Y') as order_date , od.quantity, od.price, order_type, ` +
+    var sqlQuery = `select od.id as order_id, od.customer_id,i.s3_label, i.id as item_id, date_format (od.order_date, '%m%d%Y') as order_date , od.quantity, od.price, order_type, ` +
       `date_format (od.lease_startDT, '%m%d%Y') as lease_startDT, date_format (od.lease_endDT, '%m%d%Y') as lease_endDT, order_status ` +
       `from order_details od ` +
-      `join customer c ` +
-      `on od.customer_id = c.id ` +
       `join items i ` +
       `on od.id = ${event.queryStringParameters.orderId}`;
 

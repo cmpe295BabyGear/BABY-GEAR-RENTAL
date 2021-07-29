@@ -23,7 +23,7 @@ exports.handler = (event, context, callback) => {
       return;
     }
 
-    var sqlQuery = `SELECT i.id as item_id, i.customer_id,c.email_id as email_id, item_name,i.description,baby_age,i.condition,brand,DATE_FORMAT(lease_startDT, '%m/%d/%Y') as lease_startDT, DATE_FORMAT(lease_endDT, '%m/%d/%Y') as lease_endDT, ` +
+    var sqlQuery = `SELECT i.id as item_id, i.customer_id,c.email_id as email_id,i.s3_label, i.rental_price, item_name,i.description,baby_age,i.condition,brand,DATE_FORMAT(lease_startDT, '%m/%d/%Y') as lease_startDT, DATE_FORMAT(lease_endDT, '%m/%d/%Y') as lease_endDT, ` +
       `price, availability_status,ic.categoryName as categoryName, item_status, seller_preference ` +
       `from items i ` +
       `join item_category ic ` +
@@ -47,3 +47,6 @@ exports.handler = (event, context, callback) => {
     });
   });
 }
+
+
+

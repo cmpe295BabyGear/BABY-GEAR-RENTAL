@@ -23,11 +23,13 @@ exports.handler = (event, context, callback) => {
       return;
     }
     var parameterCount = 0;
-    var sqlQuery = `SELECT i.id as item_id, i.customer_id,item_name,i.description,baby_age,i.condition,brand,DATE_FORMAT(lease_startDT, '%m/%d/%Y') as lease_startDT, DATE_FORMAT(lease_endDT, '%m/%d/%Y') as lease_endDT, `
+    var sqlQuery = `SELECT i.id as item_id, i.customer_id,c.email_id as email_id, i.s3_label, i.rental_price, item_name,i.description,baby_age,i.condition,brand,DATE_FORMAT(lease_startDT, '%m/%d/%Y') as lease_startDT, DATE_FORMAT(lease_endDT, '%m/%d/%Y') as lease_endDT, `
       + `price, availability_status,ic.categoryName, item_status, seller_preference `
       + `FROM items i `
       + `join item_category ic `
-      + `on ic.id = i.item_category`;
+      + `on ic.id = i.item_category `
+      + `join customer c `
+      + `on c.id = i.customer_id`;
 
     if (event.queryStringParameters.item_condition) {
       if (parameterCount == 0) {
