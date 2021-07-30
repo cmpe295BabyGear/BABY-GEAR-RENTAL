@@ -28,7 +28,8 @@ export const BuyList = () => {
       paddingBottom: theme.spacing(2),
       textAlign: 'center',
       color: theme.palette.text.secondary,
-      background: '#faf6f6'
+      // background: '#faf6f6'
+      background: '#d9fcf994'
     },
   }));
   const classes = useStyles();

@@ -9,6 +9,7 @@ import Container from '@material-ui/core/Container';
 import Navbar from './Components/Navbar';
 import Buy from './Components/Buy';
 import BuyList from './Components/Buy/BuyList';
+import ProductDetails from './Components/Buy/ProductDetails';
 
 import './App.css';
 

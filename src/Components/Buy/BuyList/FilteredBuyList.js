@@ -42,13 +42,13 @@ export const FilteredBuyList = (props) => {
     }, [props.filteredBuyList]);
     
     const getpathQuery = (itemId) => {
-        const pathQuery = "productDetails/" + itemId;
+        const pathQuery = "/productDetails/" + itemId;
         return {
             pathname: pathQuery
         };
     };
     return (
-        <Container maxWidth={false}>
+        <Container maxWidth={false} className="filteredBuyList">
           <Grid container item spacing={3}>
             {productList.map((product, index) => (
               <Grid item spacing={2} xs={12} sm={4}>
@@ -64,7 +64,7 @@ export const FilteredBuyList = (props) => {
                   </div>
                   <Grid item xs={12} sm={12}>
                     <Link to={getpathQuery(product.item_id)} style={{ textDecoration: 'none', display: 'block', color:"inherit" }}>
-                        <h4 className={classes.productName}>{product.item_name}</h4>
+                        <h4 className="productName" >{product.item_name}</h4>
                     </Link>
                     <div className={classes.productCategory}>
                       <span>Category: </span>

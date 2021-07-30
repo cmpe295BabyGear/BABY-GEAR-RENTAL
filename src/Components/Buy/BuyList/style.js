@@ -36,24 +36,19 @@ export const useStyles = makeStyles((theme) => ({
         width: '100%'
     },
     productCard: {
-      padding: "10px"
+      padding: "10px",
+      fontSize: "0.9em"
   },
   productImageWrap: {
       display: "flex",
       justifyContent: "center"
   },
   productImage: {
-    height: "180px",
-    width: "180px"
+    height: "150px",
+    width: "150px"
   },
   chefContent: {
       textAlign: "left",
-  },
-  productName: {
-      fontSize: "1.3em",
-      margin: "10px 0 0 0",
-      color: "#80bfcd",
-      textTransform: "capitalize"
   },
   chefLocation: {
       fontSize: "0.9em",
