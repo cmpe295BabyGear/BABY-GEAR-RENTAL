@@ -9,22 +9,26 @@ import RemoveItemFromCart from '../../services/RemoveItemFromCart';
 export const Cart = () => {
   
   const [cartDetails, setCartDetails] = useState([]);
+  const [itemTotalPrice, setItemTotalPrice] = useState(0);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {    
     GetCartDetails(1).then(function (response) {
       setCartDetails(response.cartList);
-      console.log('GetProductDetails', response);
+      console.log('GetCartDetails', response);
+
+      getTotalPrice(response.cartList);
     })
     .catch(function (error) {
       setCartDetails(null);
-        console.log('GetProductDetails error', error);
+        console.log('GetCartDetails error', error);
     }); 
   }, []);
 
   const removeFromCart = (cartItem) => {
     const itemDetails = {
       "customer_id"  :1,
-      "item_id" : cartItem.item_id,
+      "item_id" : 2,
     }
     RemoveItemFromCart(itemDetails).then(function (response) {
       alert("Item removed from cart");
@@ -35,11 +39,15 @@ export const Cart = () => {
   }
 
   const getTotalPrice = (cartDetails) => {
-
-    // return cartDetails.price.reduce(function(a, b){
-    //   return a + b;
-    // }, 0);
-  }
+    const itemPrice = cartDetails.map(cartItem => {
+      return cartItem.price;
+    }).reduce(function(a, b){
+      return a + b;
+    }, 0);
+    setItemTotalPrice(itemPrice);
+    const deliveryCharge = 20;
+    setTotal(itemPrice + deliveryCharge);
+  } 
 
   return (
     <Container className="myCart">
@@ -71,7 +79,7 @@ export const Cart = () => {
               <h2>Order Summary</h2>
               <div>
                 <span>Subtotal {} Items</span>
-                <span>${cartDetails.length > 0 ? getTotalPrice(cartDetails): null}</span>
+                <span>${itemTotalPrice}</span>
               </div>
               <div>
                 <span>Estimated Delivery</span>
@@ -79,7 +87,7 @@ export const Cart = () => {
               </div>
               <div>
                 <span>Estimated Total</span>
-                <span>${20.00}</span>
+                <span>${total}</span>
               </div>
           </Grid>
       </Grid>
