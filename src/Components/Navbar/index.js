@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,6 +14,8 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
+
+import GetCartDetails from '../../services/GetCartDetails';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -79,14 +81,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Navbar = () => {
+export const Navbar = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isLoggedIn] = React.useState(true);
+  const [numberOfCartItems, setNumberOfCartItems] = React.useState(0);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  useEffect(() => {    
+    GetCartDetails(1).then(function (response) {
+      setNumberOfCartItems(response.cartList.length);
+    })
+    .catch(function (error) {
+      console.log('GetCartDetails error', error);
+    }); 
+  }, []);
+  useEffect(() => {    
+    GetCartDetails(1).then(function (response) {
+      setNumberOfCartItems(response.cartList.length);
+    })
+    .catch(function (error) {
+      console.log('GetCartDetails error', error);
+    }); 
+  }, [props.checkCartStatus]);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -174,9 +194,9 @@ export const Navbar = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Link to="/" style={{ textDecoration: 'none', display: 'block', color:"inherit" }}><Typography className={classes.title} variant="h6" noWrap>
             Baby Gear Rentals
-          </Typography>
+          </Typography></Link>
           <div className={classes.grow} />
           { !isLoggedIn ? <Button color="inherit">Login</Button> : null}
           { isLoggedIn ? <div className={classes.sectionDesktop}>
@@ -184,7 +204,7 @@ export const Navbar = () => {
               <Button>Buy</Button>
               <Button>Sell</Button>
             </ButtonGroup> */}
-            <Button variant="contained" color="secondary">Buy</Button>
+            <Link to="/buy" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}><Button variant="contained" color="secondary">Buy</Button></Link>
             <Button color="inherit">Sell</Button>
             <Button color="inherit">About Us</Button>
             <IconButton aria-label="show wishlist" color="inherit">
@@ -193,8 +213,8 @@ export const Navbar = () => {
               </Badge>
             </IconButton>
             <IconButton aria-label="show cart items" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <Link to="/cart"><ShoppingCartIcon /></Link>
+              <Badge badgeContent={numberOfCartItems} color="secondary">
+                <Link to="/cart" style={{ textDecoration: 'none', display: 'block', color:"inherit" }}><ShoppingCartIcon /></Link>
               </Badge>
             </IconButton>
             <IconButton

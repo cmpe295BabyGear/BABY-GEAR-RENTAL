@@ -2,9 +2,7 @@ import axios from "axios";
 
 const RemoveItemFromCart = (event) => {
   return new Promise((resolve, reject) => {
-    axios.options("https://sy1p0gdgq8.execute-api.us-east-2.amazonaws.com/dev/removefromcart", {
-      params: event 
-      })
+    axios.put("https://yc6p632uxl.execute-api.us-east-2.amazonaws.com/dev/updatecart", event)
       .then(function (response) {
         resolve(true);
       })

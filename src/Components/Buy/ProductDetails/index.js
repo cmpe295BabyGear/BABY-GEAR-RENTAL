@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -37,6 +36,7 @@ export const ProductDetails = (props) => {
     }
     AddItemToCart(itemDetails).then(function (response) {
       alert("Item added to cart");
+      props.updateCartCount(Math.random());
     })
     .catch(function (error) {
       console.log('addItemToCart error', error);

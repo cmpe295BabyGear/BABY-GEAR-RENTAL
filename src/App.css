@@ -225,6 +225,12 @@ header.MuiAppBar-colorPrimary {
   padding-top: 15px;
   text-align: center;
 }
+.myCart .buttonWrap {
+  justify-content: center;
+}
+.myCart .buttonWrap button {
+  width: 60%;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

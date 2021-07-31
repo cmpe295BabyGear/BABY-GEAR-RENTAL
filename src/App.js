@@ -15,17 +15,22 @@ import Cart from './Components/Cart';
 import './App.css';
 
 function App() {
+  const [checkCartStatus, setCheckCartStatus] = React.useState(0);
+
+  const onUpdateCartCount = (status) => {
+    setCheckCartStatus(status);
+  }
   return (
     <Router>
     <div>
-      <Navbar />
+      <Navbar checkCartStatus={checkCartStatus}/>
       <Container maxWidth={false}>
           <Switch>
             <Route path='/' exact component={Buy} />
-            <Route path='/buy' exact component={() => <Buy />} />
+            <Route path='/buy' exact component={() => <Buy/>} />
             <Route path='/buyList/:categoryName' exact component={() => <BuyList />} />
-            <Route path='/productDetails/:itemId' exact component={() => <ProductDetails />} />
-            <Route path='/cart' exact component={() => <Cart />} />
+            <Route path='/productDetails/:itemId' exact component={() => <ProductDetails updateCartCount={(status)=>onUpdateCartCount(status)}/>} />
+            <Route path='/cart' exact component={() => <Cart updateCartCount={(status)=>onUpdateCartCount(status)}/>} />
           </Switch>
         </Container>
     </div>
