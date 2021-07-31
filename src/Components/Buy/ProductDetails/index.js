@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Button from '@material-ui/core/Button';
 
-import { GetProductDetails } from '../services/GetProductDetails';
+import { GetProductDetails } from '../../../services/GetProductDetails';
+import AddItemToCart from '../../../services/AddItemToCart';
 
 export const ProductDetails = (props) => {
 
@@ -22,6 +25,24 @@ export const ProductDetails = (props) => {
     }); 
   }, []);
 
+  const addToCart = (productDetails) => {
+    const path = window.location.pathname;
+    const itemId = path.split('/').pop();
+    const itemDetails = {
+      "customer_id"  :1,
+      "item_id" : itemId,
+      "item_name" : productDetails.item_name,
+      "categoryName" : productDetails.categoryName,
+      "quantity" :1
+    }
+    AddItemToCart(itemDetails).then(function (response) {
+      alert("Item added to cart");
+    })
+    .catch(function (error) {
+      console.log('addItemToCart error', error);
+    }); 
+  }
+
   return (
     <Container maxWidth="md" className="productDetails">
       <Grid container spacing={2}>
@@ -34,7 +55,7 @@ export const ProductDetails = (props) => {
             className="productImage"
           />
           <div className="buttonWrap">
-            <Button variant="contained" color="secondary">ADD TO CART</Button>
+            <Button variant="contained" color="secondary" onClick={() => addToCart(productDetails)}>ADD TO CART</Button>
             <Button>ADD TO WISHLIST</Button>
           </div>
         </Grid>
@@ -59,7 +80,7 @@ export const ProductDetails = (props) => {
           </div>
           <div className="productGrid">
             <span>Baby Age</span>
-            <span>{productDetails.baby_age}</span>
+            <span>{productDetails.baby_age} Months</span>
           </div>
           <div className="bottomBorder"></div>
           <h3>Description</h3>

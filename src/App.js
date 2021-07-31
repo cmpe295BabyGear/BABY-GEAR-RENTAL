@@ -10,6 +10,7 @@ import Navbar from './Components/Navbar';
 import Buy from './Components/Buy';
 import BuyList from './Components/Buy/BuyList';
 import ProductDetails from './Components/Buy/ProductDetails';
+import Cart from './Components/Cart';
 
 import './App.css';
 
@@ -24,6 +25,7 @@ function App() {
             <Route path='/buy' exact component={() => <Buy />} />
             <Route path='/buyList/:categoryName' exact component={() => <BuyList />} />
             <Route path='/productDetails/:itemId' exact component={() => <ProductDetails />} />
+            <Route path='/cart' exact component={() => <Cart />} />
           </Switch>
         </Container>
     </div>

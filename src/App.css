@@ -181,6 +181,50 @@ header.MuiAppBar-colorPrimary {
   display: inline-block;
 }
 
+/** Cart CSS **/
+.myCart {
+  padding-top: 30px;
+}
+.myCart h2 {
+  color: #77624f;
+  margin-bottom: 40px;
+  width:100%;
+}
+.myCart h3 {
+  font-weight: normal;
+}
+.cartItem {
+  margin-bottom: 20px;
+}
+.cartItem .link {
+  color: #77624f;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.myCartLeftGrid {
+  border-right: 1px solid #77624f;
+}
+.myCartRightGrid {
+  padding: 0 20px !important;
+}
+.myCartRightGrid > div {
+  display: flex;
+  font-size: 1.2em;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+.myCartRightGrid > div:last-child {
+  font-weight: bold;
+}
+.cartItem img {
+  border: 1px solid #77624f;
+}
+.cartItemPrice {
+  font-size: 1.2em;
+  font-weight: bold;
+  padding-top: 15px;
+  text-align: center;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

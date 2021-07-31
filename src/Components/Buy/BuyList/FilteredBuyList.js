@@ -6,8 +6,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 
 import { useStyles } from './style';
-import GetAllProducts from '../services/GetAllProducts';
-import GetItemsOnFilterCriteria from '../services/GetItemsOnFilterCriteria';
+import GetAllProducts from '../../../services/GetAllProducts';
+import GetItemsOnFilterCriteria from '../../../services/GetItemsOnFilterCriteria';
 
 export const FilteredBuyList = (props) => {
     const [productList, setProductList] = React.useState([]);

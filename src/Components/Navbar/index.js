@@ -13,6 +13,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Button from '@material-ui/core/Button';
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -193,7 +194,7 @@ export const Navbar = () => {
             </IconButton>
             <IconButton aria-label="show cart items" color="inherit">
               <Badge badgeContent={17} color="secondary">
-                <ShoppingCartIcon />
+                <Link to="/cart"><ShoppingCartIcon /></Link>
               </Badge>
             </IconButton>
             <IconButton

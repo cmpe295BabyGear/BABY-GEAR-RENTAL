@@ -11,7 +11,7 @@ import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 
 import { useStyles } from './style';
-import GetItemsOnFilterCriteria from '../services/GetItemsOnFilterCriteria';
+import GetItemsOnFilterCriteria from '../../../services/GetItemsOnFilterCriteria';
 
 export const FilterPanel = (props) => {
     const classes = useStyles();
