@@ -23,7 +23,7 @@ exports.handler = (event, context, callback) => {
       return;
     }
 
-    var sqlQuery = `select ci.id as cart_id, ci.customer_id,i.rental_price, i.s3_label, c.email_id as email_id,i.id as item_id, ic.categoryName as categoryName, i.item_name , ci.quantity from cart_items ci ` +
+    var sqlQuery = `select ci.id as cart_id, ci.customer_id,i.rental_price,i.price, i.s3_label, c.email_id as email_id,i.id as item_id, ic.categoryName as categoryName, i.item_name , ci.quantity from cart_items ci ` +
       `join items i ` +
       `on ci.item_id = i.id ` +
       `join customer c ` +
