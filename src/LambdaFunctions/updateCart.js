@@ -15,15 +15,10 @@ exports.handler = (event, context, callback) => {
 
   console.log('event ------', event);
   try {
-
-    var sqlQuery = `select od.id as order_id, od.customer_id,i.s3_label, i.id as item_id, date_format (od.order_date, '%m%d%Y') as order_date , od.quantity, od.price, order_type, ` +
-      `date_format (od.lease_startDT, '%m%d%Y') as lease_startDT, date_format (od.lease_endDT, '%m%d%Y') as lease_endDT, order_status ` +
-      `from order_details od ` +
-      `join items i ` +
-      `on od.id = ${event.queryStringParameters.orderId}`;
-
+    const itemId = event.item_id;
+    const customerId = event.customer_id;
+    var sqlQuery = `delete from cart_items where item_id = ${itemId} and customer_id = ${customerId} and quantity = 1; `;
     conn.query(sqlQuery, function (error, results, fields) {
-      // connection.destroy();
       if (error) {
         console.log(error);
         callback(error);
@@ -33,8 +28,10 @@ exports.handler = (event, context, callback) => {
         console.log(results);
         callback(null, results);
       }
+
     });
-  } catch (err) {
+  }
+  catch (err) {
     console.log(err);
   }
   finally {

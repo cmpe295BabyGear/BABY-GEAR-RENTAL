@@ -4,36 +4,28 @@ var config = require('./config.json');
 
 exports.handler = (event, context, callback) => {
 
-  var pool = mysql.createPool({
+  var conn = mysql.createConnection({
     host: config.dbhost,
     user: config.dbuser,
     password: config.dbpassword,
-    database: config.dbname
+    database: config.dbname,
+    connectionLimit: 10
   });
-
-  pool.query = new util.promisify(pool.query);
 
   context.callbackWaitsForEmptyEventLoop = false;
 
   console.log('event ------', event);
 
-  pool.getConnection(function (err, connection) {
-    if (err) {
-      callback(err);
-      return;
-    }
-
-    var sqlQuery = `select ci.id as cart_id, ci.customer_id,i.rental_price,i.price, i.s3_label, c.email_id as email_id,i.id as item_id, ic.categoryName as categoryName, i.item_name , ci.quantity from cart_items ci ` +
-      `join items i ` +
-      `on ci.item_id = i.id ` +
-      `join customer c ` +
-      `on ci.customer_id = c.id ` +
-      `join item_category ic ` +
-      `on ci.item_category = ic.id ` +
-      `where ci.customer_id = ${event.queryStringParameters.customer_id};`;
-
-    pool.query(sqlQuery, function (error, results, fields) {
-      connection.destroy();
+  var sqlQuery = `select ci.id as cart_id, ci.customer_id,i.rental_price, i.price,i.s3_label, c.email_id as email_id,i.id as item_id, ic.categoryName as categoryName, i.item_name , ci.quantity from cart_items ci ` +
+    `join items i ` +
+    `on ci.item_id = i.id ` +
+    `join customer c ` +
+    `on ci.customer_id = c.id ` +
+    `join item_category ic ` +
+    `on ci.item_category = ic.id ` +
+    `where ci.customer_id = ${event.queryStringParameters.customer_id};`;
+  try {
+    conn.query(sqlQuery, function (error, results, fields) {
       if (error) {
         console.log(error);
         callback(error);
@@ -43,9 +35,14 @@ exports.handler = (event, context, callback) => {
         console.log(results);
         callback(null, results);
       }
-      console.log('connection ----- ', connection);
     });
-  });
+  }
+  catch (err) {
+    console.log(err);
+  }
+  finally {
+    conn.end();
+  }
 }
 
 

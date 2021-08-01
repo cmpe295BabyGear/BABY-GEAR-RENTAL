@@ -4,24 +4,18 @@ var config = require('./config.json');
 
 exports.handler = (event, context, callback) => {
 
-  var pool = mysql.createPool({
+  var conn = mysql.createConnection({
     host: config.dbhost,
     user: config.dbuser,
     password: config.dbpassword,
     database: config.dbname
   });
 
-  pool.query = new util.promisify(pool.query);
-
   context.callbackWaitsForEmptyEventLoop = false;
 
   console.log('event ------', event);
 
-  pool.getConnection(function (err, connection) {
-    if (err) {
-      callback(err);
-      return;
-    }
+  try {
 
     var sqlQuery = `SELECT i.id as item_id, i.s3_label, i.rental_price, c.id as customer_id,c.email_id as email_id, item_name,i.description,baby_age,i.condition,brand,DATE_FORMAT(lease_startDT, '%m/%d/%Y') as lease_startDT, DATE_FORMAT(lease_endDT, '%m/%d/%Y') as lease_endDT, `
       + `price, availability_status,ic.categoryName, item_status, seller_preference `
@@ -32,8 +26,7 @@ exports.handler = (event, context, callback) => {
       + `on c.id = i.customer_id `
       + `where i.id = ${event.queryStringParameters.item_id};`;
 
-    pool.query(sqlQuery, function (error, results, fields) {
-      connection.destroy();
+    conn.query(sqlQuery, function (error, results, fields) {
       if (error) {
         console.log(error);
         callback(error);
@@ -43,9 +36,13 @@ exports.handler = (event, context, callback) => {
         console.log(results);
         callback(null, results);
       }
-      console.log('connection ----- ', connection);
     });
-  });
+  } catch (err) {
+    console.log(err);
+  }
+  finally {
+    conn.end();
+  }
 }
 
 

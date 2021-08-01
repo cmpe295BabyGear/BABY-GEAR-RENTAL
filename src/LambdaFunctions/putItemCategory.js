@@ -3,28 +3,20 @@ var util = require('util');
 var config = require('./config.json');
 
 exports.handler = (event, context, callback) => {
-  var pool = mysql.createPool({
+  var conn = mysql.createConnection({
     host: config.dbhost,
     user: config.dbuser,
     password: config.dbpassword,
     database: config.dbname
   });
 
-  pool.query = new util.promisify(pool.query);
-
   context.callbackWaitsForEmptyEventLoop = false;
 
   console.log('event ------', event);
-
-  pool.getConnection(function (err, connection) {
-    if (err) {
-      callback(err);
-      return;
-    }
+  try {
 
     const queryString = "INSERT INTO item_category(`id`, `description`, `categoryName`) VALUES ('" + event.id + "', '" + event.categoryDescription + "', '" + event.categoryName + "' );";
-    var result = pool.query(queryString, function (error, results, fields) {
-      connection.destroy();
+    var result = conn.query(queryString, function (error, results, fields) {
       if (error) {
         console.log(error);
         callback(error);
@@ -35,9 +27,10 @@ exports.handler = (event, context, callback) => {
         callback(null, results);
       }
     });
-    console.log(result);
+  } catch (err) {
     console.log(err);
-    console.log(connection);
-  });
+  } finally {
+    conn.end();
+  }
 };
 

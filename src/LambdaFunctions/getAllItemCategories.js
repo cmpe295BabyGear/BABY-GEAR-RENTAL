@@ -4,28 +4,19 @@ var config = require('./config.json');
 
 exports.handler = (event, context, callback) => {
 
-  var pool = mysql.createPool({
+  var conn = mysql.createConnection({
     host: config.dbhost,
     user: config.dbuser,
     password: config.dbpassword,
     database: config.dbname
   });
 
-  pool.query = new util.promisify(pool.query);
-
   context.callbackWaitsForEmptyEventLoop = false;
 
   console.log('event ------', event);
+  try {
+    conn.query(`SELECT * FROM item_category`, function (error, results, fields) {
 
-  pool.getConnection(function (err, connection) {
-    if (err) {
-      callback(err);
-      return;
-    }
-
-    console.log('connection ----- ', connection);
-    pool.query(`SELECT * FROM item_category`, function (error, results, fields) {
-      connection.destroy();
       if (error) {
         console.log(error);
         callback(error);
@@ -35,9 +26,12 @@ exports.handler = (event, context, callback) => {
         console.log(results);
         callback(null, results);
       }
-      console.log('connection ----- ', connection);
     });
-  });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    conn.end();
+  }
 }
 
 
