@@ -13,6 +13,9 @@ header.MuiAppBar-colorPrimary {
   color: #2827279e;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
 /*Banner CSS*/
 .bannerContent {
   xbackground: peachpuff;
@@ -44,6 +47,9 @@ header.MuiAppBar-colorPrimary {
   text-align: center;
   margin-top: 120px;
 }
+.bannerText a {
+  text-decoration: none;
+}
 .bannerText > span {
   display: block;
   font-size: 18px;
@@ -54,6 +60,7 @@ header.MuiAppBar-colorPrimary {
   /*skyblue banner*/
   background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY25zFbP_n9wPBHoH_XD_uMhQZpWIN-o27uQ&usqp=CAU") 60% 60%;
   margin: 3px 0 10px;
+  padding-bottom: 25px;
 }
 .categoriesRow {
   padding-top: 25px;
@@ -101,6 +108,129 @@ header.MuiAppBar-colorPrimary {
   background: #d2d2d2cf;
 }
 
+/*Buy List CSS*/
+.buyPriceWrap, .rentPriceWrap {
+  display: flex;
+  justify-content: space-between;
+}
+
+.priceWrap span:nth-child(2){
+  font-weight: bold;
+}
+.priceWrap, .rentPriceWrap .priceWrap{
+  color: #8b6c52;
+  font-size: 1.12em;
+}
+.priceWrap span:nth-child(2), .rentPriceWrap span:nth-child(2) {
+  display: inline-block;
+  margin-left: 10px;
+}
+.filteredBuyList .productName {
+  font-size: 1.1em;
+  font-weight: normal;
+  margin: 10px 0;
+  min-height: 42px;
+  xcolor: #80bfcd;
+  text-transform: capitalize;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+/* Product Details Page*/
+.productDetails {
+  margin-top: 30px;
+}
+.productDetails .productName {
+  color: #77624f;
+  text-transform: capitalize;
+  margin: 0;
+  padding: 10px 0;
+}
+.productDetails .productPrice {
+  font-size: 20px;
+  color: #f50557;
+  font-weight: bold;
+  padding: 10px 0;
+  border-bottom: 1px solid #77624f;
+  margin-bottom: 10px;
+}
+.productDetails .buttonWrap {
+  text-align: center;
+  padding: 20px;
+}
+.productDetails .buttonWrap button:first-child {
+  margin-right: 20px;
+}
+.productDetails .buttonWrap button:nth-child(2) {
+  border: 1px solid #77624f;
+}
+.bottomBorder {
+  border-bottom: 1px solid #77624f;
+  margin-top:10px;
+}
+.productDetails h3 {
+  margin: 20px 0 10px 0;
+}
+.productDetails .productGrid {
+  padding: 5px 0;
+}
+.productDetails .productGrid span:first-child {
+  width: 25%;
+  display: inline-block;
+}
+
+/** Cart CSS **/
+.myCart {
+  padding-top: 30px;
+}
+.myCart h2 {
+  color: #77624f;
+  margin-bottom: 40px;
+  width:100%;
+}
+.myCart h3 {
+  font-weight: normal;
+}
+.cartItem {
+  margin-bottom: 20px;
+}
+.cartItem .link {
+  color: #77624f;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.myCartLeftGrid {
+  border-right: 1px solid #77624f;
+}
+.myCartRightGrid {
+  padding: 0 20px !important;
+}
+.myCartRightGrid > div {
+  display: flex;
+  font-size: 1.2em;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+.myCartRightGrid > div:last-child {
+  font-weight: bold;
+}
+.cartItem img {
+  border: 1px solid #77624f;
+}
+.cartItemPrice {
+  font-size: 1.2em;
+  font-weight: bold;
+  padding-top: 15px;
+  text-align: center;
+}
+.myCart .buttonWrap {
+  justify-content: center;
+}
+.myCart .buttonWrap button {
+  width: 60%;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
