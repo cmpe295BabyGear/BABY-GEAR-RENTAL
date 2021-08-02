@@ -195,7 +195,7 @@ export const Navbar = (props) => {
             <MenuIcon />
           </IconButton>
           <Link to="/" style={{ textDecoration: 'none', display: 'block', color:"inherit" }}><Typography className={classes.title} variant="h6" noWrap>
-            Baby Gear Rentals
+            Preloved Baby Gear Center
           </Typography></Link>
           <div className={classes.grow} />
           { !isLoggedIn ? <Button color="inherit">Login</Button> : null}
