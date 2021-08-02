@@ -14,7 +14,7 @@ const GetCartDetails = (event) => {
               item_name: element.item_name,
               categoryName: element.categoryName,
               brand: element.brand,
-              image: 'https://d1d6i97vlsh97n.cloudfront.net/' + element.email_id + '/' + element.categoryName + '/' + element.s3_label
+              image: 'https://d1d6i97vlsh97n.cloudfront.net/' + element.seller_email + '/' + element.categoryName + '/' + element.s3_label
             });
           });
           console.log("response.................x", response);
