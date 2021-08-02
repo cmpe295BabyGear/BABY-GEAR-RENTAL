@@ -60,7 +60,7 @@ export const FilteredBuyList = (props) => {
                           alt={product.item_name}
                           image={product.image}
                           title={product.item_name}
-                          className={classes.productImage}
+                          className="productImage"
                       />
                     </Link>
                   </div>
