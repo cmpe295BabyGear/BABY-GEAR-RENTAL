@@ -113,7 +113,10 @@ header.MuiAppBar-colorPrimary {
   display: flex;
   justify-content: space-between;
 }
-
+.filteredBuyList .productImage {
+  height: 150px;
+  width: 150px;
+}
 .priceWrap span:nth-child(2){
   font-weight: bold;
 }
