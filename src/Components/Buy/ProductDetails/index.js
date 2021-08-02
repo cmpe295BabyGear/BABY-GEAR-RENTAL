@@ -28,7 +28,7 @@ export const ProductDetails = (props) => {
     const path = window.location.pathname;
     const itemId = path.split('/').pop();
     const itemDetails = {
-      "customer_id"  :1,
+      "customer_id" :1,
       "item_id" : itemId,
       "item_name" : productDetails.item_name,
       "categoryName" : productDetails.categoryName,

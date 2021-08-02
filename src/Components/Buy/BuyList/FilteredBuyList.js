@@ -54,6 +54,7 @@ export const FilteredBuyList = (props) => {
               <Grid item spacing={2} xs={12} sm={4}>
                 <Card className={classes.productCard} key={index}>
                   <div item className={classes.productImageWrap}>
+                    <Link to={getpathQuery(product.item_id)} style={{ textDecoration: 'none', display: 'block', color:"inherit" }}>
                       <CardMedia
                           component='img'
                           alt={product.item_name}
@@ -61,6 +62,7 @@ export const FilteredBuyList = (props) => {
                           title={product.item_name}
                           className={classes.productImage}
                       />
+                    </Link>
                   </div>
                   <Grid item xs={12} sm={12}>
                     <Link to={getpathQuery(product.item_id)} style={{ textDecoration: 'none', display: 'block', color:"inherit" }}>
