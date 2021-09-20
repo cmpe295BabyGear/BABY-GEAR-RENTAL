@@ -13,7 +13,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Button from '@material-ui/core/Button';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 import GetCartDetails from '../../services/GetCartDetails';
 
@@ -136,8 +136,12 @@ export const Navbar = (props) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <Link to='/myProfile' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>Profile</MenuItem></Link>
+      <Link to='/userAddress' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>Addresses</MenuItem></Link>
+      <Link to='/paymentOptions' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>Payment Options</MenuItem></Link>
+      <MenuItem onClick={handleMenuClose}>My Orders</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My Listings</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Wishlist</MenuItem>
     </Menu>
   );
 
@@ -153,16 +157,16 @@ export const Navbar = (props) => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show wishlist" color="inherit">
-          <Badge badgeContent={4} color="secondary">
+        <IconButton aria-label='show wishlist' color='inherit'>
+          <Badge badgeContent={4} color='secondary'>
             <FavoriteIcon />
           </Badge>
         </IconButton>
         <p>My Wishlist</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show cart items" color="inherit">
-          <Badge badgeContent={11} color="secondary">
+        <IconButton aria-label='show cart items' color='inherit'>
+          <Badge badgeContent={11} color='secondary'>
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
@@ -170,10 +174,10 @@ export const Navbar = (props) => {
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
+          aria-label='account of current user'
+          aria-controls='primary-search-account-menu'
+          aria-haspopup='true'
+          color='inherit'
         >
           <AccountCircle />
         </IconButton>
@@ -184,57 +188,59 @@ export const Navbar = (props) => {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position='static'>
         <Toolbar>
           <IconButton
-            edge="start"
+            edge='start'
             className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
+            color='inherit'
+            aria-label='open drawer'
           >
             <MenuIcon />
           </IconButton>
-          <Link to="/" style={{ textDecoration: 'none', display: 'block', color:"inherit" }}><Typography className={classes.title} variant="h6" noWrap>
-            Preloved Baby Gear Center
-          </Typography></Link>
+          <Link to='/' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
+            <Typography className={classes.title} variant='h6' noWrap>
+              Preloved Baby Gear Center
+            </Typography>
+          </Link>
           <div className={classes.grow} />
-          { !isLoggedIn ? <Button color="inherit">Login</Button> : null}
+          { !isLoggedIn ? <Button color='inherit'>Login</Button> : null}
           { isLoggedIn ? <div className={classes.sectionDesktop}>
-            {/* <ButtonGroup variant="contained" color="secondary" aria-label="contained primary button group">
+            {/* <ButtonGroup variant='contained' color='secondary' aria-label='contained primary button group'>
               <Button>Buy</Button>
               <Button>Sell</Button>
             </ButtonGroup> */}
-            <Link to="/buy" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}><Button variant="contained" color="secondary">Buy</Button></Link>
-            <Button color="inherit">Sell</Button>
-            <Button color="inherit">About Us</Button>
-            <IconButton aria-label="show wishlist" color="inherit">
-              <Badge badgeContent={4} color="secondary">
+            <Link to='/buy' style={{ textDecoration: 'none', display: 'block', color:'inherit', marginTop: '8px' }}><Button variant='contained' color='secondary'>Buy</Button></Link>
+            <Button color='inherit'>Sell</Button>
+            <Button color='inherit'>About Us</Button>
+            <IconButton aria-label='show wishlist' color='inherit'>
+              <Badge badgeContent={4} color='secondary'>
                 <FavoriteIcon />
               </Badge>
             </IconButton>
-            <IconButton aria-label="show cart items" color="inherit">
-              <Badge badgeContent={numberOfCartItems} color="secondary">
-                <Link to="/cart" style={{ textDecoration: 'none', display: 'block', color:"inherit" }}><ShoppingCartIcon /></Link>
+            <IconButton aria-label='show cart items' color='inherit'>
+              <Badge badgeContent={numberOfCartItems} color='secondary'>
+                <Link to='/cart' style={{ textDecoration: 'none', display: 'block', color:'inherit' }}><ShoppingCartIcon /></Link>
               </Badge>
             </IconButton>
             <IconButton
-              edge="end"
-              aria-label="account of current user"
+              edge='end'
+              aria-label='account of current user'
               aria-controls={menuId}
-              aria-haspopup="true"
+              aria-haspopup='true'
               onClick={handleProfileMenuOpen}
-              color="inherit"
+              color='inherit'
             >
               <AccountCircle />
             </IconButton>
           </div> : null}
           { isLoggedIn ? <div className={classes.sectionMobile}>
             <IconButton
-              aria-label="show more"
+              aria-label='show more'
               aria-controls={mobileMenuId}
-              aria-haspopup="true"
+              aria-haspopup='true'
               onClick={handleMobileMenuOpen}
-              color="inherit"
+              color='inherit'
             >
               <MoreIcon />
             </IconButton>
