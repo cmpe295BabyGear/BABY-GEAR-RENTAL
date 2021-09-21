@@ -196,9 +196,11 @@ export const Navbar = (props) => {
           </IconButton>
           <Link to="/" style={{ textDecoration: 'none', display: 'block', color:"inherit" }}><Typography className={classes.title} variant="h6" noWrap>
             Preloved Baby Gear Center
-          </Typography></Link>
+          </Typography>
+          </Link>
+
           <div className={classes.grow} />
-          { !isLoggedIn ? <Button color="inherit">Login</Button> : null}
+          {!isLoggedIn ? <Button color="inherit">Login</Button> : null}
           { isLoggedIn ? <div className={classes.sectionDesktop}>
             {/* <ButtonGroup variant="contained" color="secondary" aria-label="contained primary button group">
               <Button>Buy</Button>
