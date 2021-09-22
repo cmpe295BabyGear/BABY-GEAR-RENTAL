@@ -27,7 +27,10 @@ const [sell, setSell] = React.useState('');
 
   const handleChange = (event) => {
     setCategory(event.target.value);
+    setCondition(event.target.value);
+    setSell(event.target.value);  
   };
+
 
 
     return(
@@ -35,7 +38,7 @@ const [sell, setSell] = React.useState('');
 <Container maxWidth="md" className="SellList">
 
 <Typography variant="h4" component="h2" allignment="center" className="SellList">
-  List Selling Items
+  List Your Baby Gear
 </Typography>
 
 <Card sx={{ maxWidth: 345 }} container spacing={3}>
