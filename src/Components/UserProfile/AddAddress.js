@@ -93,10 +93,13 @@ const AddAddress = (props) => {
       }
     }).then(function (resp) {
       setZipcodeErr('')
-      const addressComponents = resp.data.results[0].address_components;
+      console.log(resp)
+      const addressComponents = resp.data.results[0].address_Components;
       setSuggestedAddr(resp.data.results[0].formatted_address)
       setAddrComp(resp.data.results[0])
-      setOpen(true)
+      if (addresVal !== suggestedAddr) {
+        setOpen(true)
+      }
     }).catch(function (err) {
       console.log(err)
       setZipcodeErr('Invalid address, Please check again')
@@ -127,9 +130,9 @@ const AddAddress = (props) => {
       "name": fullName,
       "address1": address1,
       "address2": address2,
-      "city": city,
-      "state": state,
-      "country": country,
+      "city": temp_city,
+      "state": temp_state,
+      "country": temp_country,
       "zipcode": zipCode,
       "formattedAddr": suggestedAddr
     }
