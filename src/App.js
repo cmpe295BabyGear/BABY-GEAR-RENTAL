@@ -17,6 +17,7 @@ import MyProfile from './Components/UserProfile/MyProfile';
 import UserAddresses from './Components/UserProfile/UserAddresses';
 import UserPaymentOptions from './Components/UserProfile/UserPaymentOptions';
 import ChangePassword from './Components/UserProfile/ChangePassword';
+import AddAddress from './Components/UserProfile/AddAddress';
 
 function App() {
   const [checkCartStatus, setCheckCartStatus] = React.useState(0);
@@ -39,6 +40,7 @@ function App() {
             <Route path='/userAddress' exact component={() => <UserAddresses />} />
             <Route path='/paymentOptions' exact component={() => <UserPaymentOptions />} />
             <Route path='/changePwd' exact component={() => <ChangePassword />} />
+            <Route path='/addAddress/:custId' exact component={() => <AddAddress />} />
           </Switch>
         </Container>
       </div>
