@@ -27,7 +27,7 @@ exports.handler = (event, context, callback) => {
         console.log(results);
         callback(null, results);
       }
-    }); downloa
+    }); 
   } catch (err) {
     console.log(err);
   } finally {
