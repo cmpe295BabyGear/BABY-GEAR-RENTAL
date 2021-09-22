@@ -34,7 +34,6 @@ build/
 dist/
 node_modules/
 aws-exports.js
-google-api-key.js
 awsconfiguration.json
 amplifyconfiguration.json
 amplifyconfiguration.dart
