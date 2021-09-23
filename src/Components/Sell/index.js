@@ -25,12 +25,19 @@ const [condition, setCondition] = React.useState('');
 const [sell, setSell] = React.useState('');
 
 
-  const handleChange = (event) => {
-    setCategory(event.target.value);
+  const handleConditionChange = (event) => {
+    
     setCondition(event.target.value);
-    setSell(event.target.value);  
+    
   };
 
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
+  }
+
+  const handleSellChange = (event) => {
+    setSell(event.target.value);  
+  }
 
 
     return(
@@ -86,7 +93,6 @@ const [sell, setSell] = React.useState('');
             />
         </Grid> */}
 
-
 <Grid item xs={12} sm={5}>
 <FormControl fullWidth>
   <InputLabel id="demo-simple-select-label">Category</InputLabel>
@@ -95,11 +101,15 @@ const [sell, setSell] = React.useState('');
     id="demo-simple-select"
     value={category}
     label="Category"
-    onChange={handleChange}
+    onChange={handleCategoryChange}
   >
-    <MenuItem value={10}>Ten</MenuItem>
-    <MenuItem value={20}>Twenty</MenuItem>
-    <MenuItem value={30}>Thirty</MenuItem>
+    <MenuItem value={1}>Stroller</MenuItem>
+    <MenuItem value={2}>Safety</MenuItem>
+    <MenuItem value={3}>Highchair</MenuItem>
+    <MenuItem value={4}>Crib</MenuItem>
+    <MenuItem value={5}>Carseat</MenuItem>
+    <MenuItem value={6}>Bath</MenuItem>
+    
   </Select>
 </FormControl>
 </Grid>
@@ -111,15 +121,18 @@ const [sell, setSell] = React.useState('');
     labelId="demo-simple-select-label"
     id="demo-simple-select"
     value={condition}
-    label="Category"
-    onChange={handleChange}
+    label="Condition"
+    onChange={handleConditionChange}
   >
-    <MenuItem value={10}>Ten</MenuItem>
-    <MenuItem value={20}>Twenty</MenuItem>
-    <MenuItem value={30}>Thirty</MenuItem>
+    <MenuItem value={1}>New</MenuItem>
+    <MenuItem value={2}>Used Like New </MenuItem>
+    <MenuItem value={3}>Used Good</MenuItem>
+    <MenuItem value={4}>Used Fair</MenuItem>
   </Select>
 </FormControl>
 </Grid>
+
+
 
 
 <Grid item xs={12} sm={5}>
@@ -130,7 +143,7 @@ const [sell, setSell] = React.useState('');
     id="demo-simple-select"
     value={sell}
     label="Category"
-    onChange={handleChange}
+    onChange={handleSellChange}
   >
     <MenuItem value={10}>Sell</MenuItem>
     <MenuItem value={20}>Rent</MenuItem>
