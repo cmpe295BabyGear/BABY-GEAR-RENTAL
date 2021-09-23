@@ -23,6 +23,7 @@ const getData = (e) =>{
 const [category, setCategory] = React.useState('');
 const [condition, setCondition] = React.useState('');
 const [sell, setSell] = React.useState('');
+const [babyAge, setBabyAge] = React.useState('');
 
 
   const handleConditionChange = (event) => {
@@ -39,6 +40,9 @@ const [sell, setSell] = React.useState('');
     setSell(event.target.value);  
   }
 
+  const handleBabyAgeChange = (event) => {
+    setBabyAge(event.target.value);  
+  }
 
     return(
 
@@ -132,6 +136,23 @@ const [sell, setSell] = React.useState('');
 </FormControl>
 </Grid>
 
+<Grid item xs={12} sm={5}>
+<FormControl fullWidth>
+  <InputLabel id="demo-simple-select-label">Preferred Baby Age</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    value={babyAge}
+    label="babyAge"
+    onChange={handleBabyAgeChange}
+  >
+    <MenuItem value={1}>NewBorn</MenuItem>
+    <MenuItem value={2}>6-12 Months </MenuItem>
+    <MenuItem value={3}>12-24 Month</MenuItem>
+    <MenuItem value={4}>2-4 years old</MenuItem>
+  </Select>
+</FormControl>
+</Grid>
 
 
 
@@ -145,8 +166,8 @@ const [sell, setSell] = React.useState('');
     label="Category"
     onChange={handleSellChange}
   >
-    <MenuItem value={10}>Sell</MenuItem>
-    <MenuItem value={20}>Rent</MenuItem>
+    <MenuItem value={1}>Sell</MenuItem>
+    <MenuItem value={2}>Rent</MenuItem>
     
   </Select>
 </FormControl>
