@@ -16,6 +16,7 @@
     "@testing-library/user-event": "^12.8.3",
     "aws-amplify": "^4.2.10",
     "axios": "^0.21.1",
+    "materialui-daterange-picker": "^1.1.92",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",

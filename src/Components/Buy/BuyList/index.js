@@ -29,7 +29,8 @@ export const BuyList = () => {
       textAlign: 'center',
       color: theme.palette.text.secondary,
       // background: '#faf6f6'
-      background: '#d9fcf994'
+      // background: '#d9fcf994',
+      backgroundColor: 'rgba(156, 39, 176, 0.08)'
     },
   }));
   const classes = useStyles();

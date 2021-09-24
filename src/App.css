@@ -128,6 +128,10 @@ header.MuiAppBar-colorPrimary {
   display: inline-block;
   margin-left: 10px;
 }
+.notAvailable {
+  font-size: 0.8em;
+  color: #8b6c52;
+}
 .filteredBuyList .productName {
   font-size: 1.1em;
   font-weight: normal;
@@ -152,12 +156,72 @@ header.MuiAppBar-colorPrimary {
   padding: 10px 0;
 }
 .productDetails .productPrice {
-  font-size: 20px;
-  color: #f50557;
+  padding: 20px;
+    border-bottom: 1px solid #77624f;
+    margin-bottom: 10px;
+    background: #f6eef9;
+}
+.productDetails .productPrice span {
+  width: 25%;
+  display: inline-block;
+}
+.productDetails .productPrice span:nth-child(2) {
   font-weight: bold;
-  padding: 10px 0;
-  border-bottom: 1px solid #77624f;
-  margin-bottom: 10px;
+}
+.productRentPriceWrap {
+  padding: 20px;
+  background-color: #f6eef9;
+}
+.rentDetails div {
+  padding: 10px;
+}
+.rentDetails div span:first-child {
+  display: inline-block;
+  width: 30%;
+}
+.boldText {
+  font-weight: bold;;
+}
+.productRentPriceWrap > span{
+  display: block;
+  padding-bottom: 20px;
+}
+.productRentPriceWrap .MuiTypography-subtitle1 {
+  font-size: 0.8em;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-daysContainer-16 {
+  margin-bottom: 5px;;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-header-4 {
+  padding: 5px 40px;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-dateRangePicker-2 {
+  width: 445px;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-button-22 {
+  width: 25px;
+  height: 25px;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-buttonText-23 {
+  font-size: 0.5em;
+}
+.productRentPriceWrap .MuiSelect-select.MuiSelect-select {
+  font-size: 0.8em;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-root-14 {
+  width: 220px;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-dateRangePicker-2 ul{
+  display: none;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-dateRangeBackdrop-3 {
+  height: auto;
+  position:relative
+}
+.productDetails .css-ovja5t-MuiButtonBase-root-MuiToggleButton-root.Mui-selected {
+  color: #f50557;
+  background-color: rgba(156, 39, 176, 0.08);
+  border-bottom: none;
 }
 .productDetails .buttonWrap {
   text-align: center;

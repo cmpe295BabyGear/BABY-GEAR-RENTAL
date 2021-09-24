@@ -6,10 +6,43 @@ import Button from '@material-ui/core/Button';
 
 import { GetProductDetails } from '../../../services/GetProductDetails';
 import AddItemToCart from '../../../services/AddItemToCart';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { DateRangePicker } from "materialui-daterange-picker";
 
 export const ProductDetails = (props) => {
 
   const [productDetails, setProductDetails] = useState([]);
+  const [purchaseType, setPurchaseType] = React.useState('buy');
+  const [dateRange, setDateRange] = React.useState({});
+  const [open, setOpen] = React.useState(false);
+  const [rentalDays, setRentalDays] = React.useState(0);
+    
+  const toggle = () => {
+    setOpen(!open)
+    console.log(dateRange);
+  };
+
+  const onDateRangeChange = (range) => {
+    setDateRange(range);
+    const startDate = range.startDate.getTime();
+    const endDate = range.endDate.getTime();
+    const diffTime = Math.abs(endDate - startDate);
+    const numberOfDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    setRentalDays(numberOfDays);
+  }
+
+  const handlePurchaseChange = (event, value) => {
+    setPurchaseType(value);
+    if(value === "rent") {
+        console.log('rent');
+        setOpen(true);
+    } else {
+        console.log('buy');
+        setOpen(false);
+        setDateRange({});
+    }
+  };
 
   useEffect(() => {    
     const path = window.location.pathname;
@@ -42,7 +75,7 @@ export const ProductDetails = (props) => {
       console.log('addItemToCart error', error);
     }); 
   }
-
+  const rental_price = 4;
   return (
     <Container maxWidth="md" className="productDetails">
       <Grid container spacing={2}>
@@ -54,17 +87,56 @@ export const ProductDetails = (props) => {
             width="300"
             className="productImage"
           />
+          
           <div className="buttonWrap">
             <Button variant="contained" color="secondary" onClick={() => addToCart(productDetails)}>ADD TO CART</Button>
             <Button>ADD TO WISHLIST</Button>
           </div>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={7}>
           <h2 className="productName">{productDetails.item_name}</h2>
-          <div className="productPrice">
+
+          <ToggleButtonGroup
+            color="secondary"
+            value={purchaseType}
+            exclusive
+            onChange={handlePurchaseChange}
+          >
+            <ToggleButton value="buy">Buy</ToggleButton>
+            <ToggleButton value="rent">Rent</ToggleButton>
+          </ToggleButtonGroup>
+
+          { purchaseType === 'buy' ? <div className="productPrice">
             <span>Buy Price </span>
             <span>${productDetails.price}</span>
-          </div>
+          </div> : null }
+
+          {purchaseType === 'rent' ? <div className="productRentPriceWrap">
+            <span>Select Rent Duration </span>
+            {/* Date Range Selector */}
+            <DateRangePicker
+                open={open}
+                toggle={toggle}
+                onChange={(range) => onDateRangeChange(range)}
+                // closeOnClickOutside={false}
+            
+            />
+            <div className="rentDetails">
+              <div>
+                <span>Price per day</span>
+                <span>$ {rental_price}</span>
+              </div>
+              <div>
+                <span>Number of Days</span>
+                <span>{rentalDays}</span>
+              </div>
+              <div>
+                <span>Total Rental Fee</span>
+                <span className="boldText">$ {rental_price * rentalDays}</span>
+              </div>
+            </div>
+          </div> : null }
+          
           <h3>Details</h3>
           <div className="productGrid">
             <span>Brand</span>

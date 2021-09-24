@@ -77,10 +77,17 @@ export const FilteredBuyList = (props) => {
                       {product.condition !== 'new' ? <span>Used - </span> : null}
                       <span className="capitalize">{product.condition}</span>
                     </div>
-                    <div className="priceWrap">
+                    { product.price ? <div className="priceWrap">
                       <span>Buy</span>
                       <span>${product.price}</span>
-                    </div>
+                    </div>:
+                    <div className="notAvailable"><span>BUY NOT AVAILABLE</span></div>
+                    }
+                    { product.rental_price ? <div className="priceWrap">
+                      <span>Rent</span>
+                      <span>${product.rental_price} per day</span>
+                    </div> : 
+                    <div className="notAvailable"><span>RENT NOT AVAILABLE</span></div>}
                   </Grid>
                 </Card>
               </Grid>
