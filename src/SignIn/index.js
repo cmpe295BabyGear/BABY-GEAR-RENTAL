@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -15,12 +16,15 @@ import awsconfig from "../aws-exports";
 import { useHistory, useLocation } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { GetCustomerDetails } from '../services/GetCustomerDetails';
 
 Amplify.configure(awsconfig);
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
+
+
 
 const SignIn = (props) => {
   const classes = useStyles();
@@ -29,15 +33,32 @@ const SignIn = (props) => {
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [customerDetails, setCustomerDetails] = useState([]);
+  //const [customerId, setCustomerId] = useState("")
 
   const login = async (e) => {
     e.preventDefault();
     try {
       const user = await Auth.signIn(emailid, password);
       console.log(user);
-      sessionStorage.setItem("userDetails", JSON.stringify({ userEmailId: emailid }));
-      console.log("user signedIn");
+      console.log("user signedIn");    
+      const getCustByEmailid = (emailid) => {
+
+      GetCustomerDetails(emailid).then(function (response) {
+      setCustomerDetails(response);
+      sessionStorage.setItem("userEmail", JSON.stringify({ userEmailId: emailid}));
+      sessionStorage.setItem("custId", response.id);
+      console.log('GetCustomerDetails values are - ', response);
+      })
+      .catch(function (error) {
+        setCustomerDetails(null);
+        console.log('GetCustomerDetails error', error);
+      });  
       
+     }
+      getCustByEmailid(emailid);
+      
+     
       history.push("/buy"); 
       props.onIsLoggedIn(true);
     } catch (error) {
