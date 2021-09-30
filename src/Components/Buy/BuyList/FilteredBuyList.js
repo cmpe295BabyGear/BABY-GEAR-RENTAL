@@ -38,7 +38,12 @@ export const FilteredBuyList = (props) => {
     }, []);
     useEffect(() => {    
         if (props.filteredBuyList.filteredBuyList)
-        setProductList(props.filteredBuyList.filteredBuyList);
+          setProductList(props.filteredBuyList.filteredBuyList);
+        else if (props.filteredBuyList && props.filteredBuyList.length !== 0)
+          setProductList(props.filteredBuyList);
+        else
+        setProductList([]);
+
     }, [props.filteredBuyList]);
     
     const getpathQuery = (itemId) => {

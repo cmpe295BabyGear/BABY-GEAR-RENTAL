@@ -15,8 +15,10 @@ import Radio from '@mui/material/Radio';
 import FormLabel from '@mui/material/FormLabel';
 import { DateRangePicker } from "materialui-daterange-picker";
 
-import { useStyles } from './style';
 import GetItemsOnFilterCriteria from '../../../services/GetItemsOnFilterCriteria';
+import GetAllProducts from '../../../services/GetAllProducts';
+
+import { useStyles } from './style';
 
 export const FilterPanel = (props) => {
     const classes = useStyles();
@@ -64,6 +66,25 @@ export const FilterPanel = (props) => {
         }
     }, []);
     
+    const clearFilter = () => {
+        GetAllProducts().then(function (response) {
+            props.onSearch(response.allProducts);
+
+            setLocation([]);
+            setCategory([]);
+            setCondition([]);
+            setPriceValue([0,0]);
+            setDefaultCategory("");
+            setPurchaseType([]);
+            setOpen(false);
+            setDateRange({});
+            console.log('All Products', response);
+        })
+        .catch(function (error) {
+            props.onSearch([]);
+            console.log('All Products error', error);
+        });
+    }
     const formatDate = (date) => {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -226,6 +247,7 @@ export const FilterPanel = (props) => {
                 <Button variant='contained' color='secondary' onClick={serchClick}>
                     Search
                 </Button>
+                <Button onClick={clearFilter} className={classes.clearFilter}>Clear Filter</Button>
             </div>
         </Container>
     );

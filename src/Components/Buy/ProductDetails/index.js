@@ -57,7 +57,7 @@ export const ProductDetails = (props) => {
     }); 
   }, []);
 
-  const addToCart = (productDetails) => {
+  const addToCart = (productDetails, isRent) => {
     const path = window.location.pathname;
     const itemId = path.split('/').pop();
     const itemDetails = {
@@ -75,7 +75,6 @@ export const ProductDetails = (props) => {
       console.log('addItemToCart error', error);
     }); 
   }
-  const rental_price = 4;
   return (
     <Container maxWidth="md" className="productDetails">
       <Grid container spacing={2}>
@@ -88,10 +87,6 @@ export const ProductDetails = (props) => {
             className="productImage"
           />
           
-          <div className="buttonWrap">
-            <Button variant="contained" color="secondary" onClick={() => addToCart(productDetails)}>ADD TO CART</Button>
-            <Button>ADD TO WISHLIST</Button>
-          </div>
         </Grid>
         <Grid item xs={12} sm={7}>
           <h2 className="productName">{productDetails.item_name}</h2>
@@ -103,12 +98,17 @@ export const ProductDetails = (props) => {
             onChange={handlePurchaseChange}
           >
             <ToggleButton value="buy">Buy</ToggleButton>
-            <ToggleButton value="rent">Rent</ToggleButton>
+            <ToggleButton value="rent" disabled={!productDetails.rental_price}>Rent</ToggleButton>
           </ToggleButtonGroup>
 
           { purchaseType === 'buy' ? <div className="productPrice">
             <span>Buy Price </span>
             <span>${productDetails.price}</span>
+
+            <div className="buttonWrap">
+              <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails)}>ADD TO CART</Button>
+              <Button>ADD TO WISHLIST</Button>
+            </div>
           </div> : null }
 
           {purchaseType === 'rent' ? <div className="productRentPriceWrap">
@@ -124,7 +124,7 @@ export const ProductDetails = (props) => {
             <div className="rentDetails">
               <div>
                 <span>Price per day</span>
-                <span>$ {rental_price}</span>
+                <span>$ {productDetails.rental_price}</span>
               </div>
               <div>
                 <span>Number of Days</span>
@@ -132,11 +132,24 @@ export const ProductDetails = (props) => {
               </div>
               <div>
                 <span>Total Rental Fee</span>
-                <span className="boldText">$ {rental_price * rentalDays}</span>
+                <span className="boldText">$ {productDetails.rental_price * rentalDays}</span>
               </div>
+            </div>
+
+            <div className="buttonWrap">
+              <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails, 'rent')}>ADD TO CART</Button>
+              <Button>ADD TO WISHLIST</Button>
             </div>
           </div> : null }
           
+          <div className="bottomBorder"></div>
+          <div className="deliveryDetails">
+            <span>Pickup at Mountain View Store</span>
+            <span>Delivery from store to Sunnyvale, 94086</span>
+            <span>Shiiping, arrives by Thu, Sep 30 to Sunnyvale 94086 </span>
+          </div>
+
+          <div className="bottomBorder"></div>
           <h3>Details</h3>
           <div className="productGrid">
             <span>Brand</span>

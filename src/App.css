@@ -157,9 +157,11 @@ header.MuiAppBar-colorPrimary {
 }
 .productDetails .productPrice {
   padding: 20px;
-    border-bottom: 1px solid #77624f;
-    margin-bottom: 10px;
-    background: #f6eef9;
+  border-bottom: 1px solid #ded5df;
+  margin-bottom: 10px;
+  background: #f6eef9;
+  border-left: 1px solid #ded5df;
+  border-right: 1px solid #ded5df;
 }
 .productDetails .productPrice span {
   width: 25%;
@@ -168,9 +170,21 @@ header.MuiAppBar-colorPrimary {
 .productDetails .productPrice span:nth-child(2) {
   font-weight: bold;
 }
+.productDetails .productPrice button span{
+  width: 100%;
+}
+/* .productDetails .productPrice button.addToCart {
+  background-color: transparent;
+  color: #f50057;
+  border: 1px solid #f50057;
+} */
 .productRentPriceWrap {
   padding: 20px;
-  background-color: #f6eef9;
+  border-bottom: 1px solid #ded5df;
+  margin-bottom: 10px;
+  background: #f6eef9;
+  border-left: 1px solid #ded5df;
+  border-right: 1px solid #ded5df
 }
 .rentDetails div {
   padding: 10px;
@@ -224,14 +238,18 @@ header.MuiAppBar-colorPrimary {
   border-bottom: none;
 }
 .productDetails .buttonWrap {
-  text-align: center;
-  padding: 20px;
+  margin-top: 20px;
 }
-.productDetails .buttonWrap button:first-child {
-  margin-right: 20px;
-}
-.productDetails .buttonWrap button:nth-child(2) {
+.productDetails .buttonWrap button {
   border: 1px solid #77624f;
+  margin-right: 10px;
+}
+.deliveryDetails {
+  padding: 20px 0;
+}
+.deliveryDetails span {
+  display: block;
+  margin-top: 10px;
 }
 .bottomBorder {
   border-bottom: 1px solid #77624f;
