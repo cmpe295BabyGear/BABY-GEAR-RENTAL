@@ -74,7 +74,7 @@ const SignUp = () => {
         // history.push(path);
         history.push({
           pathname: path,
-          state: { uname: username , fname: firstname, lname: lastname, phone: phonenumber},
+          state: { uname: username },
         });
       } catch (error) {
         setErrorMessage(error.message);
