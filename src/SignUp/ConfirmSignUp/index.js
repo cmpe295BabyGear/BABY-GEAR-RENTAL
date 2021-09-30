@@ -14,7 +14,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-
+import AddSignUpDetails from '../../services/AddSignUpDetails';
 
 
 const Alert = (props) => {
@@ -79,8 +79,27 @@ const ConfirmSignUp = (props) => {
     e.preventDefault();
     try {
       const username = location.state.uname;
+      const firstName = location.state.fname;
+      const lastName = location.state.lname;
+      const phoneNo = location.state.phone;
+
       await Auth.confirmSignUp(username, code);
       console.log('User confirmed !')
+      const addSignUpDetails = () => {
+        const custDetails = {
+          "email_id"  :username,
+          "first_name" : firstName,
+          "last_name" : lastName,
+          "phone_no" : phoneNo
+        }
+        AddSignUpDetails(custDetails).then(function (response) {
+         alert("Customer details added");
+        })
+        .catch(function (error) {
+          console.log('Customer details not added', error);
+        }); 
+      }
+      addSignUpDetails()
       history.push('/signIn');
     } catch (error) {
       setErrorMessage(error.message);
@@ -88,7 +107,6 @@ const ConfirmSignUp = (props) => {
       setErrorOpen(true);
     }
   }
-
   const handleErrorClose = (e, reason) => {
     if (reason === 'clickaway') {
       return;
