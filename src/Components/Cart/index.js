@@ -62,7 +62,7 @@ export const Cart = (props) => {
             <h2>Cart Details</h2>
             {cartDetails.map((cartItem, index) => (
               <Grid container className="cartItem">
-                <Grid item xs={12} sm={3}>
+                <Grid item xs={4} sm={3}>
                   <img
                     src={cartItem.image}
                     alt="Product Details"
@@ -75,7 +75,7 @@ export const Cart = (props) => {
                   <h3>{cartItem.item_name}</h3>
                   <span className="link" onClick={() => removeFromCart(cartItem)}>Remove</span>
                 </Grid>
-                <Grid item xs={3} sm={3} className="cartItemPrice">
+                <Grid item xs={2} sm={3} className="cartItemPrice">
                   <span>${cartItem.price}</span>
                 </Grid>
               </Grid>

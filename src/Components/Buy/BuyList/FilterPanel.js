@@ -34,7 +34,12 @@ export const FilterPanel = (props) => {
     };
 
     const locationList = [
-        "Los Angeles, CA", "Los Gatos, CA", "Monterey, CA", "San Diego, CA", "San Francisco, CA ", "Santa Cruz, CA"
+        {city: "Los Angeles, CA", pincode: '90001'},
+        {city: "Los Gatos, CA", pincode: '95030'},
+        {city: "Monterey, CA", pincode: '93940'},
+        {city: "San Diego, CA", pincode: '22400'},
+        {city: "San Francisco, CA", pincode: '94016'},
+        {city: "Santa Cruz, CA", pincode: '95060'},
     ];
     const categoryList = [
         "Bath", "CarSeat", "Crib", "HighChair", "Safety ", "Stroller"
@@ -112,7 +117,7 @@ export const FilterPanel = (props) => {
         const filterQuery = {};
 
         const formattedLocation = location.toString().toLowerCase();
-        filterQuery.locationName = formattedLocation !== '' ? formattedLocation : '';
+        filterQuery.store_zipcode = formattedLocation !== '' ? formattedLocation : '';
 
         const formattedCategory = category.toString().toLowerCase();
         filterQuery.categoryName = formattedCategory !== '' ? formattedCategory : '';
@@ -154,9 +159,9 @@ export const FilterPanel = (props) => {
                     onChange={(event) => setLocation(event.target.value)}
                     MenuProps={MenuProps}
                 >
-                    {locationList.map((name) => (
-                        <MenuItem key={name} value={name}>
-                            {name}
+                    {locationList.map((location) => (
+                        <MenuItem key={location.pincode} value={location.pincode}>
+                            {location.city}
                         </MenuItem>
                     ))}
                 </Select>

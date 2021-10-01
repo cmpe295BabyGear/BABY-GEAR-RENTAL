@@ -5,14 +5,17 @@ import Grid from "@material-ui/core/Grid";
 import Button from '@material-ui/core/Button';
 
 import { GetProductDetails } from '../../../services/GetProductDetails';
+import { GetStoreDetails } from '../../../services/GetStoreDetails';
 import AddItemToCart from '../../../services/AddItemToCart';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DateRangePicker } from "materialui-daterange-picker";
+import Tooltip from '@mui/material/Tooltip';
 
 export const ProductDetails = (props) => {
 
   const [productDetails, setProductDetails] = useState([]);
+  const [storeDetails, setStoreDetails] = useState({});
   const [purchaseType, setPurchaseType] = React.useState('buy');
   const [dateRange, setDateRange] = React.useState({});
   const [open, setOpen] = React.useState(false);
@@ -50,6 +53,14 @@ export const ProductDetails = (props) => {
     GetProductDetails(itemId).then(function (response) {
       setProductDetails(response);
       console.log('GetProductDetails', response);
+      GetStoreDetails(response.store_zipcode).then(function (response) {
+        setStoreDetails(response);
+        console.log('GetStoreDetails', response);
+      })
+      .catch(function (error) {
+        setStoreDetails(null);
+          console.log('GetStoreDetails error', error);
+      }); 
     })
     .catch(function (error) {
       setProductDetails(null);
@@ -78,7 +89,7 @@ export const ProductDetails = (props) => {
   return (
     <Container maxWidth="md" className="productDetails">
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={5}>
+        <Grid item xs={12} sm={5} className="textAlignCenter">
           <img
             src={productDetails ? productDetails.image : ''}
             alt="Product Details"
@@ -144,9 +155,14 @@ export const ProductDetails = (props) => {
           
           <div className="bottomBorder"></div>
           <div className="deliveryDetails">
-            <span>Pickup at Mountain View Store</span>
-            <span>Delivery from store to Sunnyvale, 94086</span>
-            <span>Shiiping, arrives by Thu, Sep 30 to Sunnyvale 94086 </span>
+            <div>Free Store Pickup at 
+              { storeDetails ? 
+              <Tooltip title={storeDetails.address}><span>{storeDetails.name}</span></Tooltip>
+              : null}
+            </div>
+            {/* <div>Pickup at nearest <span>UPS store</span> with shipping charges applied</div> */}
+            <div>Delivery from store to <span>Sunnyvale, 94086</span></div>
+            {/* <div>Shipping, arrives by Thu, Sep 30 to Sunnyvale 94086 </div> */}
           </div>
 
           <div className="bottomBorder"></div>

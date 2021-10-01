@@ -247,9 +247,13 @@ header.MuiAppBar-colorPrimary {
 .deliveryDetails {
   padding: 20px 0;
 }
-.deliveryDetails span {
+.deliveryDetails > div {
   display: block;
   margin-top: 10px;
+}
+.deliveryDetails span {
+  text-decoration: underline;
+  cursor: pointer;
 }
 .bottomBorder {
   border-bottom: 1px solid #77624f;
@@ -343,5 +347,32 @@ header.MuiAppBar-colorPrimary {
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+.textAlignCenter {
+  text-align: center;
+}
+
+@media (max-width:600px){
+  .materialui-daterange-picker-makeStyles-dateRangePicker-2 .MuiGrid-root.MuiGrid-container.MuiGrid-wrap-xs-nowrap.MuiGrid-justify-content-xs-center {
+    flex-wrap: wrap;
+  }
+  .materialui-daterange-picker-makeStyles-dateRangePicker-2 ul.MuiList-root.MuiList-padding {
+    display: none;
+  }
+  .MuiContainer-root {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
+  .MuiContainer-root.filteredBuyList, .bannerText, .MuiContainer-root.productDetails {
+    padding: 0 10px !important;
+  }
+  .cartItem h3 {
+    margin: 0;
+  }
+  .myCartLeftGrid {
+    padding: 0 15px;
+    border-right: 0;
   }
 }

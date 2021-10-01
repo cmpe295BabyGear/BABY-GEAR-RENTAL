@@ -167,7 +167,9 @@ export const Navbar = (props) => {
       <MenuItem>
         <IconButton aria-label='show cart items' color='inherit'>
           <Badge badgeContent={11} color='secondary'>
-            <ShoppingCartIcon />
+            <Link to='/cart' style={{ textDecoration: 'none', display: 'block', color:'inherit' }}>
+              <ShoppingCartIcon />
+            </Link>
           </Badge>
         </IconButton>
         <p>My Cart</p>
