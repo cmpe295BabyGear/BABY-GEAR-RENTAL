@@ -205,7 +205,7 @@ export const Navbar = (props) => {
               <Button>Sell</Button>
             </ButtonGroup> */}
             <Link to="/buy" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}><Button variant="contained" color="secondary">Buy</Button></Link>
-            <Link to="/sell" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}><Button  color="secondary">Sell </Button></Link>
+            <Link to="/sell" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}><Button >Sell </Button></Link>
             {/* <Button color="inherit">Sell</Button> */}
             <Button color="inherit">About Us</Button>
             <IconButton aria-label="show wishlist" color="inherit">

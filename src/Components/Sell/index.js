@@ -14,6 +14,10 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { useHistory } from 'react-router-dom';
 import postCustomerListItem from './postCustomerListItem';
 import getPriceEstimate from './getPriceEstimate';
+import Dropzone from 'react-dropzone-uploader';
+import axios from 'axios';
+import { ButtonGroup } from './buttonGroup';
+
 
 
 
@@ -22,21 +26,62 @@ function SellList(){
 const [itemName, setItemName]=React.useState('');
 const [brand,setBrand]=React.useState('');
 const[customerId,setCustomerId]=React.useState('');
+// const[custEmail,setCustEmail]=React.useState('');
 const [category, setCategory] = React.useState('');
 const [condition, setCondition] = React.useState('');
 const [babyAge, setBabyAge] = React.useState('');
 const[description,setDescription] = React.useState('');
 const[s3label,setS3Label] = React.useState('');
-const[adminStatus,setAdminStatus] = React.useState('');
 const[sellerPreferrence,setSellerPreferrence] = React.useState('');
-const[rentalPrice,setRentalPrice] = React.useState('');
 const[priceEstimate,setPriceEstimate] = React.useState('');
 const[errorMessage,setErrorMessage] = React.useState('');
-
 const history = useHistory();
 
- 
+// const[rentalPrice,setRentalPrice] = React.useState('');
+// const[adminStatus,setAdminStatus] = React.useState('');
+// const API_ENDPOINT="https://6wf12ee2le.execute-api.us-east-2.amazonaws.com/default/getPresignedImageURL"
 
+
+const axios= require('axios').default;
+
+const API_ENDPOINT ="https://jjhxmh9kf5.execute-api.us-east-2.amazonaws.com/dev/getpresignedurl"
+
+const handleUpload = ({ meta, remove }, status) => {
+  console.log(status, meta);
+}
+
+const handleImageSubmit= async (files) => {
+  const f = files[0];
+  console.log(f["file"]);
+  
+  // * GET request: presigned URL
+
+  let custEmail = "test@gmail.com"  // **TO DO ** - Have to get the email id from Session
+  const urlWithParams = API_ENDPOINT +"?category_id=" + category + "&cust_email=" + custEmail;
+  const response = await axios({
+    method: "GET",
+    url: urlWithParams,
+  });
+
+  let data = JSON.parse(response.data)
+  console.log("Data: ", data);
+  setS3Label(data.s3label);
+  console.log("Label: ", s3label);
+ 
+  // * PUT request: upload file to S3
+  const result = await fetch(data.uploadURL, {
+    method: "PUT",
+    headers:{
+      "Content-Type": "image/jpeg"
+    },
+    body: f["file"],
+  });
+  console.log("Result: ", result);
+
+  alert('Successfully Uploaded Image');
+  
+}
+ 
 
 
   const handleConditionChange = (event) => {
@@ -57,9 +102,9 @@ const history = useHistory();
 
   const handleEstimate = (event) => {
     console.log("Console Get Estimate")
-    if ( category === '' || condition === '' ) 
+    if ( category === '' || condition === '' || sellerPreferrence !== 1) 
     {
-      alert('Please enter Category, Condition');
+      alert('Please enter Category, Condition, Seller Preferrence as SELL');
     }
 
     else{
@@ -68,15 +113,17 @@ const history = useHistory();
       getPriceEstimate(getPriceEstimateParams)
         .then(function (response) {
           setPriceEstimate(response.priceEstimate[0].price_estimate);
+          
           console.log('GetPriceEstimate', priceEstimate);  
+          alert(priceEstimate);
         })
         .catch(function (error) {
             setPriceEstimate(null);
             console.log('GetPriceEstimate error', error);
         }); 
       }
-
   }
+
 
   const handleSubmit = () => 
   {
@@ -88,8 +135,6 @@ const history = useHistory();
     else
     {
       const listItems ={} 
-
-
       listItems.item_name = itemName;
       listItems.description= description;
       listItems.item_category= category;
@@ -97,26 +142,13 @@ const history = useHistory();
       listItems.brand=brand;
       listItems.seller_preferrence =sellerPreferrence;
       listItems.baby_age =babyAge;
-      listItems.s3_label = s3label; //image label
-      listItems.customer_id= 3;
-
-      const getPriceEstimateParams = "?category_id=" + category + "&condition=" + condition;
-
-      getPriceEstimate(getPriceEstimateParams)
-        .then(function (response) {
-          setPriceEstimate(response.priceEstimate[0].price_estimate);
-          console.log('GetPriceEstimate', priceEstimate);  
-        })
-        .catch(function (error) {
-            setPriceEstimate(null);
-            console.log('GetPriceEstimate error', error);
-        }); 
-  
-
+      listItems.s3_label = s3label; 
+      listItems.customer_id= 2;  // ** To DO** Get the Customer ID from Customer Email ID URL
 
       postCustomerListItem(listItems).then(function ()
       {
          console.log("sent list Items");
+         alert( " You have Listed Items Successfully")
       }).catch(function (error) {
               setErrorMessage('Unable to submit leave application');
               console.log(error)
@@ -142,21 +174,22 @@ const history = useHistory();
   List Your Baby Gear
 </Typography>
 
-<Card sx={{ maxWidth: 345 }} container spacing={3}>
-      <CardMedia
-        component="img"
-        alt="Baby Gear"
-        height="100"
-        width="100"
-        // image="./logo.svg"
-      />
+<Dropzone
+      onChangeStatus={handleUpload}
+      onSubmit={handleImageSubmit}
+      hjello
+      maxFiles={1}
+      multiple={false}
+      canCancel={false}
+      inputContent="Upload JPEG Image"
+      styles={{
+        dropzone: { width: 400, height: 200 },
+        dropzoneActive: { borderColor: "green" },
+      }}
+    />
 
-<CardActions>
-        <Button size="small" color="secondary" variant='outlined'>Upload</Button>
-      </CardActions>
-    </Card>
 
-    <Grid container spacing={3} direction="column" >
+        <Grid container spacing={3} direction="column" >
         
         <Grid item xs={12} sm={5}>
         <TextField
@@ -229,9 +262,10 @@ const history = useHistory();
     onChange={handleBabyAgeChange}
   >
     <MenuItem value={1}>NewBorn</MenuItem>
-    <MenuItem value={2}>6-12 Months </MenuItem>
-    <MenuItem value={3}>12-24 Month</MenuItem>
-    <MenuItem value={4}>2-4 years old</MenuItem>
+    <MenuItem value={12}>6-12 Months </MenuItem>
+    <MenuItem value={24}>12-24 Month</MenuItem>
+    <MenuItem value={36}>2-3 Years</MenuItem>
+    <MenuItem value={48}>3-4 Years</MenuItem>
   </Select>
 </FormControl>
 </Grid>
@@ -240,7 +274,7 @@ const history = useHistory();
 
 <Grid item xs={12} sm={5}>
 <FormControl fullWidth>
-  <InputLabel id="demo-simple-select-label">Sell/Rent</InputLabel>
+  <InputLabel id="demo-simple-select-label">Seller Preferrence</InputLabel>
   <Select
     labelId="demo-simple-select-label"
     id="demo-simple-select"
@@ -260,7 +294,7 @@ const history = useHistory();
           required
           id="outlined-required"
           label="Description"
-          onChange={(e, description) => setDescription()}
+          onChange={(event) => setDescription(event.target.value)}
         />
         </Grid>
         
@@ -268,16 +302,13 @@ const history = useHistory();
 
         
         <div className="buttonWrap">
+        <ButtonGroup>
             <Button variant="contained" color="secondary" onClick={handleEstimate}  > GetEstimate </Button>
-            <Button 
-            variant="contained" 
-            color="secondary"
-            onClick={handleSubmit} >
-              SUBMIT
-              </Button>
-          
+            <Button variant="contained" color="secondary"onClick={handleSubmit} > SUBMIT </Button>
             <Button variant="contained" color="secondary" onClick={handleCancel}  > CANCEL </Button> 
+        </ButtonGroup>  
           </div>
+        
         </Grid>
     
         </Grid>       
@@ -285,5 +316,5 @@ const history = useHistory();
   );
 }
 
-    
+
 export default SellList;

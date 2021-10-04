@@ -12,6 +12,7 @@ import BuyList from './Components/Buy/BuyList';
 import ProductDetails from './Components/Buy/ProductDetails';
 import Cart from './Components/Cart';
 import Sell from './Components/Sell';
+import Uploader from "./Components/Uploader";
 
 import './App.css';
 
@@ -33,6 +34,7 @@ function App() {
             <Route path='/productDetails/:itemId' exact component={() => <ProductDetails updateCartCount={(status)=>onUpdateCartCount(status)}/>} />
             <Route path='/cart' exact component={() => <Cart updateCartCount={(status)=>onUpdateCartCount(status)}/>} />
             <Route path='/sell' exact component={() => <Sell/>} />
+            <Route path='/test' exact component={() => <Uploader/>} />
           </Switch>
         </Container>
     </div>
