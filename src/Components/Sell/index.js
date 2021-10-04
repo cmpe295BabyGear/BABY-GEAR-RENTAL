@@ -53,9 +53,15 @@ const handleUpload = ({ meta, remove }, status) => {
 const handleImageSubmit= async (files) => {
   const f = files[0];
   console.log(f["file"]);
-  
-  // * GET request: presigned URL
 
+  if ( category === '') 
+    {
+      alert('Please enter Category before pressing SUBMIT for Image Upload');
+    }
+  
+  else {
+    
+  // * GET request: presigned URL
   let custEmail = "test@gmail.com"  // **TO DO ** - Have to get the email id from Session
   const urlWithParams = API_ENDPOINT +"?category_id=" + category + "&cust_email=" + custEmail;
   const response = await axios({
@@ -80,6 +86,7 @@ const handleImageSubmit= async (files) => {
 
   alert('Successfully Uploaded Image');
   
+}
 }
  
 
