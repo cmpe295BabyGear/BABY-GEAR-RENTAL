@@ -17,8 +17,10 @@ const GetPriceEstimate = (event) => {
         }
       })
       .catch(function (error) {
-        reject(error);
+        throw(error);
       });
+  }).catch(function (error) {
+    throw(error);
   });
 }
 
