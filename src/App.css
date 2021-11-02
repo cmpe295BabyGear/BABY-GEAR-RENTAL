@@ -276,19 +276,30 @@ header.MuiAppBar-colorPrimary {
 }
 .myCart h2 {
   color: #77624f;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   width:100%;
 }
 .myCart h3 {
   font-weight: normal;
+  margin: 5px 0;
 }
 .cartItem {
   margin-bottom: 20px;
+}
+.cartItemDetails span {
+  display: block;
+  font-size: 0.9em;
+  margin-top: 10px;
+  color: gray;
 }
 .cartItem .link {
   color: #77624f;
   text-decoration: underline;
   cursor: pointer;
+  display: block;
+  font-size: 0.9em;
+  font-weight: normal;
+  margin-top: 20px;
 }
 .myCartLeftGrid {
   border-right: 1px solid #77624f;
@@ -369,10 +380,15 @@ header.MuiAppBar-colorPrimary {
     padding: 0 10px !important;
   }
   .cartItem h3 {
-    margin: 0;
+    margin-bottom: 10px;
+    font-size: 1em;
+    margin-top: 0;
   }
   .myCartLeftGrid {
     padding: 0 15px;
     border-right: 0;
+  }
+  .cartItem {
+    margin-bottom: 30px;
   }
 }

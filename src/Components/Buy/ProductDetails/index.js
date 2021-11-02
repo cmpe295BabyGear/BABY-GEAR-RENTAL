@@ -68,7 +68,7 @@ export const ProductDetails = (props) => {
     }); 
   }, []);
 
-  const addToCart = (productDetails, isRent) => {
+  const addToCart = (productDetails, price, purchaseType) => {
     const path = window.location.pathname;
     const itemId = path.split('/').pop();
     const itemDetails = {
@@ -76,7 +76,9 @@ export const ProductDetails = (props) => {
       "item_id" : itemId,
       "item_name" : productDetails.item_name,
       "categoryName" : productDetails.categoryName,
-      "quantity" :1
+      "quantity" :1,
+      "price" : price,
+      "purchaseType" : purchaseType
     }
     AddItemToCart(itemDetails).then(function (response) {
       alert("Item added to cart");
@@ -86,6 +88,9 @@ export const ProductDetails = (props) => {
       console.log('addItemToCart error', error);
     }); 
   }
+
+  const rentalPrice = productDetails.rental_price ? productDetails.rental_price * rentalDays : 0;
+  const buyPrice = productDetails.price ? productDetails.price : 0;
   return (
     <Container maxWidth="md" className="productDetails">
       <Grid container spacing={2}>
@@ -117,7 +122,7 @@ export const ProductDetails = (props) => {
             <span>${productDetails.price}</span>
 
             <div className="buttonWrap">
-              <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails)}>ADD TO CART</Button>
+              <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails, buyPrice, "buy")}>ADD TO CART</Button>
               <Button>ADD TO WISHLIST</Button>
             </div>
           </div> : null }
@@ -143,12 +148,12 @@ export const ProductDetails = (props) => {
               </div>
               <div>
                 <span>Total Rental Fee</span>
-                <span className="boldText">$ {productDetails.rental_price * rentalDays}</span>
+                <span className="boldText">$ {rentalPrice}</span>
               </div>
             </div>
 
             <div className="buttonWrap">
-              <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails, 'rent')}>ADD TO CART</Button>
+              <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails, rentalPrice, "rent")}>ADD TO CART</Button>
               <Button>ADD TO WISHLIST</Button>
             </div>
           </div> : null }
