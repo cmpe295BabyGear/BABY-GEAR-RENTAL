@@ -87,6 +87,7 @@ export const Navbar = (props) => {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isLoggedIn] = React.useState(true);
   const [numberOfCartItems, setNumberOfCartItems] = React.useState(0);
+  const [selected, setSelected] = React.useState('buy');
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -167,7 +168,9 @@ export const Navbar = (props) => {
       <MenuItem>
         <IconButton aria-label='show cart items' color='inherit'>
           <Badge badgeContent={11} color='secondary'>
-            <ShoppingCartIcon />
+            <Link to='/cart' style={{ textDecoration: 'none', display: 'block', color:'inherit' }}>
+              <ShoppingCartIcon />
+            </Link>
           </Badge>
         </IconButton>
         <p>My Cart</p>
@@ -210,7 +213,27 @@ export const Navbar = (props) => {
               <Button>Buy</Button>
               <Button>Sell</Button>
             </ButtonGroup> */}
-            <Link to='/buy' style={{ textDecoration: 'none', display: 'block', color:'inherit', marginTop: '8px' }}><Button variant='contained' color='secondary'>Buy</Button></Link>
+            
+            <Link to='/buyList/buy' style={{ textDecoration: 'none', display: 'block', color:'inherit', marginTop: '8px' }}>
+              <Button
+                onClick={() => setSelected('buy')}
+                variant={ selected==='buy' ? 'contained' : ''} 
+                color={ selected==='buy' ? 'secondary' : 'inherit'} 
+              >
+                  Buy
+              </Button>
+            </Link>
+
+            <Link to='/buyList/rent' style={{ textDecoration: 'none', display: 'block', color:'inherit', marginTop: '8px' }}>
+              <Button
+                onClick={() => setSelected('rent')}
+                variant={ selected==='rent' ? 'contained' : ''} 
+                color={ selected==='rent' ? 'secondary' : 'inherit'} 
+              >
+                  Rent
+              </Button>
+            </Link>
+
             <Button color='inherit'>Sell</Button>
             <Button color='inherit'>About Us</Button>
             <IconButton aria-label='show wishlist' color='inherit'>
