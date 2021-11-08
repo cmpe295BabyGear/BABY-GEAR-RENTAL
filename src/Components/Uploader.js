@@ -46,6 +46,6 @@ const Uploader = () => {
   );
 };
 
-<Uploader />;
+{/* <Uploader />; */}
 
 export default Uploader;
