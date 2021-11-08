@@ -7,8 +7,6 @@ import Button from '@material-ui/core/Button';
 import { GetProductDetails } from '../../../services/GetProductDetails';
 import { GetStoreDetails } from '../../../services/GetStoreDetails';
 import AddItemToCart from '../../../services/AddItemToCart';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DateRangePicker } from "materialui-daterange-picker";
 import Tooltip from '@mui/material/Tooltip';
 
@@ -16,7 +14,6 @@ export const ProductDetails = (props) => {
 
   const [productDetails, setProductDetails] = useState([]);
   const [storeDetails, setStoreDetails] = useState({});
-  const [purchaseType, setPurchaseType] = React.useState('buy');
   const [dateRange, setDateRange] = React.useState({});
   const [open, setOpen] = React.useState(false);
   const [rentalDays, setRentalDays] = React.useState(0);
@@ -35,27 +32,18 @@ export const ProductDetails = (props) => {
     setRentalDays(numberOfDays);
   }
 
-  const handlePurchaseChange = (event, value) => {
-    setPurchaseType(value);
-    if(value === "rent") {
-        console.log('rent');
-        setOpen(true);
-    } else {
-        console.log('buy');
-        setOpen(false);
-        setDateRange({});
-    }
-  };
-
   useEffect(() => {    
     const path = window.location.pathname;
     const itemId = path.split('/').pop();
     GetProductDetails(itemId).then(function (response) {
       setProductDetails(response);
       console.log('GetProductDetails', response);
-      GetStoreDetails(response.store_zipcode).then(function (response) {
-        setStoreDetails(response);
-        console.log('GetStoreDetails', response);
+      if(response.seller_preference === 'RENT') {
+        setOpen(true);
+      }
+      GetStoreDetails(response.store_zipcode).then(function (store_response) {
+        setStoreDetails(store_response);
+        console.log('GetStoreDetails', store_response);
       })
       .catch(function (error) {
         setStoreDetails(null);
@@ -78,7 +66,7 @@ export const ProductDetails = (props) => {
       "categoryName" : productDetails.categoryName,
       "quantity" :1,
       "price" : price,
-      "purchaseType" : purchaseType
+      "purchaseType" : productDetails.seller_preference === 'SELL' ? 'Buy' : 'Rent'
     }
     AddItemToCart(itemDetails).then(function (response) {
       alert("Item added to cart");
@@ -91,6 +79,7 @@ export const ProductDetails = (props) => {
 
   const rentalPrice = productDetails.rental_price ? productDetails.rental_price * rentalDays : 0;
   const buyPrice = productDetails.price ? productDetails.price : 0;
+  
   return (
     <Container maxWidth="md" className="productDetails">
       <Grid container spacing={2}>
@@ -107,7 +96,7 @@ export const ProductDetails = (props) => {
         <Grid item xs={12} sm={7}>
           <h2 className="productName">{productDetails.item_name}</h2>
 
-          <ToggleButtonGroup
+          {/* <ToggleButtonGroup
             color="secondary"
             value={purchaseType}
             exclusive
@@ -115,9 +104,9 @@ export const ProductDetails = (props) => {
           >
             <ToggleButton value="buy">Buy</ToggleButton>
             <ToggleButton value="rent" disabled={!productDetails.rental_price}>Rent</ToggleButton>
-          </ToggleButtonGroup>
+          </ToggleButtonGroup> */}
 
-          { purchaseType === 'buy' ? <div className="productPrice">
+          { productDetails.seller_preference === 'SELL' ? <div className="productPrice">
             <span>Buy Price </span>
             <span>${productDetails.price}</span>
 
@@ -127,7 +116,7 @@ export const ProductDetails = (props) => {
             </div>
           </div> : null }
 
-          {purchaseType === 'rent' ? <div className="productRentPriceWrap">
+          {productDetails.seller_preference === 'RENT' ? <div className="productRentPriceWrap">
             <span>Select Rent Duration </span>
             {/* Date Range Selector */}
             <DateRangePicker

@@ -31,7 +31,8 @@ function App() {
         <Container maxWidth={false}>
           <Switch>
             <Route path='/' exact component={Buy} />
-            <Route path='/buy' exact component={() => <Buy />} />
+            <Route path='/buy' exact component={() => <Buy purchaseType='buy'/>} />
+            <Route path='/rent' exact component={() => <Buy purchaseType='rent'/>} />
             <Route path='/buyList/:categoryName' exact component={() => <BuyList />} />
             <Route path='/productDetails/:itemId' exact component={() => <ProductDetails updateCartCount={(status)=> onUpdateCartCount(status)}/>} />
             <Route path='/cart' exact component={() => <Cart updateCartCount={(status) => onUpdateCartCount(status)} />} />

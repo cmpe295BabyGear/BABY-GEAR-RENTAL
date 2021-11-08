@@ -50,7 +50,7 @@ exports.handler = (event, context, callback) => {
                 sqlQuery += ` and `;
             }
             parameterCount++;
-            sqlQuery += `i.seller_preference = '${event.queryStringParameters.seller_preference}' `;
+            sqlQuery += `(i.seller_preference) IN ('${event.queryStringParameters.seller_preference}', 'BOTH') `;
         }
         if (event.queryStringParameters.store_zipcode){
             if (parameterCount == 0){

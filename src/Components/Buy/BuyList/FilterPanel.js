@@ -53,7 +53,7 @@ export const FilterPanel = (props) => {
     const [condition, setCondition] = React.useState([]);
     const [price, setPriceValue] = React.useState([0, 0]);
     const [defaultCategory, setDefaultCategory] = React.useState("");
-    const [purchaseType, setPurchaseType] = React.useState([]);
+    // const [purchaseType, setPurchaseType] = React.useState([]);
 
     const [open, setOpen] = React.useState(false);
     const [dateRange, setDateRange] = React.useState({});
@@ -80,7 +80,7 @@ export const FilterPanel = (props) => {
             setCondition([]);
             setPriceValue([0,0]);
             setDefaultCategory("");
-            setPurchaseType([]);
+            // setPurchaseType([]);
             setOpen(false);
             setDateRange({});
             console.log('All Products', response);
@@ -104,15 +104,15 @@ export const FilterPanel = (props) => {
         return [year, month, day].join('-');
     }
 
-    const selectPurchaseType = (value) => {
-        setPurchaseType(value)
-        if(value === "RENT") {
-            setOpen(true);
-        } else {
-            setOpen(false);
-            setDateRange({});
-        }
-    }
+    // const selectPurchaseType = (value) => {
+    //     setPurchaseType(value)
+    //     if(value === "RENT") {
+    //         setOpen(true);
+    //     } else {
+    //         setOpen(false);
+    //         setDateRange({});
+    //     }
+    // }
     const serchClick = () => {
         const filterQuery = {};
 
@@ -125,13 +125,9 @@ export const FilterPanel = (props) => {
         const formattedCondition = condition.toString().toLowerCase();
         filterQuery.item_condition = formattedCondition !== '' ? formattedCondition : '';
 
-        filterQuery.seller_preference = purchaseType;
-
-        if (purchaseType === 'RENT') {
-            filterQuery.lease_startDT = formatDate(dateRange.startDate);
-            filterQuery.lease_endDT = formatDate(dateRange.endDate);
-        }
-        
+        const path = window.location.pathname;
+        const pathPurchaseType = path.split('/').pop();  
+        filterQuery.seller_preference = pathPurchaseType === 'buy' || pathPurchaseType === 'all' ? 'SELL' : 'RENT';
 
         if (price[0] > 0 || price[1] > 0) {
           filterQuery.lowPrice = price.map(String)[0];
@@ -227,7 +223,7 @@ export const FilterPanel = (props) => {
             </FormControl>
 
             {/* Purchase Type Radio Buttons */}
-            <FormControl component="fieldset" className={classes.formControl}>
+            {/* <FormControl component="fieldset" className={classes.formControl}>
                 <FormLabel component="legend">Purchase Type</FormLabel>
                 <RadioGroup
                     row aria-label="purchaseType"
@@ -239,7 +235,7 @@ export const FilterPanel = (props) => {
                     <FormControlLabel value="RENT" control={<Radio color='secondary'/>} label="Rent" />
                     <FormControlLabel value="BOTH" control={<Radio color='secondary'/>} label="Both" />
                 </RadioGroup>
-            </FormControl>
+            </FormControl> */}
 
             {/* Date Range Selector */}
             <DateRangePicker

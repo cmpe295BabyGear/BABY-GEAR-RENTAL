@@ -15,6 +15,7 @@ const GetAllProducts = (event) => {
               categoryName: element.categoryName,
               brand: element.brand,
               rental_price: element.rental_price,
+              seller_preference: element.seller_preference,
               image: 'https://d1d6i97vlsh97n.cloudfront.net/' + element.email_id + '/' + element.categoryName + '/' + element.s3_label
             });
           });

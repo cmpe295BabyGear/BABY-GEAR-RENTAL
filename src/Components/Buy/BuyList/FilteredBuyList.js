@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -11,31 +11,36 @@ import GetItemsOnFilterCriteria from '../../../services/GetItemsOnFilterCriteria
 
 export const FilteredBuyList = (props) => {
     const [productList, setProductList] = React.useState([]);
+    const [activePathState, setPathActiveState] = React.useState('buy');
     const classes = useStyles();
+
+    const location = useLocation();
+
+    useEffect(() => {
+      const path = location.pathname;
+      const currentState = path.split('/').pop();   
+      setPathActiveState(currentState);
+    }, [location]);
     
     useEffect(() => {
-        const path = window.location.pathname;
-        const category = path.split('/').pop();   
-        if (category !== 'all') {
-          const categoryName  = category.toString().toLowerCase();
-          GetItemsOnFilterCriteria({categoryName}).then(function (response) {
-            setProductList(response.filteredBuyList);
-            console.log('GetItemsOnFilterCriteria', response);
-        })
-          .catch(function (error) {
-              console.log('GetItemsOnFilterCriteria error', error);
+      GetAllProducts().then(function (response) {
+        if (activePathState === 'buy' || activePathState === 'all') {
+          const buyList = response.allProducts.filter(function(item){
+            return item.seller_preference === 'SELL';
           });
-        } else {
-          GetAllProducts().then(function (response) {
-            setProductList(response.allProducts);
-              console.log('All Products', response);
-          })
-          .catch(function (error) {
-              setProductList([]);
-              console.log('All Products error', error);
+          setProductList(buyList);
+        } else if (activePathState === 'rent') {
+          const buyList = response.allProducts.filter(function(item){
+            return item.seller_preference === 'RENT';
           });
-        }
-    }, []);
+          setProductList(buyList);
+        } 
+      })
+      .catch(function (error) {
+          setProductList([]);
+          console.log('All Products error', error);
+      });
+    }, [activePathState]);
     useEffect(() => {    
         if (props.filteredBuyList.filteredBuyList)
           setProductList(props.filteredBuyList.filteredBuyList);
@@ -52,6 +57,7 @@ export const FilteredBuyList = (props) => {
             pathname: pathQuery
         };
     };
+
     return (
         <Container maxWidth={false} className="filteredBuyList">
           <Grid container item spacing={3}>
@@ -82,17 +88,18 @@ export const FilteredBuyList = (props) => {
                       {product.condition !== 'new' ? <span>Used - </span> : null}
                       <span className="capitalize">{product.condition}</span>
                     </div>
-                    { product.price ? <div className="priceWrap">
+                    { activePathState === 'buy' || activePathState === 'all' ? <div className="priceWrap">
                       <span>Buy</span>
                       <span>${product.price}</span>
                     </div>:
-                    <div className="notAvailable"><span>BUY NOT AVAILABLE</span></div>
+                    null
                     }
-                    { product.rental_price ? <div className="priceWrap">
+                    { activePathState === 'rent' ? <div className="priceWrap">
                       <span>Rent</span>
                       <span>${product.rental_price} per day</span>
                     </div> : 
-                    <div className="notAvailable"><span>RENT NOT AVAILABLE</span></div>}
+                    null
+                    }
                   </Grid>
                 </Card>
               </Grid>
