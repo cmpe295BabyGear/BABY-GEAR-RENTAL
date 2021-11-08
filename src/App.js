@@ -11,6 +11,8 @@ import Buy from './Components/Buy';
 import BuyList from './Components/Buy/BuyList';
 import ProductDetails from './Components/Buy/ProductDetails';
 import Cart from './Components/Cart';
+import Sell from './Components/Sell';
+import Uploader from "./Components/Uploader";
 
 import './App.css';
 import MyProfile from './Components/UserProfile/MyProfile';
@@ -42,6 +44,7 @@ function App() {
             <Route path='/paymentOptions' exact component={() => <UserPaymentOptions />} />
             <Route path='/changePwd' exact component={() => <ChangePassword />} />
             <Route path='/addAddress/:custId' exact component={() => <AddAddress />} />
+            <Route path='/sell' exact component={() => <Sell/>} />
           </Switch>
         </Container>
       </div>

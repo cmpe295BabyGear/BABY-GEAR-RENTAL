@@ -234,10 +234,11 @@ export const Navbar = (props) => {
               </Button>
             </Link>
 
-            <Button color='inherit'>Sell</Button>
+            <Link to="/sell" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}><Button >Sell </Button></Link>
             <Button color='inherit'>About Us</Button>
             <IconButton aria-label='show wishlist' color='inherit'>
               <Badge badgeContent={4} color='secondary'>
+                
                 <FavoriteIcon />
               </Badge>
             </IconButton>
