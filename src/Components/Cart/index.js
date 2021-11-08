@@ -6,12 +6,15 @@ import Button from '@material-ui/core/Button';
 
 import GetCartDetails from '../../services/GetCartDetails';
 import RemoveItemFromCart from '../../services/RemoveItemFromCart';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 export const Cart = (props) => {
   
   const [cartDetails, setCartDetails] = useState([]);
   const [itemTotalPrice, setItemTotalPrice] = useState(0);
   const [total, setTotal] = useState(0);
+  const [deliveryType, setDeliveryType] = useState("pickup");
 
   useEffect(() => {    
     GetCartDetails(1).then(function (response) {
@@ -60,9 +63,21 @@ export const Cart = (props) => {
       <Grid container spacing={2}>
           <Grid container xs={12} sm={8} className="myCartLeftGrid">
             <h2>Cart Details</h2>
+            <div className="cartDeliveryWrap">
+              <h3>Select Delivery Option</h3>
+              <ToggleButtonGroup
+                color="secondary"
+                value={deliveryType}
+                exclusive
+                onChange={(event) => setDeliveryType(event.target.value)}
+              >
+                <ToggleButton value="pickup">Pickup</ToggleButton>
+                <ToggleButton value="deliver">Deliver from store</ToggleButton>
+              </ToggleButtonGroup>
+            </div>
             {cartDetails.map((cartItem, index) => (
               <Grid container className="cartItem">
-                <Grid item xs={12} sm={3}>
+                <Grid item xs={4} sm={3}>
                   <img
                     src={cartItem.image}
                     alt="Product Details"
@@ -71,18 +86,21 @@ export const Cart = (props) => {
                     className="productImage"
                   />
                 </Grid>
-                <Grid item xs={6} sm={6}>
+                <Grid item xs={6} sm={6} className="cartItemDetails">
                   <h3>{cartItem.item_name}</h3>
-                  <span className="link" onClick={() => removeFromCart(cartItem)}>Remove</span>
+                  <span>Purchase Type: Buy</span>
+                  {/* <span>Delivery Type: Self Pickup</span>
+                  <span>Shipping charges: $4</span> */}
                 </Grid>
-                <Grid item xs={3} sm={3} className="cartItemPrice">
+                <Grid item xs={2} sm={3} className="cartItemPrice">
                   <span>${cartItem.price}</span>
+                  <span className="link" onClick={() => removeFromCart(cartItem)}>Remove</span>
                 </Grid>
               </Grid>
             ))}
           </Grid>
           <Grid item xs={12} sm={4} className="myCartRightGrid">
-              <h2>Order Summary</h2>
+              <h2>Order Details</h2>
               <div>
                 <span>Subtotal {} Items</span>
                 <span>${itemTotalPrice}</span>

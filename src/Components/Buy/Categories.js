@@ -8,7 +8,7 @@ export const Categories = () => {
         <h1>Featured Categories</h1>
         <div>
           <Grid container direction="row" spacing={1} alignItems="center" justifyContent="center" className="categoriesRow">
-            <Grid item xs={3} alignItems="center" justifyContent="center">
+            <Grid item xs={12} md={3} alignItems="center" justifyContent="center">
               <Link to="/buyList/CarSeat">
                 <div className="categoryImage carSeatImage">
                   <img src="https://prelovedbabyitems.s3.us-east-2.amazonaws.com/categories/carseat.png"
@@ -19,7 +19,7 @@ export const Categories = () => {
               </Link>
               <h2>Car Seats</h2>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12} md={3}>
               <Link to="/buyList/crib">
                 <div className="categoryImage cribImage">
                   <img src="https://prelovedbabyitems.s3.us-east-2.amazonaws.com/categories/crib.png"
@@ -30,7 +30,7 @@ export const Categories = () => {
               </Link>
               <h2>Cribs</h2>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12} md={3}>
               <Link to="/buyList/highchair">
                 <div className="categoryImage highChairImage">
                   <img src="https://prelovedbabyitems.s3.us-east-2.amazonaws.com/categories/highchair.png"
@@ -43,7 +43,7 @@ export const Categories = () => {
             </Grid>
           </Grid>
           <Grid container direction="row" spacing={1} alignItems="center" justifyContent="center" className="categoriesRow">
-            <Grid item xs={3}>
+            <Grid item xs={12} md={3}>
               <Link to="/buyList/bath">
                 <div className="categoryImage bathImage">
                   <img src="https://prelovedbabyitems.s3.us-east-2.amazonaws.com/categories/bath.png"
@@ -54,7 +54,7 @@ export const Categories = () => {
               </Link>
               <h2>Bath</h2>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12} md={3}>
               <Link to="/buyList/safety">
                 <div className="categoryImage safetyImage">
                   <img src="https://prelovedbabyitems.s3.us-east-2.amazonaws.com/categories/safety.png"
@@ -65,7 +65,7 @@ export const Categories = () => {
               </Link>
               <h2>Safety</h2>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12} md={3}>
               <Link to="/buyList/stroller">
                 <div className="categoryImage strollerImage">
                   <img src="https://prelovedbabyitems.s3.us-east-2.amazonaws.com/categories/stroller.png"
