@@ -34,7 +34,6 @@ function App() {
             <Route path='/productDetails/:itemId' exact component={() => <ProductDetails updateCartCount={(status)=>onUpdateCartCount(status)}/>} />
             <Route path='/cart' exact component={() => <Cart updateCartCount={(status)=>onUpdateCartCount(status)}/>} />
             <Route path='/sell' exact component={() => <Sell/>} />
-            <Route path='/test' exact component={() => <Uploader/>} />
           </Switch>
         </Container>
     </div>

@@ -34,10 +34,9 @@ const Uploader = () => {
     <Dropzone
       onChangeStatus={handleChangeStatus}
       onSubmit={handleSubmit}
-      hjello
       maxFiles={1}
       multiple={false}
-      canCancel={false}
+      canCancel={true}
       inputContent="Drop A File"
       styles={{
         dropzone: { width: 400, height: 200 },

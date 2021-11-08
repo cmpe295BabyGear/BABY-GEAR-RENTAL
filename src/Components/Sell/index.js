@@ -16,15 +16,34 @@ import postCustomerListItem from '../../services/postCustomerListItem';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import { makeStyles } from '@material-ui/core/styles';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+const useStyles = makeStyles((theme) => ({
 
+  // marginspacing: {
+  //   '& > *': {
+  //     margin: theme.spacing(1),
+  //   },
+  // },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120
+  },
+  paddingSpacing: {
+    paddingLeft: "24px !important",
+    paddingRight: "24px !important",
+    paddingTop: "24px"
+  }
+}));
 
 function SellList(){
-
+const classes = useStyles();
 const [itemName, setItemName]=React.useState('');
 const [brand,setBrand]=React.useState('');
 const[customerId,setCustomerId]=React.useState('');
@@ -42,13 +61,15 @@ const[message,setMessage] = React.useState('');
 const[severity,setSeverity] = React.useState('success');
 const [redirect,setRedirect] = React.useState(false);
 const [uploadStatus,setUploadStatus] = React.useState(false);
+const [checked, setChecked] = React.useState(false);
 
+let isSubmit = false;
 
 useEffect(() => {
-  if (priceEstimate && priceEstimate!=='' && priceEstimate!=='-1') {
+  if (priceEstimate && priceEstimate!=='' && priceEstimate!=='-1' && !isSubmit) {
     console.log('GetPriceEstimate', priceEstimate);  
     setSeverity('info');
-    setMessage("Price Estimate is "+ priceEstimate);
+    setMessage("Price Estimate is $"+ priceEstimate);
     setOpen(true);
   } else if(priceEstimate && priceEstimate === ''){
     setSeverity('error');
@@ -57,6 +78,18 @@ useEffect(() => {
   }
 }, [priceEstimate]);
 
+useEffect(() => {
+
+  if(checked) {
+    async function callEstimate() {
+      if((priceEstimate === -1 || priceEstimate=== '') && sellerPreferrence === 'SELL') {
+        await handleEstimate(null);
+      }
+    }
+    callEstimate();
+  }
+  
+}, [checked]);
 
 useEffect(() => {
   if (open) {
@@ -128,16 +161,16 @@ const handleCategoryChange = (event) => {
 }
 
 const handleSellPreferrenceChange = (event) => {
-  setSellerPreferrence(event.target.value);  
+  setSellerPreferrence(event.target.value); 
 }
 
 const handleBabyAgeChange = (event) => {
   setBabyAge(event.target.value);  
 }
 
-const handleEstimate = (event) => {
+const handleEstimate = async (event) => {
   console.log("Console Get Estimate")
-  if ( category === '' || condition === '' || sellerPreferrence !== 1) 
+  if ( category === '' || condition === '' || sellerPreferrence !== "SELL" ) 
   {
     setSeverity('warning');
     setMessage("Please enter Category, Condition, Seller Preferrence as SELL");
@@ -148,9 +181,10 @@ const handleEstimate = (event) => {
   {
     const getPriceEstimateParams = "?category_id=" + category + "&condition=" + condition;
     setPriceEstimate('-1');
-    getPriceEstimate(getPriceEstimateParams)
+    await getPriceEstimate(getPriceEstimateParams)
       .then(function (response) {
         setPriceEstimate(response.priceEstimate[0].price_estimate);
+        console.log(response.priceEstimate[0].price_estimate);
       })
       .catch(function (error) {
           setPriceEstimate('');
@@ -161,9 +195,10 @@ const handleEstimate = (event) => {
 }
 
 
-const handleSubmit = () => 
+const handleSubmit = async () => 
 {
   console.log("test submit")
+  isSubmit = true;
   if (itemName === ''  || brand === '' || category === '' || condition ==='' ||sellerPreferrence ==='' ) 
   {
     setSeverity('warning');
@@ -172,21 +207,43 @@ const handleSubmit = () =>
   }
   else
   {
+    //  handleImageSubmit();
     const listItems ={} 
     listItems.item_name = itemName;
     listItems.description= description;
     listItems.item_category= category;
     listItems.condition=condition;
     listItems.brand=brand;
-    listItems.seller_preferrence =sellerPreferrence;
+    listItems.seller_preference = sellerPreferrence;
     listItems.baby_age =babyAge;
     listItems.s3_label = s3label; 
     listItems.customer_id= 2;  // ** To DO** Get the Customer ID from Customer Email ID URL
+   
+    if(sellerPreferrence === "RENT" && (condition === "new" || condition === "like new")) {
+      if(category === 1) {
+        listItems.rental_price = 10;
+      } else if(category === 2) {
+        listItems.rental_price = 20;
+      } else if(category === 3) {
+        listItems.rental_price = 30;
+      } else if(category === 4) {
+        listItems.rental_price = 40;
+      } else if(category === 5) {
+        listItems.rental_price = 50;
+      } else if(category === 6) {
+        listItems.rental_price = 60;
+      } else {
+        listItems.rental_price = -1;
+      } 
+    }
 
-    if(uploadStatus) 
-    {
-      postCustomerListItem(listItems).then(function ()
-      {
+    if(uploadStatus) {
+      console.log('before post');
+      if(priceEstimate !== -1 || priceEstimate !== '') {
+        listItems.price = await (priceEstimate + (priceEstimate*0.1)) ;
+      }
+      postCustomerListItem(listItems)
+      .then(function () {
         console.log("sent list Items");
         setSeverity('success');
         setRedirect(true);
@@ -236,10 +293,9 @@ return(
   <Dropzone
     onChangeStatus={handleUpload}
     onSubmit={handleImageSubmit}
-    hjello
     maxFiles={1}
     multiple={false}
-    canCancel={false}
+    canCancel={true}
     inputContent=" Please Upload JPEG Image"
     styles={{
       dropzone: { width: 400, height: 200 },
@@ -268,7 +324,22 @@ return(
         onChange={(event) => setBrand(event.target.value)}
       />
     </Grid>
-          
+     
+    <Grid item xs={12} sm={5}>
+      <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Seller Preferrence</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={sellerPreferrence}
+            label="Category"
+            onChange={handleSellPreferrenceChange}
+          >
+            <MenuItem value={"SELL"}>Sell</MenuItem>
+            <MenuItem value={"RENT"}>Rent</MenuItem>
+          </Select>
+      </FormControl>
+    </Grid>     
 
     <Grid item xs={12} sm={5}>
       <FormControl fullWidth>
@@ -292,6 +363,22 @@ return(
 
 
     <Grid item xs={12} sm={5}>
+
+    {sellerPreferrence === "RENT" ? (
+      <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Condition</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={condition}
+          label="Condition"
+          onChange={handleConditionChange}
+        >
+          <MenuItem value={"new"}>New</MenuItem>
+          <MenuItem value={"like new"}>Like New </MenuItem>
+        </Select>
+      </FormControl>
+    ) : (
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Condition</InputLabel>
         <Select
@@ -307,6 +394,8 @@ return(
           <MenuItem value={"good"}>Good</MenuItem>
         </Select>
       </FormControl>
+    ) 
+    }
     </Grid>
 
     <Grid item xs={12} sm={5}>
@@ -330,22 +419,6 @@ return(
 
 
     <Grid item xs={12} sm={5}>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Seller Preferrence</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={sellerPreferrence}
-            label="Category"
-            onChange={handleSellPreferrenceChange}
-          >
-            <MenuItem value={1}>Sell</MenuItem>
-            <MenuItem value={2}>Rent</MenuItem>
-          </Select>
-      </FormControl>
-    </Grid>
-
-    <Grid item xs={12} sm={5}>
       <TextField
         required
         id="outlined-required"
@@ -353,12 +426,37 @@ return(
         onChange={(event) => setDescription(event.target.value)}
       />
     </Grid>
+
+    <Grid item xs={12} align='left'>
+          <div>
+            <Typography align='left' variant='h6' color='error' gutterBottom>
+              Terms & Conditions
+            </Typography>
+            <Typography align='left' variant='subtitle1'  gutterBottom>
+              Check the box before submitting the form:
+            </Typography>
+            <Typography align='left' variant='body1' gutterBottom>
+              1. Have to write
+            </Typography>
+            <Typography align='left' variant='body1' gutterBottom>
+              2. Have to write.
+            </Typography>
+            <Typography align='left' variant='body1' gutterBottom>
+              3. Have to write.
+            </Typography>
+          </div>
+        </Grid>
+        <Grid item xs={12} align='left' >
+          <FormControlLabel
+            control={<Checkbox color='primary' checked={checked} onChange={(event) => setChecked(event.target.checked)} name='checked' />}
+          />
+        </Grid>
         
     <Grid container spacing={1} direction="column" item xs={12} sm={5} >
       <div className="buttonWrap">
         <Stack direction="row" spacing={2}>
             <Button variant="contained" color="secondary" onClick={handleEstimate}  > GET ESTIMATE </Button>
-            <Button variant="contained" color="secondary" onClick={handleSubmit}  > SUBMIT </Button>
+            <Button type='submit' disabled={!checked} variant="contained" color="secondary" onClick={handleSubmit}  > SUBMIT </Button>
             <Button variant="contained" color="secondary" onClick={handleCancel}  > CANCEL </Button> 
         </Stack>
         
