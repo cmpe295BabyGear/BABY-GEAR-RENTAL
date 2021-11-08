@@ -20,7 +20,7 @@ import UserAddresses from './Components/UserProfile/UserAddresses';
 import UserPaymentOptions from './Components/UserProfile/UserPaymentOptions';
 import ChangePassword from './Components/UserProfile/ChangePassword';
 import AddAddress from './Components/UserProfile/AddAddress';
-
+import Payment from './Components/Payment'
 function App() {
   const [checkCartStatus, setCheckCartStatus] = React.useState(0);
 
@@ -44,7 +44,8 @@ function App() {
             <Route path='/paymentOptions' exact component={() => <UserPaymentOptions />} />
             <Route path='/changePwd' exact component={() => <ChangePassword />} />
             <Route path='/addAddress/:custId' exact component={() => <AddAddress />} />
-            <Route path='/sell' exact component={() => <Sell/>} />
+            <Route path='/sell' exact component={() => <Sell />} />
+            <Route path='/payment' exact component={() => <Payment />} />
           </Switch>
         </Container>
       </div>

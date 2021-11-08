@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom'
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -65,8 +64,8 @@ const UserAddresses = () => {
     })
   }
 
-  const handleDelete = (address_id) => {
-    RemoveAddress(address_id)
+  const handleDelete = (addressId) => {
+    RemoveAddress(addressId)
       .then(function (res) {
         GetCustomerAddresses(customerId)
           .then(function (res) {
