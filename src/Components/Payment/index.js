@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
 import Container from '@mui/material/Container'
-import { makeStyles } from '@material-ui/core/styles';
 import './style.css'
 
 const Payment = (props) => {
