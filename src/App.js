@@ -17,16 +17,14 @@ import ProductDetails from './Components/Buy/ProductDetails';
 import Cart from './Components/Cart';
 import Sell from './Components/Sell';
 import Uploader from "./Components/Uploader";
-
 import './App.css';
-Amplify.configure(awsconfig);
-
 import MyProfile from './Components/UserProfile/MyProfile';
 import UserAddresses from './Components/UserProfile/UserAddresses';
 import UserPaymentOptions from './Components/UserProfile/UserPaymentOptions';
 import ChangePassword from './Components/UserProfile/ChangePassword';
 import AddAddress from './Components/UserProfile/AddAddress';
-import Payment from './Components/Payment'
+import Payment from './Components/Payment';
+Amplify.configure(awsconfig);
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [checkCartStatus, setCheckCartStatus] = React.useState(0);
