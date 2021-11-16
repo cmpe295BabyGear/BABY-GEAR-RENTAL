@@ -92,16 +92,18 @@ export const Navbar = (props) => {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  useEffect(() => {    
-    GetCartDetails(1).then(function (response) {
+  useEffect(() => {
+    const customerId = JSON.parse(sessionStorage.getItem('custId'));    
+    GetCartDetails(customerId).then(function (response) {
       setNumberOfCartItems(response.cartList.length);
     })
     .catch(function (error) {
       console.log('GetCartDetails error', error);
     }); 
   }, []);
-  useEffect(() => {    
-    GetCartDetails(1).then(function (response) {
+  useEffect(() => { 
+    const customerId = JSON.parse(sessionStorage.getItem('custId'));   
+    GetCartDetails(customerId).then(function (response) {
       setNumberOfCartItems(response.cartList.length);
     })
     .catch(function (error) {

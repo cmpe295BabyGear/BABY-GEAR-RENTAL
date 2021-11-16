@@ -17,7 +17,8 @@ const GetCustomerAddresses = (customerId) => {
               state: element.state,
               country: element.country,
               zipcode: element.zipcode,
-              isDefault: element.isDefault
+              isDefault: element.isDefault,
+              formatted_address: element.formatted_address
             });
           })
           console.log('custAddr')
