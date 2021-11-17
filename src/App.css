@@ -45,7 +45,7 @@ header.MuiAppBar-colorPrimary {
 }
 .bannerText {
   text-align: center;
-  margin-top: 120px;
+  margin-top: 70px;
 }
 .bannerText a {
   text-decoration: none;
@@ -173,6 +173,12 @@ header.MuiAppBar-colorPrimary {
 .productDetails .productPrice button span{
   width: 100%;
 }
+.editDetails {
+  margin: 0 5px;
+  color: #47aae4;
+  text-decoration: underline;
+  cursor: pointer;
+}
 /* .productDetails .productPrice button.addToCart {
   background-color: transparent;
   color: #f50057;
@@ -245,15 +251,29 @@ header.MuiAppBar-colorPrimary {
   margin-right: 10px;
 }
 .deliveryDetails {
-  padding: 20px 0;
+  padding: 10px 0 0;
+}
+.deliveryDetails span:first-child {
+  color: #77624f;
 }
 .deliveryDetails > div {
   display: block;
   margin-top: 10px;
 }
-.deliveryDetails span {
-  text-decoration: underline;
+.deleveryAddressWrap .MuiCardContent-root {
   cursor: pointer;
+  padding: 10px;
+}
+.css-46bh2p-MuiCardContent-root h6 {
+  font-size: 1.1em;
+    margin: 0 0 5px 0;
+    font-weight: normal;
+}
+.DeliverAddresses .deleveryAddressWrap > div {
+  padding: 10px;
+}
+.CheckCircleOutlineIcon {
+  color: green;
 }
 .bottomBorder {
   border-bottom: 1px solid #77624f;
@@ -274,6 +294,9 @@ header.MuiAppBar-colorPrimary {
 .myCart {
   padding-top: 30px;
 }
+.cartItemDetails {
+  width: 100%;
+}
 .myCart h2 {
   color: #77624f;
   margin-bottom: 20px;
@@ -282,6 +305,27 @@ header.MuiAppBar-colorPrimary {
 .myCart h3 {
   font-weight: normal;
   margin: 5px 0;
+}
+.myCart h4 {
+  background: #f6eef9;
+  padding: 15px;
+  font-weight: bold;
+  margin: 0 0 15px 0;
+  font-size: 18px;
+}
+.DeliverAddresses {
+  background: #f6eef9;
+}
+.myCart h4 span {
+  display: inline-block;
+  margin: 0 0 0 10px;
+}
+.myCart .link {
+  color: #77624f;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: normal;
 }
 .cartItem {
   margin-bottom: 20px;
