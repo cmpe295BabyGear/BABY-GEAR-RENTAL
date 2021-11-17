@@ -17,6 +17,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PasswordIcon from '@mui/icons-material/Password';
 import HistoryIcon from '@mui/icons-material/History';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const theme = createTheme();
 const useStyles = makeStyles({
@@ -137,7 +138,7 @@ export default function MyProfile () {
                   /> */}
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant='h6' component='h2'>
-                      <BookmarksIcon fontSize='large' color='secondary'/> My WishList
+                      <FavoriteIcon fontSize='large' color='secondary'/> My WishList
                     </Typography>
                   </CardContent>
                 </CardActionArea>
