@@ -11,11 +11,17 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import { CardActionArea } from '@mui/material';
 import {Link as RouterLink} from 'react-router-dom'
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import PaymentIcon from '@mui/icons-material/Payment';
+import HomeIcon from '@mui/icons-material/Home';
+import PasswordIcon from '@mui/icons-material/Password';
+import HistoryIcon from '@mui/icons-material/History';
+import BookmarksIcon from '@mui/icons-material/Bookmarks';
 
 const theme = createTheme();
 const useStyles = makeStyles({
   card: {
-    maxWidth: 200,
+    maxWidth: 300,
   },
   cardmedia: {
     height: 140,
@@ -27,6 +33,7 @@ export default function MyProfile () {
   const classes = useStyles()
   useEffect(() => {
     // To- do : get and set username
+    var sessionDetails = JSON.parse(sessionStorage.getItem('custId'));
   }, [])
   return (
     <ThemeProvider theme={theme}>
@@ -50,49 +57,53 @@ export default function MyProfile () {
             <Grid item xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <CardActionArea underline='none' component={RouterLink} to='/userAddress'>
-                  <CardMedia
-                    component='img'
+                  {/* <CardMedia
+                    // component='img'
+                    component='div'
                     className={classes.cardmedia}
-                    image='https://prelovedbabyitems.s3.us-east-2.amazonaws.com/OtherPictures/listings.png'
+                    // image='https://prelovedbabyitems.s3.us-east-2.amazonaws.com/OtherPictures/listings.png'
+                    src={<FormatListBulletedIcon />}
                     alt='My listings'
-                  />
+                  >
+                    {/* <FormatListBulletedIcon color='secondary' fontsize='large' align='center' height='140'/> */}
+                  {/* </CardMedia> */}
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant='h6' component='h2'>
-                      My Listings
+                      <FormatListBulletedIcon color='secondary' fontSize='large' gutterBottom /> My Listings
                     </Typography>
                   </CardContent>
                 </CardActionArea>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            {/* <Grid item xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <CardActionArea underline='none' component={RouterLink} to='/paymentOptions'>
-                  <CardMedia
+                  {/* <CardMedia
                     component='img'
                     className={classes.cardmedia}
                     image='https://prelovedbabyitems.s3.us-east-2.amazonaws.com/OtherPictures/PaymentOptions.png'
                     alt='payment options'
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant='h6' component='h4'>
-                      Payment Options
+                  /> */}
+                  {/* <CardContent >
+                    <Typography gutterBottom variant='h6' component='h2'>
+                      <PaymentIcon color='secondary' fontSize='large' gutterBottom /> Payment Options
                     </Typography>
                   </CardContent>
                 </CardActionArea>
               </Card>
-            </Grid>
+            </Grid>  */}
             <Grid item xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <CardActionArea underline='none' component={RouterLink} to='/userAddress'>
-                  <CardMedia
+                  {/* <CardMedia
                     component='img'
                     className={classes.cardmedia}
                     image='https://prelovedbabyitems.s3.us-east-2.amazonaws.com/OtherPictures/Address.png'
                     alt='addresses'
-                  />
+                  /> */}
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant='h6' component='h2'>
-                      My Addresses
+                      <HomeIcon color='secondary' fontSize='large' /> My Addresses
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -101,15 +112,15 @@ export default function MyProfile () {
             <Grid item xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <CardActionArea underline='none' component={RouterLink} to='/userAddress'>
-                  <CardMedia
+                  {/* <CardMedia
                     component='img'
                     className={classes.cardmedia}
                     image='https://prelovedbabyitems.s3.us-east-2.amazonaws.com/OtherPictures/myorders.png'
                     alt='my orders'
-                  />
+                  /> */}
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant='h6' component='h2'>
-                      My Orders
+                      <HistoryIcon fontSize='large' color='secondary' /> My Orders
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -118,15 +129,15 @@ export default function MyProfile () {
             <Grid item xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <CardActionArea underline='none' component={RouterLink} to='/userAddress'>
-                  <CardMedia
+                  {/* <CardMedia
                     component='img'
                     className={classes.cardmedia}
                     image='https://prelovedbabyitems.s3.us-east-2.amazonaws.com/OtherPictures/wishlist.png'
                     alt='wishlist'
-                  />
+                  /> */}
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant='h6' component='h2'>
-                      My WishList
+                      <BookmarksIcon fontSize='large' color='secondary'/> My WishList
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -135,15 +146,15 @@ export default function MyProfile () {
             <Grid item xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <CardActionArea underline='none' component={RouterLink} to='/changePwd'>
-                  <CardMedia
+                  {/* <CardMedia
                     component='img'
                     className={classes.cardmedia}
                     image='https://prelovedbabyitems.s3.us-east-2.amazonaws.com/OtherPictures/password.png'
                     alt='security'
-                  />
+                  /> */}
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant='h6' component='h2'>
-                      Change Password
+                      <PasswordIcon fontSize='large' color='secondary' /> Change Password
                     </Typography>
                   </CardContent>
                 </CardActionArea>
