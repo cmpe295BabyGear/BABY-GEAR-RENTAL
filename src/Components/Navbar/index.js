@@ -14,6 +14,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
+import { Auth } from 'aws-amplify';
 
 import GetCartDetails from '../../services/GetCartDetails';
 
@@ -128,6 +129,13 @@ export const Navbar = (props) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleLogout = async () => {
+    //props.setAnchorEl(null);
+    await Auth.signOut();
+    sessionStorage.clear();
+    //props.onIsLoggedIn(false);
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -145,8 +153,28 @@ export const Navbar = (props) => {
       <MenuItem onClick={handleMenuClose}>My Orders</MenuItem>
       <MenuItem onClick={handleMenuClose}>My Listings</MenuItem>
       <MenuItem onClick={handleMenuClose}>Wishlist</MenuItem>
+      <Link to="/signIn" style={{ textDecoration: 'none', display: 'block', color: "inherit" }}
+        onClick={handleLogout}>
+        <MenuItem>Logout</MenuItem>
+      </Link>
     </Menu>
   );
+
+   // const loggedInUser = JSON.parse(sessionStorage.getItem('userEmail')) &&  JSON.parse(sessionStorage.getItem('userEmail')).userEmailId ? true : false;
+ 
+  // const renderLogin = (
+  //   <Menu>
+  //   {loggedInUser ? <Link to="/signIn" style={{ textDecoration: 'none', display: 'block', color: "inherit" }}>
+  //       <MenuItem>
+  //         <IconButton aria-label="search" color="inherit">
+  //           <PersonIcon />
+  //         </IconButton>
+  //         <p>Sign In</p>
+  //       </MenuItem>
+  //     </Link> : null
+  //     }
+  //   </Menu>
+  // );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
