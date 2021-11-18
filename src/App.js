@@ -24,6 +24,8 @@ import UserPaymentOptions from './Components/UserProfile/UserPaymentOptions';
 import ChangePassword from './Components/UserProfile/ChangePassword';
 import AddAddress from './Components/UserProfile/AddAddress';
 import Payment from './Components/Payment';
+import MyOrders from './Components/MyOrders';
+
 Amplify.configure(awsconfig);
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -57,6 +59,7 @@ function App() {
             <Route path='/addAddress/:custId' exact component={() => <AddAddress />} />
             <Route path='/sell' exact component={() => <Sell />} />
             <Route path='/payment' exact component={() => <Payment />} />
+            <Route path='/myOrders' exact component={() => <MyOrders />} />
           </Switch>
         </Container>
       </div>

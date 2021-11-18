@@ -150,7 +150,7 @@ export const Navbar = (props) => {
       <Link to='/myProfile' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>Profile</MenuItem></Link>
       <Link to='/userAddress' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>Addresses</MenuItem></Link>
       {/* <Link to='/paymentOptions' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>Payment Options</MenuItem></Link> */}
-      <MenuItem onClick={handleMenuClose}>My Orders</MenuItem>
+      <Link to='/myOrders' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>My Orders</MenuItem></Link>
       <MenuItem onClick={handleMenuClose}>My Listings</MenuItem>
       <MenuItem onClick={handleMenuClose}>Wishlist</MenuItem>
       <Link to="/signIn" style={{ textDecoration: 'none', display: 'block', color: "inherit" }}

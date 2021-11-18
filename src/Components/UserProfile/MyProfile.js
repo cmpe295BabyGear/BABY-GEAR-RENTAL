@@ -112,7 +112,7 @@ export default function MyProfile () {
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
               <Card className={classes.card}>
-                <CardActionArea underline='none' component={RouterLink} to='/userAddress'>
+                <CardActionArea underline='none' component={RouterLink} to='/myOrders'>
                   {/* <CardMedia
                     component='img'
                     className={classes.cardmedia}
