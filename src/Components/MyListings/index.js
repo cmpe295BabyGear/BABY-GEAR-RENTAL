@@ -8,6 +8,10 @@ import Fab from '@mui/material/Fab';
 import Button from '@mui/material/Button';
 import GetCustomerListings from '../../services/GetCustomerListings'
 import ButtonBase from '@mui/material/ButtonBase';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Stack from '@mui/material/Stack';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { Link as RouterLink } from 'react-router-dom'
 
 const Img = styled('img')({
   margin: 'auto',
@@ -22,6 +26,18 @@ const MyListings = () => {
   const [custId, setCustId] = React.useState(1);
   const [filteredData, setFilterData] = React.useState([]);
   const [selected, setSelected] = React.useState('ALL');
+
+  const breadcrumbs = [
+    <RouterLink to='/' underline='hover' key='1' color='inherit' >
+      Home
+    </RouterLink>,
+    <RouterLink to='/myProfile' underline='hover' key='2' color='inherit'>
+      My Profile
+    </RouterLink>,
+    <RouterLink to='/myListings' underline='hover' key='2' color='inherit'>
+      My Listings
+    </RouterLink>
+  ];
 
   useEffect(() => {
     // const customerId = JSON.parse(sessionStorage.getItem('custId'));
@@ -55,6 +71,14 @@ const MyListings = () => {
   }
   return (
     <div>
+      <Stack spacing={2} marginTop={10}>
+        <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="small" />}
+          aria-label="breadcrumb"
+        >
+          {breadcrumbs}
+        </Breadcrumbs>
+      </Stack>
       <Box sx={{ flexGrow: 1, overflow: 'hidden', marginTop: 10}}>
         <Grid item>
           <Typography

@@ -11,6 +11,10 @@ import Grid from '@mui/material/Grid'
 import GetCustomerAddresses from '../../services/GetCustomerAddresses';
 import RemoveAddress from '../../services/RemoveAddress';
 import { Fragment } from 'react';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Stack from '@mui/material/Stack';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { Link as RouterLink } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -28,12 +32,23 @@ const useStyles = makeStyles((theme) => ({
 
 const UserAddresses = () => {
 
+  const breadcrumbs = [
+    <RouterLink to='/' underline='hover' key='1' color='inherit' >
+      Home
+    </RouterLink>,
+    <RouterLink to='/myProfile' underline='hover' key='2' color='inherit'>
+      My Profile
+    </RouterLink>,
+    <RouterLink to='/userAddress' underline='hover' key='2' color='inherit'>
+      My Addresses
+    </RouterLink>
+  ];
+
   const [customerId, setCustomerId] = React.useState(1) // TO-DO: set the customer id from the session storage 
   const [custAddresses, setCustAddresses] = React.useState([])
   // const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   const history = useHistory();
-
 
   useEffect(() => {
     // get customer address
@@ -94,6 +109,14 @@ const UserAddresses = () => {
   }
   return (
     <div>
+      <Stack spacing={2} marginTop={10}>
+        <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="small" />}
+          aria-label="breadcrumb"
+        >
+          {breadcrumbs}
+        </Breadcrumbs>
+      </Stack>
       <Container style={{ marginTop: 100 }} className={classes.marginspacing}>
         <Grid container spacing={3}>
           <Grid item spacing={3}>
