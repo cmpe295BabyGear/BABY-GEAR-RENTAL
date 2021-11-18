@@ -72,7 +72,7 @@ export default function MyProfile () {
                 color='text.primary'
                 gutterBottom
               >
-                Hi {userName}
+                My Profile
               </Typography>
             </Container>
           </Box>
