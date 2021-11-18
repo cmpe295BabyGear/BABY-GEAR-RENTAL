@@ -50,9 +50,12 @@ const DeliverItems = (props) => {
           <Grid item xs={6} sm={6} className="cartItemDetails">
             <h3>{cartItem.item_name}</h3>
             <span>Purchase Type: {cartItem.purchaseType}</span>
-            <span>Shipment:
-              {cartItem.deliveryOption === 0 ? ' Self Pickup' : ' Get it delivered'}
-            </span>
+            <div className="cartShipment">
+              <span>Shipment:
+                {cartItem.deliveryOption === 0 ? ' Self Pickup' : ' Get it delivered'}
+              </span>
+              <span className="changeShipping" onClick={() => props.changeShipping(cartItem.item_id, 0)}>Change to Self Pickup</span>
+            </div>
 
             <span>Shipping charges: $5</span>
 
@@ -61,7 +64,7 @@ const DeliverItems = (props) => {
             : null}
           </Grid>
           <Grid item xs={2} sm={3} className="cartItemPrice">
-            <span>${cartItem.price}</span>
+            <span>${cartItem.displayPrice}</span>
             <span className="link" onClick={() => props.removeFromCart(cartItem)}>Remove</span>
           </Grid>
         </Grid>

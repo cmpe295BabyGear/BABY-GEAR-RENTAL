@@ -124,7 +124,7 @@ const handleImageSubmit= async (files) => {
     // services.GetCustomerDetailsByEmail(sessionDetails.uname).then(function (response) {});  
     
   // * GET request: presigned URL
-  let custEmail = "test@gmail.com"  // **TO DO ** - Have to get the email id from Session
+  let custEmail = "prajakta.joshi@sjsu.edu"  // **TO DO ** - Have to get the email id from Session
   const urlWithParams = API_ENDPOINT +"?category_id=" + category + "&cust_email=" + custEmail;
   const response = await axios({
     method: "GET",
@@ -217,7 +217,7 @@ const handleSubmit = async () =>
     listItems.seller_preference = sellerPreferrence;
     listItems.baby_age =babyAge;
     listItems.s3_label = s3label; 
-    listItems.customer_id= 2;  // ** To DO** Get the Customer ID from Customer Email ID URL
+    listItems.customer_id= 4;  // ** To DO** Get the Customer ID from Customer Email ID URL
    
     if(sellerPreferrence === "RENT" && (condition === "new" || condition === "like new")) {
       if(category === 1) {
@@ -436,14 +436,14 @@ return(
               Check the box before submitting the form:
             </Typography>
             <Typography align='left' variant='body1' gutterBottom>
-              1. Have to write
+              I accept all Terms and Conditions.
             </Typography>
-            <Typography align='left' variant='body1' gutterBottom>
+            {/* <Typography align='left' variant='body1' gutterBottom>
               2. Have to write.
             </Typography>
             <Typography align='left' variant='body1' gutterBottom>
               3. Have to write.
-            </Typography>
+            </Typography> */}
           </div>
         </Grid>
         <Grid item xs={12} align='left' >

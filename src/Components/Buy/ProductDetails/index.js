@@ -85,11 +85,12 @@ export const ProductDetails = (props) => {
       "item_name" : productDetails.item_name,
       "categoryName" : productDetails.categoryName,
       "quantity" :1,
-      "price" : price,
+      "displayPrice" : price,
       "purchaseType" : productDetails.seller_preference === 'SELL' ? 'Buy' : 'Rent',
       "deliveryOption": deliveryType === 'pickup' ? 0 : 1,
       "rentStartDate": rentStartDate,
-      "rentEndDate": rentEndDate
+      "rentEndDate": rentEndDate,
+      "rentalPrice": productDetails.rental_price
     }
     AddItemToCart(itemDetails).then(function (response) {
       alert("Item added to cart");

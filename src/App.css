@@ -369,6 +369,17 @@ header.MuiAppBar-colorPrimary {
   padding-top: 15px;
   text-align: center;
 }
+.cartShipment span{
+  display: inline-block;
+}
+.cartShipment .changeShipping {
+  text-decoration: underline;
+  cursor: pointer;
+  text-decoration: underline;
+    cursor: pointer;
+    margin-left: 10px;
+    color: #7a6653;
+}
 .myCart .buttonWrap {
   justify-content: center;
 }

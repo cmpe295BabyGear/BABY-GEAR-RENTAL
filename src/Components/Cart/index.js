@@ -10,6 +10,8 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import GetCustomerAddresses from '../../services/GetCustomerAddresses';
+import UpdateCartShipping from '../../services/UpdateCartShipping';
+
 import PickUpItems from './PickUpItems';
 import DeliverItems from './DeliverItems';
 
@@ -64,8 +66,8 @@ export const Cart = (props) => {
     }, 0);
 
     const itemTaxes = cartDetails.map(cartItem => {
-      const price = cartItem.price * 0.0725;
-      return Math.round(price * 100) / 100;
+      const price = (7.25 / 100) * cartItem.price;
+      return price;
     }).reduce(function(a, b){
       return a + b;
     }, 0);
@@ -94,6 +96,29 @@ export const Cart = (props) => {
     })
   }
 
+  const changeShipping = (itemId, changeShipping) => {
+    const itemDetails = {
+      "customer_id"  :custId,
+      "item_id" : itemId,
+      "deliveryOption": changeShipping
+    }
+    UpdateCartShipping(itemDetails).then(function (response) {
+      alert("Delivery option updated successfully");
+      GetCartDetails(custId).then(function (response) {
+        setCartDetails(response.cartList);
+        console.log('GetCartDetails', response);
+  
+        getTotalPrice(response.cartList);
+      })
+      .catch(function (error) {
+        setCartDetails(null);
+          console.log('GetCartDetails error', error);
+      });
+    })
+    .catch(function (error) {
+      console.log('UpdateCartShipping error', error);
+    }); 
+  }
   return (
     <Container className="myCart">
       <Grid container spacing={2}>
@@ -111,8 +136,16 @@ export const Cart = (props) => {
                 <ToggleButton value="deliver">Get it delivered</ToggleButton>
               </ToggleButtonGroup>
             </div> */}
-            <PickUpItems removeFromCart = {(cartItem) => removeFromCart(cartItem)} cartDetails={cartDetails}/>
-            <DeliverItems removeFromCart = {(cartItem) => removeFromCart(cartItem)} cartDetails={cartDetails}/>
+            <PickUpItems 
+              removeFromCart = {(cartItem) => removeFromCart(cartItem)}
+              changeShipping = {(itemId, deliveryOption) => changeShipping(itemId, deliveryOption)}
+              cartDetails={cartDetails}
+            />
+            <DeliverItems
+              removeFromCart = {(cartItem) => removeFromCart(cartItem)}
+              changeShipping = {(itemId, deliveryOption) => changeShipping(itemId, deliveryOption)}
+              cartDetails={cartDetails}
+            />
             
           </Grid>
           <Grid item xs={12} sm={4} className="myCartRightGrid">
@@ -135,7 +168,7 @@ export const Cart = (props) => {
               </div>
               <div className="buttonWrap">
                 <Button variant='contained' color='secondary'>
-                  CHECKOUT
+                  Pay Now
                 </Button>
               </div>
               
