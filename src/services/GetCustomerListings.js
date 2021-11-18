@@ -22,7 +22,7 @@ const GetCustomerOrders = (customerId) => {
               babyAge: element.baby_age,
               rentalPrice: element.rental_price,
               customerEmail: element.customer_email,
-              availabilityStatus: element.availability_status == 1 ? 'AVAILABLE' : element.sellerPreference == 'SELL' ? 'SOLD' : 'RENTED',
+              availabilityStatus: element.availability_status == 1 ? 'AVAILABLE' : element.sellerPreference === 'SELL' ? 'SOLD' : 'RENTED',
               image: 'https://d1d6i97vlsh97n.cloudfront.net/' + element.customer_email + '/' + element.category_name + '/' + element.s3_label
             });
           });

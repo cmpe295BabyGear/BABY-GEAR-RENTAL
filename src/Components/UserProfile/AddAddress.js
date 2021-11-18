@@ -12,7 +12,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import MuiAlert from '@material-ui/lab/Alert';
-import googleAPIKey from '../../Api-key/google-api-key'
 import PutAddress from '../../services/PutAddress';
 import axios from 'axios'
 import updateAddress from '../../services/updateAddress';
@@ -57,10 +56,18 @@ const AddAddress = (props) => {
   const [addressComp, setAddrComp] = React.useState([])
   const [updAddress, setUpdAddress] = React.useState(location.state.updAddress)
   const [addressID, setAddressID] = React.useState(0)
-
+  const [gKey, setGKey] = React.useState('');
   const history = useHistory();
 
+
   useEffect(() => {
+    // get key
+    axios.get('https://71ryoxs1t7.execute-api.us-east-2.amazonaws.com/dev/getgak').then(function (response) {
+      setGKey(response.data.key);
+      // console.log(response)
+    }).catch(function (err) {
+      console.log(err);
+    })
     if (updAddress === true) {
       const addObj = location.state.address
       setFullName(addObj.name)
@@ -89,7 +96,7 @@ const AddAddress = (props) => {
     axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
       params: {
         address: addresVal,
-        key: googleAPIKey.key
+        key: gKey
       }
     }).then(function (resp) {
       setZipcodeErr('')

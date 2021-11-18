@@ -2,22 +2,19 @@ import React, { useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography'
 import Fab from '@mui/material/Fab';
 import Button from '@mui/material/Button';
 import GetCustomerListings from '../../services/GetCustomerListings'
+import ButtonBase from '@mui/material/ButtonBase';
 
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  height: 60,
-  width: 500,
-  lineHeight: '60px',
-}));
-
-const lightTheme = createTheme({ palette: { mode: 'light' } });
+const Img = styled('img')({
+  margin: 'auto',
+  display: 'block',
+  maxWidth: '100%',
+  maxHeight: '100%'
+});
 
 const MyListings = () => {
 
@@ -25,8 +22,8 @@ const MyListings = () => {
   const [custId, setCustId] = React.useState(1);
   const [filteredData, setFilterData] = React.useState([]);
   const [selected, setSelected] = React.useState('ALL');
-  useEffect(() => {
 
+  useEffect(() => {
     // const customerId = JSON.parse(sessionStorage.getItem('custId'));
     const customerId = 1;
     setCustId(customerId);
@@ -53,69 +50,71 @@ const MyListings = () => {
   }
 
   const handleCancel = () => {
-    //set availability status as 0
+    // set availability status as 0 when customer cancels the listing
     console.log('cancel')
   }
   return (
-    <Grid container spacing={2} marginTop={10} display='flex'>
-      <Grid item xs={4} sm={3}>
-        <Typography
-          component='h4'
-          variant='h4'
-          align='center'>
-          Your Listings
-        </Typography>
-      </Grid>
-      <Grid item xs={4} sm={3}>
-        <Box sx={{ '& > :not(style)': { m: 1 } }}>
-          <Fab color={selected === 'ALL' ? 'secondary' : 'inherit'} variant='extended' onClick={() => { handleFabClick('ALL') }}>
-            All
-          </Fab>
-          <Fab color={selected === 'SELL' ? 'secondary' : 'inherit'} variant='extended' onClick={() => { handleFabClick('SELL') }}>
-            SELL
-          </Fab>
-          <Fab color={selected === 'RENT' ? 'secondary' : 'inherit'} variant='extended' onClick={() => { handleFabClick('RENT') }}>
-            RENT
-          </Fab>
-
-        </Box>
-      </Grid>
-
-      {filteredData.map((curr, index) => (
-        <Grid container className='cartItem' >
-          <Grid item xs={4} sm={3}>
-            <img
-              src={curr.image}
-              alt='Customer Listing'
-              height='120'
-              width='120'
-              className='productImage'
-            />
-          </Grid>
-          <Grid item xs={6} sm={6} className='cartItemDetails'>
-            <h3>{curr.itemName}</h3>
-            {/* <span>Listed On : {custOrder.ListedDate}</span> */}
-            <span>Preference : {curr.sellerPreference}</span>
-            <span>Listing Status : {curr.adminStatus}</span>
-            <span>Item Status : {curr.availabilityStatus}</span>
-
-            {curr.availabilityStatus === 'AVAILABLE'
-              ?
-              <>
-                <span><Button onClick={handleCancel} color='primary' variant='contained'>Cancel</Button></span>
-              </>
-              :
-              null
-            }
-           
-          </Grid>
-          <Grid item xs={2} sm={3} className='cartItemPrice'>
-            <span>Price: {curr.sellerPreference === 'RENT' ? curr.rentalPrice : curr.price}</span>
-            {/* <span className="link" onClick={() => removeFromCart(cartItem)}>Remove</span> */}
-          </Grid>
+    <div>
+      <Box sx={{ flexGrow: 1, overflow: 'hidden', marginTop: 10}}>
+        <Grid item>
+          <Typography
+            component='h4'
+            variant='h4'>
+            Your Listings
+          </Typography>
         </Grid>
-      ))}
-    </Grid>
+        <Grid item>
+          <Box sx={{ '& > :not(style)': { m: 1 }, alignSelf: 'flex-end'}}>
+            <Fab color={selected === 'ALL' ? 'secondary' : 'inherit'} variant='extended' onClick={() => { handleFabClick('ALL') }}>
+              All
+            </Fab>
+            <Fab color={selected === 'SELL' ? 'secondary' : 'inherit'} variant='extended' onClick={() => { handleFabClick('SELL') }}>
+              SELL
+            </Fab>
+            <Fab color={selected === 'RENT' ? 'secondary' : 'inherit'} variant='extended' onClick={() => { handleFabClick('RENT') }}>
+              RENT
+            </Fab>
+          </Box>
+        </Grid>
+        {filteredData.map((curr, index) => (
+          <Paper key = {curr.id} sx={{ maxWidth: 800, my: 1, p: 2 }} elevation={24}>
+            <Grid container spacing={2}>
+              <Grid item>
+                <ButtonBase sx={{ width: 128, height: 128 }}>
+                  <Img alt='Customer Listing' src={curr.image}/>
+                </ButtonBase>
+              </Grid>
+              <Grid item xs={12} sm container>
+                <Grid item xs container direction='column' spacing={2}>
+                  <Grid item xs>
+                    <Typography gutterBottom variant='h6' component='div'>
+                      {curr.itemName}
+                    </Typography>
+                    <Typography variant='body2' gutterBottom>
+                      Preference : {curr.sellerPreference}
+                    </Typography>
+                    <Typography variant='body2' color='text.secondary'>
+                      Listing Status : {curr.adminStatus}
+                    </Typography>
+                    <Typography variant='body2' color='text.secondary'>
+                      Item Status : {curr.availabilityStatus}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <Typography variant='h6' component='div'>
+                    Price: {curr.sellerPreference === 'RENT' ? curr.rentalPrice : curr.price}
+                  </Typography>
+                  {curr.availabilityStatus === 'AVAILABLE'
+                    ? <span><Button onClick={handleCancel} color='primary' variant='contained'>Cancel</Button></span>
+                    : null}
+                </Grid>
+              </Grid>
+            </Grid>
+          </Paper>
+        ))}
+      </Box>
+    </div>
   );
 }
 export default MyListings;
