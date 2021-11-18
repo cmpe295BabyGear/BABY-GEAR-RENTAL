@@ -25,6 +25,7 @@ import ChangePassword from './Components/UserProfile/ChangePassword';
 import AddAddress from './Components/UserProfile/AddAddress';
 import Payment from './Components/Payment';
 import MyOrders from './Components/MyOrders';
+import MyListings from './Components/MyListings';
 
 Amplify.configure(awsconfig);
 function App() {
@@ -60,6 +61,7 @@ function App() {
             <Route path='/sell' exact component={() => <Sell />} />
             <Route path='/payment' exact component={() => <Payment />} />
             <Route path='/myOrders' exact component={() => <MyOrders />} />
+            <Route path='/myListings' exact component={() => <MyListings />} />
           </Switch>
         </Container>
       </div>
