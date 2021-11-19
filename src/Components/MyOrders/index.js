@@ -135,7 +135,7 @@ const MyOrders = () => {
                 </Grid>
                 <Grid item>
                   <Typography variant='h6' component='div'>
-                    Price: {custOrder.price}
+                    Price: $ {custOrder.price}
                   </Typography>
                   {/*  To-do : include cancel button */}
                 </Grid>
