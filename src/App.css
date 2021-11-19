@@ -45,7 +45,7 @@ header.MuiAppBar-colorPrimary {
 }
 .bannerText {
   text-align: center;
-  margin-top: 120px;
+  margin-top: 70px;
 }
 .bannerText a {
   text-decoration: none;
@@ -128,6 +128,10 @@ header.MuiAppBar-colorPrimary {
   display: inline-block;
   margin-left: 10px;
 }
+.notAvailable {
+  font-size: 0.8em;
+  color: #8b6c52;
+}
 .filteredBuyList .productName {
   font-size: 1.1em;
   font-weight: normal;
@@ -152,22 +156,124 @@ header.MuiAppBar-colorPrimary {
   padding: 10px 0;
 }
 .productDetails .productPrice {
-  font-size: 20px;
-  color: #f50557;
-  font-weight: bold;
-  padding: 10px 0;
-  border-bottom: 1px solid #77624f;
+  padding: 20px;
+  border-bottom: 1px solid #ded5df;
   margin-bottom: 10px;
+  background: #f6eef9;
+  border-left: 1px solid #ded5df;
+  border-right: 1px solid #ded5df;
+}
+.productDetails .productPrice span {
+  width: 25%;
+  display: inline-block;
+}
+.productDetails .productPrice span:nth-child(2) {
+  font-weight: bold;
+}
+.productDetails .productPrice button span{
+  width: 100%;
+}
+.editDetails {
+  margin: 0 5px;
+  color: #47aae4;
+  text-decoration: underline;
+  cursor: pointer;
+}
+/* .productDetails .productPrice button.addToCart {
+  background-color: transparent;
+  color: #f50057;
+  border: 1px solid #f50057;
+} */
+.productRentPriceWrap {
+  padding: 20px;
+  border-bottom: 1px solid #ded5df;
+  margin-bottom: 10px;
+  background: #f6eef9;
+  border-left: 1px solid #ded5df;
+  border-right: 1px solid #ded5df
+}
+.rentDetails div {
+  padding: 10px;
+}
+.rentDetails div span:first-child {
+  display: inline-block;
+  width: 30%;
+}
+.boldText {
+  font-weight: bold;;
+}
+.productRentPriceWrap > span{
+  display: block;
+  padding-bottom: 20px;
+}
+.productRentPriceWrap .MuiTypography-subtitle1 {
+  font-size: 0.8em;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-daysContainer-16 {
+  margin-bottom: 5px;;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-header-4 {
+  padding: 5px 40px;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-dateRangePicker-2 {
+  width: 445px;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-button-22 {
+  width: 25px;
+  height: 25px;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-buttonText-23 {
+  font-size: 0.5em;
+}
+.productRentPriceWrap .MuiSelect-select.MuiSelect-select {
+  font-size: 0.8em;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-root-14 {
+  width: 220px;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-dateRangePicker-2 ul{
+  display: none;
+}
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-dateRangeBackdrop-3 {
+  height: auto;
+  position:relative
+}
+.productDetails .css-ovja5t-MuiButtonBase-root-MuiToggleButton-root.Mui-selected {
+  color: #f50557;
+  background-color: rgba(156, 39, 176, 0.08);
+  border-bottom: none;
 }
 .productDetails .buttonWrap {
-  text-align: center;
-  padding: 20px;
+  margin-top: 20px;
 }
-.productDetails .buttonWrap button:first-child {
-  margin-right: 20px;
-}
-.productDetails .buttonWrap button:nth-child(2) {
+.productDetails .buttonWrap button {
   border: 1px solid #77624f;
+  margin-right: 10px;
+}
+.deliveryDetails {
+  padding: 10px 0 0;
+}
+.deliveryDetails span:first-child {
+  color: #77624f;
+}
+.deliveryDetails > div {
+  display: block;
+  margin-top: 10px;
+}
+.deleveryAddressWrap .MuiCardContent-root {
+  cursor: pointer;
+  padding: 10px;
+}
+.css-46bh2p-MuiCardContent-root h6 {
+  font-size: 1.1em;
+    margin: 0 0 5px 0;
+    font-weight: normal;
+}
+.DeliverAddresses .deleveryAddressWrap > div {
+  padding: 10px;
+}
+.CheckCircleOutlineIcon {
+  color: green;
 }
 .bottomBorder {
   border-bottom: 1px solid #77624f;
@@ -188,21 +294,56 @@ header.MuiAppBar-colorPrimary {
 .myCart {
   padding-top: 30px;
 }
+.cartItemDetails {
+  width: 100%;
+}
 .myCart h2 {
   color: #77624f;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   width:100%;
 }
 .myCart h3 {
+  font-weight: normal;
+  margin: 5px 0;
+}
+.myCart h4 {
+  background: #f6eef9;
+  padding: 15px;
+  font-weight: bold;
+  margin: 0 0 15px 0;
+  font-size: 18px;
+}
+.DeliverAddresses {
+  background: #f6eef9;
+}
+.myCart h4 span {
+  display: inline-block;
+  margin: 0 0 0 10px;
+}
+.myCart .link {
+  color: #77624f;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9em;
   font-weight: normal;
 }
 .cartItem {
   margin-bottom: 20px;
 }
+.cartItemDetails span {
+  display: block;
+  font-size: 0.9em;
+  margin-top: 10px;
+  color: gray;
+}
 .cartItem .link {
   color: #77624f;
   text-decoration: underline;
   cursor: pointer;
+  display: block;
+  font-size: 0.9em;
+  font-weight: normal;
+  margin-top: 20px;
 }
 .myCartLeftGrid {
   border-right: 1px solid #77624f;
@@ -227,6 +368,17 @@ header.MuiAppBar-colorPrimary {
   font-weight: bold;
   padding-top: 15px;
   text-align: center;
+}
+.cartShipment span{
+  display: inline-block;
+}
+.cartShipment .changeShipping {
+  text-decoration: underline;
+  cursor: pointer;
+  text-decoration: underline;
+    cursor: pointer;
+    margin-left: 10px;
+    color: #7a6653;
 }
 .myCart .buttonWrap {
   justify-content: center;
@@ -261,5 +413,37 @@ header.MuiAppBar-colorPrimary {
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+.textAlignCenter {
+  text-align: center;
+}
+
+@media (max-width:600px){
+  .materialui-daterange-picker-makeStyles-dateRangePicker-2 .MuiGrid-root.MuiGrid-container.MuiGrid-wrap-xs-nowrap.MuiGrid-justify-content-xs-center {
+    flex-wrap: wrap;
+  }
+  .materialui-daterange-picker-makeStyles-dateRangePicker-2 ul.MuiList-root.MuiList-padding {
+    display: none;
+  }
+  .MuiContainer-root {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
+  .MuiContainer-root.filteredBuyList, .bannerText, .MuiContainer-root.productDetails {
+    padding: 0 10px !important;
+  }
+  .cartItem h3 {
+    margin-bottom: 10px;
+    font-size: 1em;
+    margin-top: 0;
+  }
+  .myCartLeftGrid {
+    padding: 0 15px;
+    border-right: 0;
+  }
+  .cartItem {
+    margin-bottom: 30px;
   }
 }

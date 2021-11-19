@@ -9,6 +9,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Auth } from 'aws-amplify'
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Stack from '@mui/material/Stack';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { Link as RouterLink } from 'react-router-dom'
 
 const theme = createTheme();
 
@@ -20,6 +24,18 @@ export default function ChangePassword () {
   const [currentPwd, setCurrentPwd] = React.useState('')
   const [err1, setErr1] = React.useState('')
   const [err2, setErr2] = React.useState('')
+
+  const breadcrumbs = [
+    <RouterLink to='/' underline='hover' key='1' color='inherit' >
+      Home
+    </RouterLink>,
+    <RouterLink to='/myProfile' underline='hover' key='2' color='inherit'>
+      My Profile
+    </RouterLink>,
+    <RouterLink to='/changePwd' underline='hover' key='2' color='inherit'>
+      Change Password
+    </RouterLink>
+  ];
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -44,72 +60,82 @@ export default function ChangePassword () {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component='main' maxWidth='xs'>
-        <CssBaseline /> 
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
+    <div>
+      <Stack spacing={2} marginTop={10}>
+        <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="small" />}
+          aria-label="breadcrumb"
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component='h1' variant='h5'>
-            Change Password
-          </Typography>
-          <Box component='form' novalidate sx={{ mt: 1 }}>
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              id='currentPassword'
-              label='Current Password'
-              type='password'
-              onChange={(event) => setCurrentPwd(event.target.value)}
-              name='currentPassword'
-              error={err1 === ''}
-              helperText={err1 === '' ? '' : err1}
-            />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              id='newPassword'
-              label='Password'
-              type='password'
-              onChange={(event) => setPwd(event.target.value)}
-              name='password'
-              error={err2 === ''}
-              helperText={err2 === '' ? '' : err1}
-            />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              name='confirmPassword'
-              label='Confirm Password'
-              type='password'
-              id='confirmPassword'
-              onChange={(event) => setConfirmPwd(event.target.value)}
-              error={newPwd !== confirmPwd}
-              helperText={newPwd !== confirmPwd ? 'Password Not Matching, please check again !' : ''}
-            />
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              sx={{ mt: 3, mb: 2 }}
-              onClick={(event) => handleSubmit(event)}
-            >
+          {breadcrumbs}
+        </Breadcrumbs>
+      </Stack>
+      <ThemeProvider theme={theme}>
+        <Container component='main' maxWidth='xs'>
+          <CssBaseline /> 
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component='h1' variant='h5'>
               Change Password
-            </Button>
+            </Typography>
+            <Box component='form' novalidate sx={{ mt: 1 }}>
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                id='currentPassword'
+                label='Current Password'
+                type='password'
+                onChange={(event) => setCurrentPwd(event.target.value)}
+                name='currentPassword'
+                error={err1 === ''}
+                helperText={err1 === '' ? '' : err1}
+              />
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                id='newPassword'
+                label='Password'
+                type='password'
+                onChange={(event) => setPwd(event.target.value)}
+                name='password'
+                error={err2 === ''}
+                helperText={err2 === '' ? '' : err1}
+              />
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                name='confirmPassword'
+                label='Confirm Password'
+                type='password'
+                id='confirmPassword'
+                onChange={(event) => setConfirmPwd(event.target.value)}
+                error={newPwd !== confirmPwd}
+                helperText={newPwd !== confirmPwd ? 'Password Not Matching, please check again !' : ''}
+              />
+              <Button
+                type='submit'
+                fullWidth
+                variant='contained'
+                sx={{ mt: 3, mb: 2 }}
+                onClick={(event) => handleSubmit(event)}
+              >
+                Change Password
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+        </Container>
+      </ThemeProvider>
+      </div>
   );
 }

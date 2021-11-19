@@ -6,15 +6,30 @@ import Button from '@material-ui/core/Button';
 
 import GetCartDetails from '../../services/GetCartDetails';
 import RemoveItemFromCart from '../../services/RemoveItemFromCart';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+
+import GetCustomerAddresses from '../../services/GetCustomerAddresses';
+import UpdateCartShipping from '../../services/UpdateCartShipping';
+
+import PickUpItems from './PickUpItems';
+import DeliverItems from './DeliverItems';
 
 export const Cart = (props) => {
   
   const [cartDetails, setCartDetails] = useState([]);
   const [itemTotalPrice, setItemTotalPrice] = useState(0);
   const [total, setTotal] = useState(0);
+  const [deliveryCharges, setDeliveryCharges] = useState(0);
+  const [itemTaxes, setItemTaxes] = useState(0);
+  const [deliveryType, setDeliveryType] = useState("pickup");
+  const [custId, setCustId] = useState(0)
 
   useEffect(() => {    
-    GetCartDetails(1).then(function (response) {
+    
+    const customerId = JSON.parse(sessionStorage.getItem('custId'));
+    setCustId(customerId);
+    GetCartDetails(customerId).then(function (response) {
       setCartDetails(response.cartList);
       console.log('GetCartDetails', response);
 
@@ -28,11 +43,10 @@ export const Cart = (props) => {
 
   const removeFromCart = (cartItem) => {
     const itemDetails = {
-      "customer_id"  :1,
+      "customer_id"  :custId,
       "item_id" : cartItem.item_id
     }
     RemoveItemFromCart(itemDetails).then(function (response) {
-      // const currentCart = cartDetails;
       const filteredArray = cartDetails.filter((item) => {return item.item_id !== cartItem.item_id});
       setCartDetails(filteredArray);
       props.updateCartCount(Math.random());
@@ -50,46 +64,103 @@ export const Cart = (props) => {
     }).reduce(function(a, b){
       return a + b;
     }, 0);
+
+    const itemTaxes = cartDetails.map(cartItem => {
+      const price = (7.25 / 100) * cartItem.price;
+      return price;
+    }).reduce(function(a, b){
+      return a + b;
+    }, 0);
+
+    const deliveredItemList = cartDetails.filter(function(item){
+      return item.deliveryOption === 1;
+    });
+    const delivery = deliveredItemList.length * 5;
+
     setItemTotalPrice(itemPrice);
-    const deliveryCharge = 20;
-    setTotal(itemPrice + deliveryCharge);
+    setItemTaxes(itemTaxes);
+    setDeliveryCharges(delivery);
+    setTotal(itemPrice + delivery + itemTaxes);
   } 
 
+  const getDeliveryAddress = (id) => {
+    GetCustomerAddresses(custId)
+    .then(function (res) {
+      const selectedAddress =  res.filter(function(itm){
+        return itm.id === id;
+      });
+      return selectedAddress[0].formatted_address;
+    })
+    .catch(function (err) {
+      return ""
+    })
+  }
+
+  const changeShipping = (itemId, changeShipping) => {
+    const itemDetails = {
+      "customer_id"  :custId,
+      "item_id" : itemId,
+      "deliveryOption": changeShipping
+    }
+    UpdateCartShipping(itemDetails).then(function (response) {
+      alert("Delivery option updated successfully");
+      GetCartDetails(custId).then(function (response) {
+        setCartDetails(response.cartList);
+        console.log('GetCartDetails', response);
+  
+        getTotalPrice(response.cartList);
+      })
+      .catch(function (error) {
+        setCartDetails(null);
+          console.log('GetCartDetails error', error);
+      });
+    })
+    .catch(function (error) {
+      console.log('UpdateCartShipping error', error);
+    }); 
+  }
   return (
     <Container className="myCart">
       <Grid container spacing={2}>
           <Grid container xs={12} sm={8} className="myCartLeftGrid">
             <h2>Cart Details</h2>
-            {cartDetails.map((cartItem, index) => (
-              <Grid container className="cartItem">
-                <Grid item xs={12} sm={3}>
-                  <img
-                    src={cartItem.image}
-                    alt="Product Details"
-                    height="120"
-                    width="120"
-                    className="productImage"
-                  />
-                </Grid>
-                <Grid item xs={6} sm={6}>
-                  <h3>{cartItem.item_name}</h3>
-                  <span className="link" onClick={() => removeFromCart(cartItem)}>Remove</span>
-                </Grid>
-                <Grid item xs={3} sm={3} className="cartItemPrice">
-                  <span>${cartItem.price}</span>
-                </Grid>
-              </Grid>
-            ))}
+            {/* <div className="cartDeliveryWrap">
+              <h3>Select Delivery Option</h3>
+              <ToggleButtonGroup
+                color="secondary"
+                value={deliveryType}
+                exclusive
+                onChange={(event) => setDeliveryType(event.target.value)}
+              >
+                <ToggleButton value="pickup">Pickup</ToggleButton>
+                <ToggleButton value="deliver">Get it delivered</ToggleButton>
+              </ToggleButtonGroup>
+            </div> */}
+            <PickUpItems 
+              removeFromCart = {(cartItem) => removeFromCart(cartItem)}
+              changeShipping = {(itemId, deliveryOption) => changeShipping(itemId, deliveryOption)}
+              cartDetails={cartDetails}
+            />
+            <DeliverItems
+              removeFromCart = {(cartItem) => removeFromCart(cartItem)}
+              changeShipping = {(itemId, deliveryOption) => changeShipping(itemId, deliveryOption)}
+              cartDetails={cartDetails}
+            />
+            
           </Grid>
           <Grid item xs={12} sm={4} className="myCartRightGrid">
-              <h2>Order Summary</h2>
+              <h2>Order Details</h2>
               <div>
                 <span>Subtotal {} Items</span>
                 <span>${itemTotalPrice}</span>
               </div>
               <div>
                 <span>Estimated Delivery</span>
-                <span>${20.00}</span>
+                <span>${deliveryCharges}</span>
+              </div>
+              <div>
+                <span>Taxes</span>
+                <span>${itemTaxes}</span>
               </div>
               <div>
                 <span>Estimated Total</span>
@@ -97,7 +168,7 @@ export const Cart = (props) => {
               </div>
               <div className="buttonWrap">
                 <Button variant='contained' color='secondary'>
-                  CHECKOUT
+                  Pay Now
                 </Button>
               </div>
               

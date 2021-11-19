@@ -32,8 +32,11 @@ export const useStyles = makeStyles((theme) => ({
     buttonWrap: {
         marginTop: '30px',
         display: 'flex',
-        justifyContent: 'flex-end',
         width: '100%'
+    },
+    clearFilter: {
+        border: '1px solid #77624f',
+        marginLeft: '10px'
     },
     productCard: {
       padding: "10px",

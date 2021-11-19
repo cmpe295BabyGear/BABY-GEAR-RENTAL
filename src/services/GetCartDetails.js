@@ -14,6 +14,12 @@ const GetCartDetails = (event) => {
               item_name: element.item_name,
               categoryName: element.categoryName,
               brand: element.brand,
+              purchaseType: element.purchase_type,
+              deliveryOption: element.delivery_option,
+              rentStartDate: element.rent_start_date,
+              rentEndDate: element.rent_end_date,
+              displayPrice: element.display_price,
+              rentalPrice: element.rental_price,
               image: 'https://d1d6i97vlsh97n.cloudfront.net/' + element.seller_email + '/' + element.categoryName + '/' + element.s3_label
             });
           });
