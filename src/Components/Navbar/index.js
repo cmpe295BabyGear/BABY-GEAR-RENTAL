@@ -153,10 +153,7 @@ export const Navbar = (props) => {
       <Link to='/myOrders' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>My Orders</MenuItem></Link>
       <Link to='/myListings' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>My Listings</MenuItem></Link>
       <MenuItem onClick={handleMenuClose}>My Wishlist</MenuItem>
-      <Link to="/signIn" style={{ textDecoration: 'none', display: 'block', color: "inherit" }}
-        onClick={handleLogout}>
-        <MenuItem>Logout</MenuItem>
-      </Link>
+      <Link to="/signIn" style={{ textDecoration: 'none', display: 'block', color: "inherit" }} onClick={handleLogout}><MenuItem onClick={handleMenuClose}>Logout</MenuItem></Link>
     </Menu>
   );
 

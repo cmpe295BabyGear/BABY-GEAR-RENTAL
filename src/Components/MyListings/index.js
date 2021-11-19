@@ -127,7 +127,7 @@ const MyListings = () => {
                 </Grid>
                 <Grid item>
                   <Typography variant='h6' component='div'>
-                    Price: {curr.sellerPreference === 'RENT' ? curr.rentalPrice : curr.price}
+                    Price: $ {curr.sellerPreference === 'RENT' ? curr.rentalPrice : curr.price}
                   </Typography>
                   {curr.availabilityStatus === 'AVAILABLE'
                     ? <span><Button onClick={handleCancel} color='primary' variant='contained'>Cancel</Button></span>

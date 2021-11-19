@@ -37,7 +37,8 @@ const SignIn = (props) => {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [customerDetails, setCustomerDetails] = useState([]);
   const [fkey, setfkey] = React.useState('444592453854743')
-  //const [customerId, setCustomerId] = useState("")
+  const [customerId, setCustomerId] = useState(0)
+  const [username , setUserName] = React.useState("")
   const [res, setRes] = React.useState([])
 
   const login = async (e) => {
@@ -52,6 +53,7 @@ const SignIn = (props) => {
       setCustomerDetails(response);
       sessionStorage.setItem("userEmail", JSON.stringify({ userEmailId: emailid}));
       sessionStorage.setItem("custId", response.id);
+      sessionStorage.setItem('userName', response.first_name + " " + response.last_name)
       console.log('GetCustomerDetails values are - ', response);
       })
       .catch(function (error) {
@@ -78,15 +80,25 @@ const SignIn = (props) => {
     setOpen(false);
   };
  
-   const responseFacebook = (response) => {
-    if (response != null) {
+  const responseFacebook = (response) => {
+     var resp = {}
+     if (response != null) {
       props.onIsLoggedIn(true)
+       GetCustomerDetails(response.email).
+        then(function (response1) {
+          resp = response1
+          console.log('api response ',response1)
+        }).catch(function (error) {
+          setCustomerDetails(null);
+          console.log('GetCustomerDetails error', error);
+        });  
       setRes(response);
       console.log('response.....', response)
-      sessionStorage.setItem("userEmail", JSON.stringify({ userEmailId : response.email }));
-      sessionStorage.setItem("userName", JSON.stringify({ userName: response.name }));
+        sessionStorage.setItem("userEmail", JSON.stringify({ userEmailId : response.email }));
+        sessionStorage.setItem("userName", JSON.stringify({ userName: response.name }));
+        sessionStorage.setItem('custId', resp.first_name)
+       
       history.push('/')
-      // to-do : set the customer id 
     }
     else {
       props.onIsLoggedIn(false);
