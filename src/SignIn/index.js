@@ -17,6 +17,8 @@ import { useHistory, useLocation } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { GetCustomerDetails } from '../services/GetCustomerDetails';
+import FacebookLogin from 'react-facebook-login';
+import axios from 'axios';
 
 Amplify.configure(awsconfig);
 
@@ -34,7 +36,9 @@ const SignIn = (props) => {
   const [open, setOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [customerDetails, setCustomerDetails] = useState([]);
+  const [fkey, setfkey] = React.useState('444592453854743')
   //const [customerId, setCustomerId] = useState("")
+  const [res, setRes] = React.useState([])
 
   const login = async (e) => {
     e.preventDefault();
@@ -54,7 +58,6 @@ const SignIn = (props) => {
         setCustomerDetails(null);
         console.log('GetCustomerDetails error', error);
       });  
-      
      }
       getCustByEmailid(emailid);
       
@@ -74,6 +77,22 @@ const SignIn = (props) => {
     }
     setOpen(false);
   };
+ 
+   const responseFacebook = (response) => {
+    if (response != null) {
+      props.onIsLoggedIn(true)
+      setRes(response);
+      console.log('response.....', response)
+      sessionStorage.setItem("userEmail", JSON.stringify({ userEmailId : response.email }));
+      sessionStorage.setItem("userName", JSON.stringify({ userName: response.name }));
+      history.push('/')
+      // to-do : set the customer id 
+    }
+    else {
+      props.onIsLoggedIn(false);
+      sessionStorage.clear();
+    }
+  }
 
   return (
     <Grid container component="main" className={classes.signIn}>
@@ -126,15 +145,23 @@ const SignIn = (props) => {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link href="/signUp" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
+            <Grid container spacing={3} >
+              <Grid item>
+                <FacebookLogin
+                  appId={fkey}
+                  autoLoad={false}
+                  fields='name, email,picture'
+                  callback={responseFacebook} />
               </Grid>
             </Grid>
+            <Grid container spacing={3}>
+              <Grid item>
+                <Link href="/signUp" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+            
           </form>
         </div>
       </Grid>
