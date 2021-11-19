@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Button from '@material-ui/core/Button';
@@ -10,6 +10,7 @@ import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
 import Dropzone from 'react-dropzone-uploader';
+import "react-dropzone-uploader/dist/styles.css";
 import axios from 'axios';
 import getPriceEstimate from '../../services/getPriceEstimate';
 import postCustomerListItem from '../../services/postCustomerListItem';
@@ -19,6 +20,7 @@ import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@mui/material/Link';
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -62,6 +64,11 @@ const[severity,setSeverity] = React.useState('success');
 const [redirect,setRedirect] = React.useState(false);
 const [uploadStatus,setUploadStatus] = React.useState(false);
 const [checked, setChecked] = React.useState(false);
+const [fileNames, setFileNames] = useState([]);
+  
+
+// const handleDrop = acceptedFiles =>
+//     setFileNames(acceptedFiles.map(file => file.name));
 
 let isSubmit = false;
 
@@ -83,7 +90,9 @@ useEffect(() => {
   if(checked) {
     async function callEstimate() {
       if((priceEstimate === -1 || priceEstimate=== '') && sellerPreferrence === 'SELL') {
+        isSubmit = true;
         await handleEstimate(null);
+        isSubmit = false;
       }
     }
     callEstimate();
@@ -99,56 +108,86 @@ useEffect(() => {
       }, 7000);
     }
   }
-}, [open]);
+}, [open, redirect]);
+
+useEffect(() => {
+
+  if(uploadStatus) {
+    async function callSubmit() {
+      await listItemOnline();
+      setUploadStatus(false);
+    }
+    callSubmit();
+  }
+  
+}, [uploadStatus]);
 
 //Image Upload 
 const axios= require('axios').default;
 const API_ENDPOINT ="https://jjhxmh9kf5.execute-api.us-east-2.amazonaws.com/dev/getpresignedurl"
 
-const handleUpload = ({ meta, remove }, status) => {
+const toast = (innerHTML) => {
+  const el = document.getElementById('toast')
+  el.innerHTML = innerHTML
+  el.className = 'show'
+  setTimeout(() => { el.className = el.className.replace('show', '') }, 3000)
+}
+
+
+const handleUpload = ({ meta, remove }, status, files) => {
   console.log(status, meta);
+  if (status === 'headers_received') {
+    toast(`${meta.name} uploaded!`)
+    remove()
+  } else if (status === 'aborted') {
+    toast(`${meta.name}, upload failed...`)
+  } else if (status === 'done') {
+    setFileNames(files);
+  }
 }
 
 const handleImageSubmit= async (files) => {
   const f = files[0];
-  console.log(f["file"]);
-  if ( category === '') 
-    {
-    setSeverity('warning');
-    setMessage("Please enter *Category* in the below form, before pressing *SUBMIT* for Image Upload");
-    setOpen(true);
+  if(f) {
+    console.log(f["file"]);
+    if ( category === '') 
+      {
+      setSeverity('warning');
+      setMessage("Please enter *Category* in the below form, before pressing *SUBMIT* for Image Upload");
+      setOpen(true);
+      }
+    else {
+    //useEffect(() => {
+      // var sessionDetails = JSON.parse(sessionStorage.getItem('custDetails'));
+      // services.GetCustomerDetailsByEmail(sessionDetails.uname).then(function (response) {});  
+      
+    // * GET request: presigned URL
+    let custEmail = "test@gmail.com"  // **TO DO ** - Have to get the email id from Session
+    const urlWithParams = API_ENDPOINT +"?category_id=" + category + "&cust_email=" + custEmail;
+    const response = await axios({
+      method: "GET",
+      url: urlWithParams,
+    });
+    let data = JSON.parse(response.data)
+    console.log("Data: ", data);
+    setS3Label(data.s3label);
+    console.log("Label: ", s3label);
+  
+    // * PUT request: upload file to S3
+    const result = await fetch(data.uploadURL, {
+      method: "PUT",
+      headers:{
+        "Content-Type": "image/jpeg"
+      },
+      body: f["file"],
+    });
+    console.log("Result: ", result);
+    await setUploadStatus(true);
+    setSeverity('success');
+      setMessage('Successfully Uploaded Image');
+      setOpen(true);
     }
-  else {
-  //useEffect(() => {
-    // var sessionDetails = JSON.parse(sessionStorage.getItem('custDetails'));
-    // services.GetCustomerDetailsByEmail(sessionDetails.uname).then(function (response) {});  
-    
-  // * GET request: presigned URL
-  let custEmail = "prajakta.joshi@sjsu.edu"  // **TO DO ** - Have to get the email id from Session
-  const urlWithParams = API_ENDPOINT +"?category_id=" + category + "&cust_email=" + custEmail;
-  const response = await axios({
-    method: "GET",
-    url: urlWithParams,
-  });
-  let data = JSON.parse(response.data)
-  console.log("Data: ", data);
-  setS3Label(data.s3label);
-  console.log("Label: ", s3label);
- 
-  // * PUT request: upload file to S3
-  const result = await fetch(data.uploadURL, {
-    method: "PUT",
-    headers:{
-      "Content-Type": "image/jpeg"
-    },
-    body: f["file"],
-  });
-  console.log("Result: ", result);
-  setUploadStatus(true);
-  setSeverity('success');
-    setMessage('Successfully Uploaded Image');
-    setOpen(true);
-}
+  }
 }
  
 
@@ -197,17 +236,27 @@ const handleEstimate = async (event) => {
 
 const handleSubmit = async () => 
 {
-  console.log("test submit")
+  console.log("test submit");
+  if (fileNames && fileNames.length>0) {
+    await handleImageSubmit(fileNames);
+  }
+  
+}
+
+const listItemOnline = async () => {
+  console.log("listItemOnline")
   isSubmit = true;
-  if (itemName === ''  || brand === '' || category === '' || condition ==='' ||sellerPreferrence ==='' ) 
+  if (itemName === ''  || brand === '' || category === '' || condition ==='' || sellerPreferrence ==='' ) 
   {
     setSeverity('warning');
     setMessage("Please enter ALL Missing Values in the form");
     setOpen(true);
-  }
-  else
-  {
-    //  handleImageSubmit();
+  }else {
+
+    //useEffect(() => {
+    // var sessionDetails = JSON.parse(sessionStorage.getItem('custDetails'));
+    // services.GetCustomerDetailsByEmail(sessionDetails.uname).then(function (response) {}); } 
+    
     const listItems ={} 
     listItems.item_name = itemName;
     listItems.description= description;
@@ -217,7 +266,8 @@ const handleSubmit = async () =>
     listItems.seller_preference = sellerPreferrence;
     listItems.baby_age =babyAge;
     listItems.s3_label = s3label; 
-    listItems.customer_id= 4;  // ** To DO** Get the Customer ID from Customer Email ID URL
+    listItems.customer_id= 2;
+    // JSON.parse(sessionStorage.getItem('custId'));
    
     if(sellerPreferrence === "RENT" && (condition === "new" || condition === "like new")) {
       if(category === 1) {
@@ -236,7 +286,7 @@ const handleSubmit = async () =>
         listItems.rental_price = -1;
       } 
     }
-
+    
     if(uploadStatus) {
       console.log('before post');
       if(priceEstimate !== -1 || priceEstimate !== '') {
@@ -265,7 +315,6 @@ const handleSubmit = async () =>
   }
 }
 
-
 const handleCancel = () => {
   history.push('/')
 }
@@ -292,7 +341,7 @@ return(
 
   <Dropzone
     onChangeStatus={handleUpload}
-    onSubmit={handleImageSubmit}
+    //onSubmit={handleImageSubmit}
     maxFiles={1}
     multiple={false}
     canCancel={true}
@@ -302,6 +351,22 @@ return(
       dropzoneActive: { borderColor: "green" },
     }}
   />
+
+{/* <Dropzone
+        onDrop={handleDrop}
+        accept="image/*"
+        minSize={1024}
+        maxSize={3072000}
+        maxFiles={1}
+        onsubmit={handleImageSubmit}
+      >
+        {/* {({ getRootProps, getInputProps }) => (
+          <div {...getRootProps({ className: "dropzone" })}>
+            <input {...getInputProps()} />
+            <p>Drag'n'drop images, or click to select Images</p>
+          </div>
+        )} */}
+    
 
 
   <Grid container spacing={3} direction="column" >
@@ -435,9 +500,17 @@ return(
             <Typography align='left' variant='subtitle1'  gutterBottom>
               Check the box before submitting the form:
             </Typography>
-            <Typography align='left' variant='body1' gutterBottom>
-              I accept all Terms and Conditions.
-            </Typography>
+            <Grid item xs={12} align='left' >
+          <FormControlLabel
+            control={<Checkbox color='primary' checked={checked} onChange={(event) => setChecked(event.target.checked)} name='checked' />}
+          />
+        </Grid>
+        <Link href="#">I accept the Terms and Conditions</Link>
+
+        
+            {/* <Typography align='left' variant='body1' gutterBottom>
+              I accept the Terms and Conditions
+            </Typography> */}
             {/* <Typography align='left' variant='body1' gutterBottom>
               2. Have to write.
             </Typography>
@@ -446,17 +519,18 @@ return(
             </Typography> */}
           </div>
         </Grid>
-        <Grid item xs={12} align='left' >
+        {/* <Grid item xs={12} align='left' >
           <FormControlLabel
             control={<Checkbox color='primary' checked={checked} onChange={(event) => setChecked(event.target.checked)} name='checked' />}
           />
-        </Grid>
+        </Grid> */}
         
     <Grid container spacing={1} direction="column" item xs={12} sm={5} >
       <div className="buttonWrap">
         <Stack direction="row" spacing={2}>
             <Button variant="contained" color="secondary" onClick={handleEstimate}  > GET ESTIMATE </Button>
-            <Button type='submit' disabled={!checked} variant="contained" color="secondary" onClick={handleSubmit}  > SUBMIT </Button>
+            <Button type='submit' disabled={!checked} variant="contained" color="secondary" 
+                onClick={handleSubmit} > SUBMIT </Button>
             <Button variant="contained" color="secondary" onClick={handleCancel}  > CANCEL </Button> 
         </Stack>
         
