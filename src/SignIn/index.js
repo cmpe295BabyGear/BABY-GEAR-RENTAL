@@ -17,6 +17,8 @@ import { useHistory, useLocation } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { GetCustomerDetails } from '../services/GetCustomerDetails';
+import FbLoginInsert from '../services/FbLoginInsert';
+
 import FacebookLogin from 'react-facebook-login';
 import axios from 'axios';
 
@@ -38,7 +40,6 @@ const SignIn = (props) => {
   const [customerDetails, setCustomerDetails] = useState([]);
   const [fkey, setfkey] = React.useState('444592453854743')
   //const [customerId, setCustomerId] = useState("")
-  const [res, setRes] = React.useState([])
 
   const login = async (e) => {
     e.preventDefault();
@@ -81,18 +82,14 @@ const SignIn = (props) => {
    const responseFacebook = async (response) => {
     if (response != null) {
       props.onIsLoggedIn(true)
-      await setRes(response);
-      
-      await GetCustomerDetails(response.email).then(function (resp) {
-        setCustomerDetails(resp);
-        sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId: response.email, custId: resp.id }));
-        console.log('GetCustomerDetails values are - ', response);
-      })
+      await FbLoginInsert(response.email, response.name).then(function (resp) {
+        sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId: response.email, custId: resp.data[0][0]['id'] }));
+        })
         .catch(function (error) {
           setCustomerDetails(null);
-          console.log('GetCustomerDetails error', error);
+          props.onIsLoggedIn(false)
+          console.log('fb login insert error', error);
         }); 
-      console.log(sessionStorage)
       history.push('/')
       // to-do : set the customer id 
     }
