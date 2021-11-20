@@ -52,8 +52,6 @@ const SignIn = (props) => {
       setCustomerDetails(response);
       console.log('response signin ...', response)
       sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId : emailid, custId : response.id}));
-      sessionStorage.setItem("userEmail", JSON.stringify({ userEmailId: emailid}));
-      sessionStorage.setItem("custId", response.id);
       console.log('GetCustomerDetails values are - ', response);
       })
       .catch(function (error) {
@@ -80,13 +78,21 @@ const SignIn = (props) => {
     setOpen(false);
   };
  
-   const responseFacebook = (response) => {
+   const responseFacebook = async (response) => {
     if (response != null) {
       props.onIsLoggedIn(true)
-      setRes(response);
-      console.log('response.....', response)
-      sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId : response.email, userName: response.name, custId : response.id}));
-      sessionStorage.setItem("userName", JSON.stringify({ userName: response.name }));
+      await setRes(response);
+      
+      await GetCustomerDetails(response.email).then(function (resp) {
+        setCustomerDetails(resp);
+        sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId: response.email, custId: resp.id }));
+        console.log('GetCustomerDetails values are - ', response);
+      })
+        .catch(function (error) {
+          setCustomerDetails(null);
+          console.log('GetCustomerDetails error', error);
+        }); 
+      console.log(sessionStorage)
       history.push('/')
       // to-do : set the customer id 
     }
