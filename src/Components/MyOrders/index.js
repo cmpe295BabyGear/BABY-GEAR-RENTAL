@@ -40,8 +40,7 @@ const MyOrders = () => {
 
   useEffect(() => {
 
-    // const customerId = JSON.parse(sessionStorage.getItem('custId'));
-    const customerId = 1
+    const customerId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
     setCustId(customerId);
     GetCustomerOrders(customerId).then(function (response) {
       setCustOrders(response.orderList);

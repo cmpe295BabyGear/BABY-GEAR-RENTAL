@@ -44,7 +44,7 @@ const UserAddresses = () => {
     </RouterLink>
   ];
 
-  const [customerId, setCustomerId] = React.useState(1) // TO-DO: set the customer id from the session storage 
+  const [customerId, setCustomerId] = React.useState() // TO-DO: set the customer id from the session storage 
   const [custAddresses, setCustAddresses] = React.useState([])
   // const [open, setOpen] = React.useState(false);
   const classes = useStyles();
@@ -53,6 +53,7 @@ const UserAddresses = () => {
   useEffect(() => {
     // get customer address
     // To-do : set customer id
+    setCustomerId(JSON.parse(sessionStorage.getItem('customerDetails')).custId);
     GetCustomerAddresses(customerId)
       .then(function (res) {
         console.log('get response ----')

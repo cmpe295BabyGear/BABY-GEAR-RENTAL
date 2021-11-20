@@ -48,7 +48,7 @@ export default function MyProfile () {
 
   useEffect(() => {
     // To- do : get and set username
-    var sessionDetails = JSON.parse(sessionStorage.getItem('custId'));
+    // var sessionDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
   }, [])
   return (
     <div>

@@ -49,7 +49,7 @@ const classes = useStyles();
 const [itemName, setItemName]=React.useState('');
 const [brand,setBrand]=React.useState('');
 const[customerId,setCustomerId]=React.useState('');
-// const[custEmail,setCustEmail]=React.useState('');
+const[custEmail,setCustEmail]=React.useState('');
 const [category, setCategory] = React.useState('');
 const [condition, setCondition] = React.useState('');
 const [babyAge, setBabyAge] = React.useState('');
@@ -73,6 +73,11 @@ const [fileNames, setFileNames] = useState([]);
 let isSubmit = false;
 
 useEffect(() => {
+  const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
+  console.log('custDetails...', custDetails)
+  setCustomerId(custDetails.custId);
+  setCustEmail(custDetails.userEmailId);
+
   if (priceEstimate && priceEstimate!=='' && priceEstimate!=='-1' && !isSubmit) {
     console.log('GetPriceEstimate', priceEstimate);  
     setSeverity('info');
@@ -162,7 +167,9 @@ const handleImageSubmit= async (files) => {
       // services.GetCustomerDetailsByEmail(sessionDetails.uname).then(function (response) {});  
       
     // * GET request: presigned URL
-    let custEmail = "test@gmail.com"  // **TO DO ** - Have to get the email id from Session
+    // let custEmail = JSON.parse(sessionStorage.getItem('userEmail')).userEmailId; // **TO DO ** - Have to get the email id from Session
+    // console.log(custEmail);
+
     const urlWithParams = API_ENDPOINT +"?category_id=" + category + "&cust_email=" + custEmail;
     const response = await axios({
       method: "GET",
@@ -266,9 +273,8 @@ const listItemOnline = async () => {
     listItems.seller_preference = sellerPreferrence;
     listItems.baby_age =babyAge;
     listItems.s3_label = s3label; 
-    listItems.customer_id= 2;
-    // JSON.parse(sessionStorage.getItem('custId'));
-   
+    listItems.customer_id= customerId;
+  
     if(sellerPreferrence === "RENT" && (condition === "new" || condition === "like new")) {
       if(category === 1) {
         listItems.rental_price = 10;

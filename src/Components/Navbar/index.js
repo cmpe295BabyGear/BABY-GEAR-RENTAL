@@ -89,12 +89,12 @@ export const Navbar = (props) => {
   const [isLoggedIn] = React.useState(true);
   const [numberOfCartItems, setNumberOfCartItems] = React.useState(0);
   const [selected, setSelected] = React.useState('buy');
-
+  const [customerId, setCustomerId] = React.useState('')
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   useEffect(() => {
-    const customerId = JSON.parse(sessionStorage.getItem('custId'));    
+    // const customerId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
     GetCartDetails(customerId).then(function (response) {
       setNumberOfCartItems(response.cartList.length);
     })
@@ -103,7 +103,10 @@ export const Navbar = (props) => {
     }); 
   }, []);
   useEffect(() => { 
-    const customerId = JSON.parse(sessionStorage.getItem('custId'));   
+    const customerDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
+    if (customerDetails != null){
+      setCustomerId(customerDetails.custId);
+    }
     GetCartDetails(customerId).then(function (response) {
       setNumberOfCartItems(response.cartList.length);
     })
@@ -155,11 +158,11 @@ export const Navbar = (props) => {
       <MenuItem onClick={handleMenuClose}>My Wishlist</MenuItem>
       <Link to="/signIn" style={{ textDecoration: 'none', display: 'block', color: "inherit" }}
         onClick={handleLogout}>
-        <MenuItem>Logout</MenuItem>
+        <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
       </Link>
     </Menu>
   );
-
+    // CORRECT ONE TO GET EMAIL ID : JSON.parse(sessionStorage.getItem('customerDetails')).userEmailId
    // const loggedInUser = JSON.parse(sessionStorage.getItem('userEmail')) &&  JSON.parse(sessionStorage.getItem('userEmail')).userEmailId ? true : false;
  
   // const renderLogin = (

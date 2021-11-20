@@ -42,7 +42,7 @@ export const ProductDetails = (props) => {
     const path = window.location.pathname;
     const itemId = path.split('/').pop();
 
-    const custId = JSON.parse(sessionStorage.getItem('custId'));
+    const custId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
 
     GetProductDetails(itemId).then(function (response) {
       setProductDetails(response);
@@ -78,7 +78,7 @@ export const ProductDetails = (props) => {
   const addToCart = (productDetails, price, purchaseType) => {
     const path = window.location.pathname;
     const itemId = path.split('/').pop();
-    const custId = JSON.parse(sessionStorage.getItem('custId'));
+    const custId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
     const itemDetails = {
       "customer_id" :custId,
       "item_id" : itemId,

@@ -37,7 +37,7 @@ const DeliveryAddresses = (props) => {
 
 
   useEffect(() => {
-    const custId = JSON.parse(sessionStorage.getItem('custId'));
+    const custId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
     GetCustomerAddresses(custId)
       .then(function (res) {
         setCustAddresses(res)

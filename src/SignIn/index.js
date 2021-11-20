@@ -50,6 +50,8 @@ const SignIn = (props) => {
 
       GetCustomerDetails(emailid).then(function (response) {
       setCustomerDetails(response);
+      console.log('response signin ...', response)
+      sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId : emailid, custId : response.id}));
       sessionStorage.setItem("userEmail", JSON.stringify({ userEmailId: emailid}));
       sessionStorage.setItem("custId", response.id);
       console.log('GetCustomerDetails values are - ', response);
@@ -83,7 +85,7 @@ const SignIn = (props) => {
       props.onIsLoggedIn(true)
       setRes(response);
       console.log('response.....', response)
-      sessionStorage.setItem("userEmail", JSON.stringify({ userEmailId : response.email }));
+      sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId : response.email, userName: response.name, custId : response.id}));
       sessionStorage.setItem("userName", JSON.stringify({ userName: response.name }));
       history.push('/')
       // to-do : set the customer id 
