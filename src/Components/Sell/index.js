@@ -21,6 +21,53 @@ import { makeStyles } from '@material-ui/core/styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@mui/material/Link';
+import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import PropTypes from 'prop-types';
+
+
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    padding: theme.spacing(2),
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
+  },
+}));
+
+const BootstrapDialogTitle = (props) => {
+  const { children, onClose, ...other } = props;
+
+  return (
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        ><CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+};
+
+BootstrapDialogTitle.propTypes = {
+  children: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
+};
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -65,7 +112,14 @@ const [redirect,setRedirect] = React.useState(false);
 const [uploadStatus,setUploadStatus] = React.useState(false);
 const [checked, setChecked] = React.useState(false);
 const [fileNames, setFileNames] = useState([]);
-  
+const [openTC, setOpenTC] = React.useState(false);
+
+const handleClickOpen = () => {
+  setOpenTC(true);
+};
+const handleClose = () => {
+  setOpenTC(false);
+};
 
 // const handleDrop = acceptedFiles =>
 //     setFileNames(acceptedFiles.map(file => file.name));
@@ -162,13 +216,6 @@ const handleImageSubmit= async (files) => {
       setOpen(true);
       }
     else {
-    //useEffect(() => {
-      // var sessionDetails = JSON.parse(sessionStorage.getItem('custDetails'));
-      // services.GetCustomerDetailsByEmail(sessionDetails.uname).then(function (response) {});  
-      
-    // * GET request: presigned URL
-    // let custEmail = JSON.parse(sessionStorage.getItem('userEmail')).userEmailId; // **TO DO ** - Have to get the email id from Session
-    // console.log(custEmail);
 
     const urlWithParams = API_ENDPOINT +"?category_id=" + category + "&cust_email=" + custEmail;
     const response = await axios({
@@ -247,6 +294,12 @@ const handleSubmit = async () =>
   if (fileNames && fileNames.length>0) {
     await handleImageSubmit(fileNames);
   }
+  if (itemName === ''  || brand === '' || category === '' || condition ==='' || sellerPreferrence ==='' ) 
+  {
+    setSeverity('warning');
+    setMessage("Please enter ALL Missing Values in the form");
+    setOpen(true);
+  }
   
 }
 
@@ -259,10 +312,6 @@ const listItemOnline = async () => {
     setMessage("Please enter ALL Missing Values in the form");
     setOpen(true);
   }else {
-
-    //useEffect(() => {
-    // var sessionDetails = JSON.parse(sessionStorage.getItem('custDetails'));
-    // services.GetCustomerDetailsByEmail(sessionDetails.uname).then(function (response) {}); } 
     
     const listItems ={} 
     listItems.item_name = itemName;
@@ -274,6 +323,7 @@ const listItemOnline = async () => {
     listItems.baby_age =babyAge;
     listItems.s3_label = s3label; 
     listItems.customer_id= customerId;
+    listItems.admin_status='pending'
   
     if(sellerPreferrence === "RENT" && (condition === "new" || condition === "like new")) {
       if(category === 1) {
@@ -351,28 +401,12 @@ return(
     maxFiles={1}
     multiple={false}
     canCancel={true}
-    inputContent=" Please Upload JPEG Image"
+    inputContent=" Please Upload Item Image"
     styles={{
       dropzone: { width: 400, height: 200 },
       dropzoneActive: { borderColor: "green" },
     }}
   />
-
-{/* <Dropzone
-        onDrop={handleDrop}
-        accept="image/*"
-        minSize={1024}
-        maxSize={3072000}
-        maxFiles={1}
-        onsubmit={handleImageSubmit}
-      >
-        {/* {({ getRootProps, getInputProps }) => (
-          <div {...getRootProps({ className: "dropzone" })}>
-            <input {...getInputProps()} />
-            <p>Drag'n'drop images, or click to select Images</p>
-          </div>
-        )} */}
-    
 
 
   <Grid container spacing={3} direction="column" >
@@ -499,37 +533,60 @@ return(
     </Grid>
 
     <Grid item xs={12} align='left'>
-          <div>
-            <Typography align='left' variant='h6' color='error' gutterBottom>
-              Terms & Conditions
-            </Typography>
-            <Typography align='left' variant='subtitle1'  gutterBottom>
-              Check the box before submitting the form:
-            </Typography>
-            <Grid item xs={12} align='left' >
-          <FormControlLabel
-            control={<Checkbox color='primary' checked={checked} onChange={(event) => setChecked(event.target.checked)} name='checked' />}
-          />
-        </Grid>
-        <Link href="#">I accept the Terms and Conditions</Link>
+      <div>
+        {/* <Typography align='left' variant='h6' color='error' gutterBottom>
+          Terms & Conditions
+        </Typography>
+        <Typography align='left' variant='subtitle1'  gutterBottom>
+          Please read carefully below Terms & Conditions and Check the box before submitting
+        </Typography> */}
+        <Grid item xs={12} align='left' >
 
-        
-            {/* <Typography align='left' variant='body1' gutterBottom>
-              I accept the Terms and Conditions
-            </Typography> */}
-            {/* <Typography align='left' variant='body1' gutterBottom>
-              2. Have to write.
+      <div>
+        <Button variant='outlined' color='secondary' onClick={handleClickOpen}>
+          Terms & Conditions
+        </Button>
+        <BootstrapDialog
+          onClose={handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={openTC}
+        >
+        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+            Terms & Conditions
+        </BootstrapDialogTitle>
+        <DialogContent dividers>
+            <Typography gutterBottom>
+              1. Price estimate shown is only an estimated value, 
+                 the actual price is estimated only after an item is received and in the same condition as specified in the form.
             </Typography>
-            <Typography align='left' variant='body1' gutterBottom>
-              3. Have to write.
-            </Typography> */}
-          </div>
-        </Grid>
-        {/* <Grid item xs={12} align='left' >
+            <Typography gutterBottom>
+              2. You can only cancel your listings with in 2 days of your listing date.
+            </Typography>
+            <Typography gutterBottom>
+              3. We do not accept damaged or nonfunctional items. 
+            </Typography>
+            <Typography gutterBottom>
+              4. We reserve the right to accept or reject the item.
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+              <Button autoFocus onClick={handleClose}>
+              Close
+              </Button> 
+          </DialogActions>
+        </BootstrapDialog>
+    </div>
+
           <FormControlLabel
             control={<Checkbox color='primary' checked={checked} onChange={(event) => setChecked(event.target.checked)} name='checked' />}
+            label="I accept all the Terms and Conditions"
           />
-        </Grid> */}
+        </Grid>
+       
+    
+  </div>
+  </Grid>
+        
         
     <Grid container spacing={1} direction="column" item xs={12} sm={5} >
       <div className="buttonWrap">
