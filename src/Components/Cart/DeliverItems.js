@@ -12,27 +12,20 @@ const DeliverItems = (props) => {
     setDeliverItems(itemList)
   }, [props.cartDetails])
 
-  const formatDate = (val) => {
-    const receivedDate = Number(val);
-    var date = new Date(receivedDate);
+  const formatDate = (date) => {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
 
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
-    var hour = date.getHours();
-    var min = date.getMinutes();
-    var sec = date.getSeconds();
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
 
-    month = (month < 10 ? "0" : "") + month;
-    day = (day < 10 ? "0" : "") + day;
-    hour = (hour < 10 ? "0" : "") + hour;
-    min = (min < 10 ? "0" : "") + min;
-    sec = (sec < 10 ? "0" : "") + sec;
-
-    var str = date.getFullYear() + "-" + month + "-" + day;
-    return str;
-
+    return [year, month, day].join('-');
   }
-
+  
   return (
     <div className="cartItemDetails">
       <DeliveryAddresses />

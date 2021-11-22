@@ -17,6 +17,8 @@ import { useHistory, useLocation } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { GetCustomerDetails } from '../services/GetCustomerDetails';
+import FbLoginInsert from '../services/FbLoginInsert';
+
 import FacebookLogin from 'react-facebook-login';
 import axios from 'axios';
 
@@ -38,7 +40,6 @@ const SignIn = (props) => {
   const [customerDetails, setCustomerDetails] = useState([]);
   const [fkey, setfkey] = React.useState('444592453854743')
   //const [customerId, setCustomerId] = useState("")
-  const [res, setRes] = React.useState([])
 
   const login = async (e) => {
     e.preventDefault();
@@ -52,8 +53,6 @@ const SignIn = (props) => {
       setCustomerDetails(response);
       console.log('response signin ...', response)
       sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId : emailid, custId : response.id}));
-      sessionStorage.setItem("userEmail", JSON.stringify({ userEmailId: emailid}));
-      sessionStorage.setItem("custId", response.id);
       console.log('GetCustomerDetails values are - ', response);
       })
       .catch(function (error) {
@@ -80,13 +79,17 @@ const SignIn = (props) => {
     setOpen(false);
   };
  
-   const responseFacebook = (response) => {
+   const responseFacebook = async (response) => {
     if (response != null) {
       props.onIsLoggedIn(true)
-      setRes(response);
-      console.log('response.....', response)
-      sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId : response.email, userName: response.name, custId : response.id}));
-      sessionStorage.setItem("userName", JSON.stringify({ userName: response.name }));
+      await FbLoginInsert(response.email, response.name).then(function (resp) {
+        sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId: response.email, custId: resp.data[0][0]['id'] }));
+        })
+        .catch(function (error) {
+          setCustomerDetails(null);
+          props.onIsLoggedIn(false)
+          console.log('fb login insert error', error);
+        }); 
       history.push('/')
       // to-do : set the customer id 
     }
