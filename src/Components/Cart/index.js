@@ -14,7 +14,8 @@ import UpdateCartShipping from '../../services/UpdateCartShipping';
 
 import PickUpItems from './PickUpItems';
 import DeliverItems from './DeliverItems';
-
+import Payment from '../../Components/Payment'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 export const Cart = (props) => {
   
   const [cartDetails, setCartDetails] = useState([]);
@@ -24,6 +25,8 @@ export const Cart = (props) => {
   const [itemTaxes, setItemTaxes] = useState(0);
   const [deliveryType, setDeliveryType] = useState("pickup");
   const [custId, setCustId] = useState(0)
+  const [payAmount, setPayAmount] = useState(false);
+  const [cartItemsId, setCartItemsId] = useState('') // Required fror bulk update of item availability status
 
   useEffect(() => {    
     
@@ -77,10 +80,11 @@ export const Cart = (props) => {
     });
     const delivery = deliveredItemList.length * 5;
 
-    setItemTotalPrice(itemPrice);
-    setItemTaxes(itemTaxes);
-    setDeliveryCharges(delivery);
-    setTotal(itemPrice + delivery + itemTaxes);
+    setItemTotalPrice(itemPrice.toFixed(2));
+    setItemTaxes(itemTaxes.toFixed(2));
+    setDeliveryCharges(delivery.toFixed(2));
+    const total_p = itemPrice + delivery + itemTaxes
+    setTotal(total_p.toFixed(2));
   } 
 
   const getDeliveryAddress = (id) => {
@@ -119,6 +123,21 @@ export const Cart = (props) => {
       console.log('UpdateCartShipping error', error);
     }); 
   }
+
+  const getCartItemIds = () => {
+    var itemlist =[]
+    cartDetails.forEach(function (item) {
+      itemlist.push(item.item_id);
+    })
+    
+    setCartItemsId(itemlist.join(','));
+  }
+
+  const handlePay = () => {
+    getCartItemIds();
+    setPayAmount(true)
+    
+  }
   return (
     <Container className="myCart">
       <Grid container spacing={2}>
@@ -155,23 +174,28 @@ export const Cart = (props) => {
                 <span>${itemTotalPrice}</span>
               </div>
               <div>
-                <span>Estimated Delivery</span>
-                <span>${deliveryCharges}</span>
-              </div>
-              <div>
                 <span>Taxes</span>
                 <span>${itemTaxes}</span>
-              </div>
+            </div>
+            <div>
+              <span>Estimated Delivery</span>
+              <span>${deliveryCharges}</span>
+            </div>
               <div>
                 <span>Estimated Total</span>
                 <span>${total}</span>
-              </div>
-              <div className="buttonWrap">
-                <Button variant='contained' color='secondary'>
-                  Pay Now
-                </Button>
-              </div>
-              
+          </div>
+          <div className="buttonWrap">
+            {payAmount ?
+              <PayPalScriptProvider options={{ 'client-id': 'ATlJZgQoBmctMvDCbTN_hiQuh2kvR7dAoZhaIK8P6oDpZSubd1or7M32xwr-i-2y0XNpUqWUmMZPa-NP' }}>
+                <Payment totalPrice={total} customerId={custId} itemList={cartItemsId}/>
+              </PayPalScriptProvider>
+              :
+              <Button variant='contained' color='secondary' onClick={handlePay}>
+                Pay Now
+              </Button>
+            }
+          </div>
           </Grid>
       </Grid>
     </Container>

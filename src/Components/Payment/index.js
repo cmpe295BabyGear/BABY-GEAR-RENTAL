@@ -1,67 +1,81 @@
 import React, { useRef, useEffect, useState } from 'react'
 import Container from '@mui/material/Container'
+import Button from '@mui/material/IconButton'
 import './style.css'
+import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
+import CommitOrderDetails from '../../services/CommitOrderDetails';
+import DeleteCartItems from '../../services/DeleteCartItems';
+import CheckoutCart from '../../services/CheckoutCart';
+import UpdateItemStatusOnOrder from '../../services/UpdateItemStatusOnOrder';
+import { useHistory } from 'react-router-dom';
 
 const Payment = (props) => {
-
-  // const [cardName, setCardName] = React.useState(props.paymentInfo.cardName);
-  // const [cardNumber, setCardNumber] = React.useState(props.paymentInfo.cardNumber);
-  // const [expDate, setExpDate] = React.useState(props.paymentInfo.expDate);
-  // const [totalPrice, setTotalPrice] = React.useState(props.paymentInfo.totalPrice);
-  const [cardName, setCardName] = React.useState('test x');
-  const [cardNumber, setCardNumber] = React.useState('7998089808909');
-  const [expDate, setExpDate] = React.useState('07/22');
-  const [totalPrice, setTotalPrice] = React.useState(100);
-
-  const [paid, setPaid] = useState(false);
-  const [error, setError] = useState(null);
-  const paypalRef = useRef();
+  const history = useHistory();
+  const [totalPrice, setTotalPrice] = React.useState(props.totalPrice)
   // const classes = useStyles()
 
-  const handleSave = () => {
-    props.onPaymentFormUpdate({ cardName, cardNumber, expDate });
-  }
-
-
   useEffect (() => {
-    console.log(props)
-    window.paypal
-      .Buttons({
-        createOrder: (data, actions) => {
+    console.log('payment props .....', props)
+    
+  }, [])
+
+  return (
+    <div>
+      {/* <PayPalScriptProvider options={{'client-id' : 'ATlJZgQoBmctMvDCbTN_hiQuh2kvR7dAoZhaIK8P6oDpZSubd1or7M32xwr-i-2y0XNpUqWUmMZPa-NP'}}> */}
+      <PayPalButtons style={{ layout: "horizontal" }}
+        createOrder={(data, actions) => {
           return actions.order.create({
-            intent: 'CAPTURE',
             purchase_units: [
               {
-                description: 'Your description',
                 amount: {
-                  currency_code: 'USD',
-                  value: totalPrice,
+                  value: props.totalPrice
                 }
               }
             ]
           })
-        },
-        onApprove: async (data, actions) => {
-          const order = await actions.order.capture();
-          // set paid true 
-          actions.disable(true)
-          setPaid(true);
-          alert ('Payment successful')
-          console.log(order);
-        },
-        onError: (err) => {
-          //   setError(err),
-          console.error(err);
-        },
-      })
-      .render(paypalRef.current);
-  }, [])
-  return (
-    <Container maxwidth={"sm"} className='payment-div'>
-      <div ref={paypalRef} />
-    </Container>
-    
+      }}
+        onApprove={(data, actions) => {
+          return actions.order.capture().then(details => {
+            // commit cart items for order 
+            // CommitOrderDetails(props.customerId).then(function (response) {
+            //   // delete cart items of the customer 
+            //   console.log('order details committed successfully')
+            //   DeleteCartItems(props.customerId).then(function (delResponse) {
+            //     console.log('cart cleared successfully')
+            //     UpdateItemStatusOnOrder(props.itemList).then(function (updResp) {
+            //       console.log('item status updated successfully')
+            //       history.push('/myOrders');
+            //     }).catch(function (delErr) {
+            //       console.log('Unable to update item status', delErr)
+            //     })
+            //   }).catch(function (delErr) {
+            //     console.log('Unable to clear cart', delErr)
+            //   })
+            // }).catch(function (err) {
+            //   console.log('Unable to commit order details', err)
+            // })
+
+            alert('Payment successful.')
+            CheckoutCart(props.customerId, props.itemList).then(function (response) {
+              console.log('cart checkout complete ')
+              history.push('/myOrders');
+            }).catch(function (err){
+              console.log(err)
+            })
+          })
+        }}
+        onCancel={() => {
+          console.log('You cancelled the payment')
+          alert('You cancelled the Payment !')
+        }}
+        onError={() => {
+          console.log('Payment Error')
+        }
+      }
+      />
+        {/* </PayPalScriptProvider> */}
+   </div>
   )
 }
 
-export default Payment
+export default Payment;
