@@ -58,6 +58,7 @@ const PickUpItems = (props) => {
               </span>
               <span className="changeShipping" onClick={() => props.changeShipping(cartItem.item_id, 1)}>Get it delivered</span>
             </div>
+            <span>Pickup Address: {cartItem.storeAddress}</span>
             {cartItem.purchaseType === 'Rent' ?
               <span>Selected Dates: {formatDate(cartItem.rentStartDate)} to {formatDate(cartItem.rentEndDate)}</span>
             : null}

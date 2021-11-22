@@ -42,7 +42,7 @@ const DeliveryAddresses = (props) => {
     if (custDetails != null) {
       setCustId(custDetails.custId)
     }
-    GetCustomerAddresses(custId)
+    GetCustomerAddresses(custDetails.custId)
       .then(function (res) {
         setCustAddresses(res)
         const itemList = res.filter(function(item){

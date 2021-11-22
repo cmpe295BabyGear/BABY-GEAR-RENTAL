@@ -81,7 +81,7 @@ export const ProductDetails = (props) => {
         console.log('GetProductDetails error', error);
     });
     
-    GetCustomerAddresses(custId)
+    GetCustomerAddresses(custDetails.custId)
       .then(function (res) {
         setCustAddress(res)
     })
@@ -91,7 +91,7 @@ export const ProductDetails = (props) => {
     
   }, []);
 
-  const addToCart = (productDetails, price, purchaseType) => {
+  const addToCart = (productDetails, price, purchaseType, storeDetails) => {
     const path = window.location.pathname;
     const itemId = path.split('/').pop();
     const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
@@ -99,7 +99,7 @@ export const ProductDetails = (props) => {
       setCustId(custDetails.custId)
     }
     const itemDetails = {
-      "customer_id" :custId,
+      "customer_id" :custDetails.custId,
       "item_id" : itemId,
       "item_name" : productDetails.item_name,
       "categoryName" : productDetails.categoryName,
@@ -109,7 +109,8 @@ export const ProductDetails = (props) => {
       "deliveryOption": deliveryType === 'pickup' ? 0 : 1,
       "rentStartDate": rentStartDate,
       "rentEndDate": rentEndDate,
-      "rentalPrice": productDetails.rental_price
+      "rentalPrice": productDetails.rental_price,
+      "storeAddress": storeDetails && storeDetails.address ? storeDetails.address : ''
     }
     AddItemToCart(itemDetails).then(function (response) {
       alert("Item added to cart");
@@ -129,7 +130,7 @@ export const ProductDetails = (props) => {
     return price;
   }
   
-  const buyPrice = productDetails.price ? productDetails.price : 0;
+  const buyPrice = productDetails && productDetails.price ? productDetails.price : 0;
   
   return (
     <Container maxWidth="md" className="productDetails">
@@ -145,7 +146,7 @@ export const ProductDetails = (props) => {
           
         </Grid>
         <Grid item xs={12} sm={7}>
-          <h2 className="productName">{productDetails.item_name}</h2>
+          <h2 className="productName">{productDetails.item_name ? productDetails.item_name : ''}</h2>
 
           {/* <ToggleButtonGroup
             color="secondary"
@@ -193,7 +194,7 @@ export const ProductDetails = (props) => {
             </div>
 
             <div className="buttonWrap">
-              <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails, getRentalPrice(), "rent")}>ADD TO CART</Button>
+              <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails, getRentalPrice(), "rent", storeDetails)}>ADD TO CART</Button>
               <Button>ADD TO WISHLIST</Button>
             </div>
           </div> : null }

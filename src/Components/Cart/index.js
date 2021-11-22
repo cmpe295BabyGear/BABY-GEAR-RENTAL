@@ -34,7 +34,7 @@ export const Cart = (props) => {
     if (custDetails != null) {
       setCustId(custDetails.custId)
     }
-    GetCartDetails(custId).then(function (response) {
+    GetCartDetails(custDetails.custId).then(function (response) {
       setCartDetails(response.cartList);
       console.log('GetCartDetails', response);
 
@@ -65,7 +65,7 @@ export const Cart = (props) => {
 
   const getTotalPrice = (cartDetails) => {
     const itemPrice = cartDetails.map(cartItem => {
-      return cartItem.price;
+      return cartItem.purchaseType === 'Rent' ? cartItem.displayPrice : cartItem.price;
     }).reduce(function(a, b){
       return a + b;
     }, 0);
@@ -131,7 +131,7 @@ export const Cart = (props) => {
     cartDetails.forEach(function (item) {
       itemlist.push(item.item_id);
     })
-    
+
     setCartItemsId(itemlist.join(','));
   }
 

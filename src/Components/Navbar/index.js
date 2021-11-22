@@ -94,7 +94,7 @@ export const Navbar = (props) => {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   useEffect(() => {
-    // const customerId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
+    const customerId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
     GetCartDetails(customerId).then(function (response) {
       setNumberOfCartItems(response.cartList.length);
     })
@@ -267,7 +267,15 @@ export const Navbar = (props) => {
               </Button>
             </Link>
 
-            <Link to="/sell" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}><Button >Sell </Button></Link>
+            <Link to="/sell" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}>
+              <Button
+                onClick={() => setSelected('sell')}
+                variant={ selected==='sell' ? 'contained' : ''} 
+                color={ selected==='sell' ? 'secondary' : 'inherit'}
+              >
+                Sell 
+              </Button>
+            </Link>
             <Button color='inherit'>About Us</Button>
             <IconButton aria-label='show wishlist' color='inherit'>
               <Badge badgeContent={4} color='secondary'>

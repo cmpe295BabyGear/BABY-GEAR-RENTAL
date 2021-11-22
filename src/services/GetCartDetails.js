@@ -20,6 +20,7 @@ const GetCartDetails = (event) => {
               rentEndDate: element.rent_end_date,
               displayPrice: element.display_price,
               rentalPrice: element.rental_price,
+              storeAddress: element.store_address,
               image: 'https://d1d6i97vlsh97n.cloudfront.net/' + element.seller_email + '/' + element.categoryName + '/' + element.s3_label
             });
           });
