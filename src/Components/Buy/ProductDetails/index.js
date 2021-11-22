@@ -32,10 +32,24 @@ export const ProductDetails = (props) => {
     const endDate = range.endDate.getTime();
     const diffTime = Math.abs(endDate - startDate);
     const numberOfDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-    setRentStartDate(String(startDate));
-    setRentEndDate(String(endDate));
+    setRentStartDate(formatDate(range.startDate));
+    setRentEndDate(formatDate(range.endDate));
     setRentalDays(numberOfDays);
     console.log("dateRange", range);
+  }
+
+  const formatDate = (date) => {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 
   useEffect(() => {    
@@ -63,7 +77,6 @@ export const ProductDetails = (props) => {
       setProductDetails(null);
         console.log('GetProductDetails error', error);
     });
-    
     
     GetCustomerAddresses(custId)
       .then(function (res) {
