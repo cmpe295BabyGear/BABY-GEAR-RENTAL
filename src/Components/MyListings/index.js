@@ -40,9 +40,11 @@ const MyListings = () => {
   ];
 
   useEffect(() => {
-    const customerId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
-    setCustId(customerId);
-    GetCustomerListings(customerId).then(function (response) {
+    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
+    if (custDetails != null) {
+      setCustId(custDetails.custId)
+    }
+    GetCustomerListings(custId).then(function (response) {
       setCustListings(response.customerItemListings);
       setFilterData(response.customerItemListings)
       console.log('GetCustomer Listings', response);

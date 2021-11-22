@@ -40,9 +40,11 @@ const MyOrders = () => {
 
   useEffect(() => {
 
-    const customerId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
-    setCustId(customerId);
-    GetCustomerOrders(customerId).then(function (response) {
+    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
+    if (custDetails != null) {
+      setCustId(custDetails.custId)
+    }
+    GetCustomerOrders(custId).then(function (response) {
       setCustOrders(response.orderList);
       setFilterData(response.orderList)
       console.log('GetOrders', response);

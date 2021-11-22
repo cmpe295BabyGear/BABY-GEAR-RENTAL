@@ -24,7 +24,7 @@ export const ProductDetails = (props) => {
   const [rentStartDate, setRentStartDate] = React.useState(new Date().getTime())
   const [rentEndDate, setRentEndDate] = React.useState(new Date().getTime())
   const [deliveryType, setDeliveryType] = React.useState('pickup');
-    
+  const [custId, setCustId] = React.useState(0)
 
   const onDateRangeChange = (range) => {
     setDateRange(range);
@@ -56,7 +56,10 @@ export const ProductDetails = (props) => {
     const path = window.location.pathname;
     const itemId = path.split('/').pop();
 
-    const custId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
+    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
+    if (custDetails != null) {
+      setCustId(custDetails.custId)
+    }
 
     GetProductDetails(itemId).then(function (response) {
       setProductDetails(response);
@@ -91,7 +94,10 @@ export const ProductDetails = (props) => {
   const addToCart = (productDetails, price, purchaseType) => {
     const path = window.location.pathname;
     const itemId = path.split('/').pop();
-    const custId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
+    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
+    if (custDetails != null) {
+      setCustId(custDetails.custId)
+    }
     const itemDetails = {
       "customer_id" :custId,
       "item_id" : itemId,

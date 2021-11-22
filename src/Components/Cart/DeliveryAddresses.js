@@ -33,11 +33,15 @@ const DeliveryAddresses = (props) => {
   const [moreAddresses, setMoreAddresses] = React.useState(false)
   const [defaultAddress, setDefaultAddress] = React.useState('');
   const [selectedCustAddress, setSelectedCustAddress] = React.useState();
+  const [custId, setCustId] = React.useState(0)
   const classes = useStyles();
 
 
   useEffect(() => {
-    const custId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
+    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
+    if (custDetails != null) {
+      setCustId(custDetails.custId)
+    }
     GetCustomerAddresses(custId)
       .then(function (res) {
         setCustAddresses(res)

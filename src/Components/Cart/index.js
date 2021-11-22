@@ -30,9 +30,11 @@ export const Cart = (props) => {
 
   useEffect(() => {    
     
-    const customerId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
-    setCustId(customerId);
-    GetCartDetails(customerId).then(function (response) {
+    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
+    if (custDetails != null) {
+      setCustId(custDetails.custId)
+    }
+    GetCartDetails(custId).then(function (response) {
       setCartDetails(response.cartList);
       console.log('GetCartDetails', response);
 
