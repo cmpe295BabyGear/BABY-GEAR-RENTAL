@@ -55,7 +55,7 @@ const Payment = (props) => {
             //   console.log('Unable to commit order details', err)
             // })
 
-            alert('Payment successful.')
+            // alert('Payment successful.')
             CheckoutCart(props.customerId, props.itemList).then(function (response) {
               console.log('cart checkout complete ')
               history.push('/myOrders');
