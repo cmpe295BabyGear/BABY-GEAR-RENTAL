@@ -129,8 +129,11 @@ let isSubmit = false;
 useEffect(() => {
   const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
   console.log('custDetails...', custDetails)
-  setCustomerId(custDetails.custId);
-  setCustEmail(custDetails.userEmailId);
+  if (custDetails != null) {
+    setCustomerId(custDetails.custId);
+    setCustEmail(custDetails.userEmailId);
+  }
+  
 
   if (priceEstimate && priceEstimate!=='' && priceEstimate!=='-1' && !isSubmit) {
     console.log('GetPriceEstimate', priceEstimate);  
@@ -230,7 +233,7 @@ const handleImageSubmit= async (files) => {
     // * PUT request: upload file to S3
     const result = await fetch(data.uploadURL, {
       method: "PUT",
-      headers:{
+      headers: {
         "Content-Type": "image/jpeg"
       },
       body: f["file"],
