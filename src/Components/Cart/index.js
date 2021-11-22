@@ -193,7 +193,7 @@ export const Cart = (props) => {
                 <Payment totalPrice={total} customerId={custId} itemList={cartItemsId}/>
               </PayPalScriptProvider>
               :
-              <Button variant='contained' color='secondary' onClick={handlePay}>
+              <Button disabled={total == 0} variant='contained' color='secondary' onClick={handlePay}>
                 Pay Now
               </Button>
             }
