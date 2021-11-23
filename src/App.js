@@ -31,8 +31,8 @@ Amplify.configure(awsconfig);
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [checkCartStatus, setCheckCartStatus] = React.useState(0);
-  const onIsLoggedIn = (isLoggedIn) => {
-    setIsLoggedIn(isLoggedIn);
+  const onIsLoggedIn = (checkIsLoggedIn) => {
+    setIsLoggedIn(checkIsLoggedIn);
   }
   const onUpdateCartCount = (status) => {
     setCheckCartStatus(status);
@@ -40,7 +40,7 @@ function App() {
   return (
     <Router>
       <div>
-        <Navbar checkCartStatus={checkCartStatus} />
+        <Navbar checkCartStatus={checkCartStatus} checkIsLoggedIn={isLoggedIn}/>
         <Container maxWidth={false}>
           <Switch>
             <Route path='/' exact component={Buy} />

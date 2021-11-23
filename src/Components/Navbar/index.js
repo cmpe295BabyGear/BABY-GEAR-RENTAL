@@ -94,26 +94,29 @@ export const Navbar = (props) => {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   useEffect(() => {
-    const customerId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
-    GetCartDetails(customerId).then(function (response) {
-      setNumberOfCartItems(response.cartList.length);
-    })
-    .catch(function (error) {
-      console.log('GetCartDetails error', error);
-    }); 
+    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
+    if(custDetails != null) {
+      const custId = custDetails.custId;
+      GetCartDetails(custId).then(function (response) {
+        setNumberOfCartItems(response.cartList.length);
+      })
+      .catch(function (error) {
+        console.log('GetCartDetails error', error);
+      }); 
+    }   
   }, []);
   useEffect(() => { 
     const customerDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
     if (customerDetails != null){
-      setCustomerId(customerDetails.custId);
+      const custId = customerDetails.custId;
+      GetCartDetails(custId).then(function (response) {
+        setNumberOfCartItems(response.cartList.length);
+      })
+      .catch(function (error) {
+        console.log('GetCartDetails error', error);
+      });
     }
-    GetCartDetails(customerId).then(function (response) {
-      setNumberOfCartItems(response.cartList.length);
-    })
-    .catch(function (error) {
-      console.log('GetCartDetails error', error);
-    }); 
-  }, [props.checkCartStatus]);
+  }, [props.checkCartStatus, props.checkIsLoggedIn]);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
