@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const GetCustomerOrders = (customerId) => {
+const GetCustomerListings = (customerId) => {
   return new Promise((resolve, reject) => {
     axios.get('https://oslnzm1zy3.execute-api.us-east-2.amazonaws.com/dev/getcustomerlistings?customerId=' + customerId)
       .then(function (response) {
@@ -37,4 +37,4 @@ const GetCustomerOrders = (customerId) => {
   });
 }
 
-export default GetCustomerOrders;
+export default GetCustomerListings;
