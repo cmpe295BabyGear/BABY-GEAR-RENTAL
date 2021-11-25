@@ -26,12 +26,12 @@ export const FilteredBuyList = (props) => {
       GetAllProducts().then(function (response) {
         if (activePathState === 'buy' || activePathState === 'all') {
           const buyList = response.allProducts.filter(function(item){
-            return item.seller_preference === 'SELL';
+            return item.seller_preference === 'SELL' && item.availability_status === 1;
           });
           setProductList(buyList);
         } else if (activePathState === 'rent') {
           const buyList = response.allProducts.filter(function(item){
-            return item.seller_preference === 'RENT';
+            return item.seller_preference === 'RENT' && item.availability_status === 1;
           });
           setProductList(buyList);
         } 
