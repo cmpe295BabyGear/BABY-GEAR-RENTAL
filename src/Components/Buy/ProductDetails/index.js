@@ -10,7 +10,7 @@ import { GetStoreDetails } from '../../../services/GetStoreDetails';
 import AddItemToCart from '../../../services/AddItemToCart';
 import { DateRangePicker } from "materialui-daterange-picker";
 
-import GetCustomerAddresses from '../../../services/GetCustomerAddresses';
+import GetCartDetails from '../../../services/GetCartDetails';
 
 export const ProductDetails = (props) => {
 
@@ -56,11 +56,6 @@ export const ProductDetails = (props) => {
     const path = window.location.pathname;
     const itemId = path.split('/').pop();
 
-    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
-    if (custDetails != null) {
-      setCustId(custDetails.custId)
-    }
-
     GetProductDetails(itemId).then(function (response) {
       setProductDetails(response);
       console.log('GetProductDetails', response);
@@ -81,44 +76,51 @@ export const ProductDetails = (props) => {
         console.log('GetProductDetails error', error);
     });
     
-    GetCustomerAddresses(custDetails.custId)
-      .then(function (res) {
-        setCustAddress(res)
-    })
-    .catch(function (err) {
-      setCustAddress([])
-    })
-    
   }, []);
 
   const addToCart = (productDetails, price, purchaseType, storeDetails) => {
     const path = window.location.pathname;
     const itemId = path.split('/').pop();
-    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
-    if (custDetails != null) {
-      setCustId(custDetails.custId)
+    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
+    if (custDetails == null) {
+      alert("Please login to view cart");
+      return;
     }
-    const itemDetails = {
-      "customer_id" :custDetails.custId,
-      "item_id" : itemId,
-      "item_name" : productDetails.item_name,
-      "categoryName" : productDetails.categoryName,
-      "quantity" :1,
-      "displayPrice" : price,
-      "purchaseType" : productDetails.seller_preference === 'SELL' ? 'Buy' : 'Rent',
-      "deliveryOption": deliveryType === 'pickup' ? 0 : 1,
-      "rentStartDate": rentStartDate,
-      "rentEndDate": rentEndDate,
-      "rentalPrice": productDetails.rental_price,
-      "storeAddress": storeDetails && storeDetails.address ? storeDetails.address : ''
-    }
-    AddItemToCart(itemDetails).then(function (response) {
-      alert("Item added to cart");
-      props.updateCartCount(Math.random());
+    const customerId = custDetails.custId;
+    GetCartDetails(customerId).then(function (res) {
+      const cartList = res.cartList.filter(function(item){
+        return item.item_id == itemId;
+      });
+      if (cartList.length === 0) { // Item not present in cart
+        const itemDetails = {
+          "customer_id" :customerId,
+          "item_id" : itemId,
+          "item_name" : productDetails.item_name,
+          "categoryName" : productDetails.categoryName,
+          "quantity" :1,
+          "displayPrice" : price,
+          "purchaseType" : productDetails.seller_preference === 'SELL' ? 'Buy' : 'Rent',
+          "deliveryOption": deliveryType === 'pickup' ? 0 : 1,
+          "rentStartDate": rentStartDate,
+          "rentEndDate": rentEndDate,
+          "rentalPrice": productDetails.rental_price,
+          "storeAddress": storeDetails && storeDetails.address ? storeDetails.address : ''
+        }
+        AddItemToCart(itemDetails).then(function (response) {
+          alert("Item added to cart");
+          props.updateCartCount(Math.random());
+        })
+        .catch(function (error) {
+          console.log('addItemToCart error', error);
+        });
+      } else {
+        alert("Item is already present in the cart");
+      }
     })
     .catch(function (error) {
-      console.log('addItemToCart error', error);
-    }); 
+      console.log('GetCartDetails error', error);
+    });
+ 
   }
 
   const getRentalPrice = () => {
@@ -164,7 +166,6 @@ export const ProductDetails = (props) => {
 
             <div className="buttonWrap">
               <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails, buyPrice, "buy")}>ADD TO CART</Button>
-              <Button>ADD TO WISHLIST</Button>
             </div>
           </div> : null }
 

@@ -94,25 +94,26 @@ export const Navbar = (props) => {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   useEffect(() => {
-    // const customerId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
-    GetCartDetails(customerId).then(function (response) {
-      setNumberOfCartItems(response.cartList.length);
-    })
-    .catch(function (error) {
-      console.log('GetCartDetails error', error);
-    }); 
+    const customerDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
+    if (customerDetails != null){
+      GetCartDetails(customerDetails.custId).then(function (response) {
+        setNumberOfCartItems(response.cartList.length);
+      })
+      .catch(function (error) {
+        console.log('GetCartDetails error', error);
+      });
+    }
   }, []);
   useEffect(() => { 
     const customerDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
     if (customerDetails != null){
-      setCustomerId(customerDetails.custId);
+      GetCartDetails(customerDetails.custId).then(function (response) {
+        setNumberOfCartItems(response.cartList.length);
+      })
+      .catch(function (error) {
+        console.log('GetCartDetails error', error);
+      });
     }
-    GetCartDetails(customerId).then(function (response) {
-      setNumberOfCartItems(response.cartList.length);
-    })
-    .catch(function (error) {
-      console.log('GetCartDetails error', error);
-    }); 
   }, [props.checkCartStatus]);
 
   const handleProfileMenuOpen = (event) => {

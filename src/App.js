@@ -45,7 +45,7 @@ function App() {
         <Container maxWidth={false}>
           <Switch>
             <Route path='/' exact component={Buy} />
-            <Route path='/signIn' exact component={() => <SignIn onIsLoggedIn={onIsLoggedIn} />} />
+            <Route path='/signIn' exact component={() => <SignIn onIsLoggedIn={onIsLoggedIn} updateCartCount={(status) => onUpdateCartCount(status)}/>} />
             <Route path='/signUp' exact component={() => <SignUp />} /> 
             {/* <Route path='/signUp' exact component={SignUp } /> */}
             <Route path='/confirmSignUp/:email' exact component={ConfirmSignUp} />
