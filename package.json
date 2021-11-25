@@ -26,6 +26,8 @@
     "react-facebook-login": "^4.1.1",
     "react-hot-toast": "^2.1.1",
     "react-router-dom": "^5.2.0",
+    "primereact": "^6.5.0",
+    "react-query": "^3.5.0",
     "react-scripts": "^4.0.3",
     "web-vitals": "^1.1.2"
   },
