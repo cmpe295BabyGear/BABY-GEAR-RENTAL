@@ -195,7 +195,7 @@ export const ProductDetails = (props) => {
 
             <div className="buttonWrap">
               <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails, getRentalPrice(), "rent", storeDetails)}>ADD TO CART</Button>
-              <Button>ADD TO WISHLIST</Button>
+              {/* <Button>ADD TO WISHLIST</Button> */}
             </div>
           </div> : null }
           

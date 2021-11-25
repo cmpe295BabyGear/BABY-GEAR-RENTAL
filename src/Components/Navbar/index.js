@@ -157,8 +157,8 @@ export const Navbar = (props) => {
       <Link to='/userAddress' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>My Addresses</MenuItem></Link>
       {/* <Link to='/paymentOptions' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>Payment Options</MenuItem></Link> */}
       <Link to='/myOrders' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>My Orders</MenuItem></Link>
-      <Link to='/myListings' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>My Listings</MenuItem></Link>
-      <MenuItem onClick={handleMenuClose}>My Wishlist</MenuItem>
+      <Link to='/myListings' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>My Listings</MenuItem></Link> 
+      {/* <MenuItem onClick={handleMenuClose}>My Wishlist</MenuItem> */}
       <Link to="/signIn" style={{ textDecoration: 'none', display: 'block', color: "inherit" }}
         onClick={handleLogout}>
         <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
@@ -193,14 +193,14 @@ export const Navbar = (props) => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      {/* <MenuItem>
         <IconButton aria-label='show wishlist' color='inherit'>
           <Badge badgeContent={4} color='secondary'>
             <FavoriteIcon />
           </Badge>
         </IconButton>
         <p>My Wishlist</p>
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem>
         <IconButton aria-label='show cart items' color='inherit'>
           <Badge badgeContent={11} color='secondary'>
@@ -279,13 +279,13 @@ export const Navbar = (props) => {
                 Sell 
               </Button>
             </Link>
-            <Button color='inherit'>About Us</Button>
+            {/* <Button color='inherit'>About Us</Button>
             <IconButton aria-label='show wishlist' color='inherit'>
               <Badge badgeContent={4} color='secondary'>
                 
                 <FavoriteIcon />
-              </Badge>
-            </IconButton>
+              </Badge> */}
+            {/* </IconButton> */}
             <IconButton aria-label='show cart items' color='inherit'>
               <Badge badgeContent={numberOfCartItems} color='secondary'>
                 <Link to='/cart' style={{ textDecoration: 'none', display: 'block', color:'inherit' }}><ShoppingCartIcon /></Link>
