@@ -22,7 +22,7 @@ const Img = styled('img')({
 const MyOrders = () => {
   
   const [custOrders, setCustOrders] = React.useState([]);
-  const [custId, setCustId] = React.useState(1);
+  const [custId, setCustId] = React.useState(0);
   const [filteredData, setFilterData] = React.useState([]);
   const [selected, setSelected] = React.useState('all');
 
@@ -44,7 +44,7 @@ const MyOrders = () => {
     if (custDetails != null) {
       setCustId(custDetails.custId)
     }
-    GetCustomerOrders(custId).then(function (response) {
+    GetCustomerOrders(custDetails.custId).then(function (response) {
       setCustOrders(response.orderList);
       setFilterData(response.orderList)
       console.log('GetOrders', response);

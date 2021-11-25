@@ -65,7 +65,7 @@ export const ProductDetails = (props) => {
       setProductDetails(response);
       console.log('GetProductDetails', response);
       if(response.seller_preference === 'RENT') {
-        setOpen(true);
+         setOpen(true);
       }
       GetStoreDetails(response.store_zipcode).then(function (store_response) {
         setStoreDetails(store_response);
@@ -146,7 +146,7 @@ export const ProductDetails = (props) => {
           
         </Grid>
         <Grid item xs={12} sm={7}>
-          <h2 className="productName">{productDetails.item_name ? productDetails.item_name : ''}</h2>
+          <h2 className="productName">{productDetails && productDetails.item_name ? productDetails.item_name : ''}</h2>
 
           {/* <ToggleButtonGroup
             color="secondary"
@@ -158,7 +158,7 @@ export const ProductDetails = (props) => {
             <ToggleButton value="rent" disabled={!productDetails.rental_price}>Rent</ToggleButton>
           </ToggleButtonGroup> */}
 
-          { productDetails.seller_preference === 'SELL' ? <div className="productPrice">
+          { productDetails && productDetails.seller_preference === 'SELL' ? <div className="productPrice">
             <span>Buy Price </span>
             <span>${productDetails.price ? productDetails.price : 0}</span>
 
@@ -168,7 +168,7 @@ export const ProductDetails = (props) => {
             </div>
           </div> : null }
 
-          {productDetails.seller_preference === 'RENT' ? <div className="productRentPriceWrap">
+          {productDetails && productDetails.seller_preference === 'RENT' ? <div className="productRentPriceWrap">
             <span>Select Rent Duration </span>
             {/* Date Range Selector */}
             <DateRangePicker
@@ -195,7 +195,7 @@ export const ProductDetails = (props) => {
 
             <div className="buttonWrap">
               <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails, getRentalPrice(), "rent", storeDetails)}>ADD TO CART</Button>
-              <Button>ADD TO WISHLIST</Button>
+              {/* <Button>ADD TO WISHLIST</Button> */}
             </div>
           </div> : null }
           
@@ -230,24 +230,24 @@ export const ProductDetails = (props) => {
           <h3>Details</h3>
           <div className="productGrid">
             <span>Brand</span>
-            <span>{productDetails.brand}</span>
+            <span>{productDetails && productDetails.brand}</span>
           </div>
           <div className="productGrid">
             <span>Category</span>
-            <span>{productDetails.categoryName}</span>
+            <span>{productDetails && productDetails.categoryName}</span>
           </div>
-          { productDetails.seller_preference === 'SELL' ? <div className="productGrid">
+          { productDetails && productDetails.seller_preference === 'SELL' ? <div className="productGrid">
             <span>Condition</span>
-            <span>{productDetails.condition}</span>
+            <span>{productDetails && productDetails.condition}</span>
           </div> : null}
           <div className="productGrid">
             <span>Baby Age</span>
-            <span>{productDetails.baby_age} Months</span>
+            <span>{productDetails && productDetails.baby_age} Months</span>
           </div>
           <div className="bottomBorder"></div>
           <h3>Description</h3>
           <div>
-            <span>{productDetails.description}</span>
+            <span>{productDetails && productDetails.description}</span>
           </div>
 
         </Grid> 
