@@ -136,7 +136,7 @@ export const Navbar = (props) => {
     //props.setAnchorEl(null);
     await Auth.signOut();
     sessionStorage.clear();
-    //props.onIsLoggedIn(false);
+    props.onIsLoggedIn(false);
   }
 
   const menuId = 'primary-search-account-menu';
@@ -284,12 +284,22 @@ export const Navbar = (props) => {
                 <FavoriteIcon />
               </Badge> */}
             {/* </IconButton> */}
-            <IconButton aria-label='show cart items' color='inherit'>
+            { !props.isLoggedIn ? <Link to="/signIn" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}>
+              <Button
+                // onClick={() => setSelected('sell')}
+                variant='contained'
+                // color='secondary'
+                className="loginButton"
+              >
+                Login 
+              </Button>
+            </Link> : null}
+            { props.isLoggedIn ? <IconButton aria-label='show cart items' color='inherit'>
               <Badge badgeContent={numberOfCartItems} color='secondary'>
                 <Link to='/cart' style={{ textDecoration: 'none', display: 'block', color:'inherit' }}><ShoppingCartIcon /></Link>
               </Badge>
-            </IconButton>
-            <IconButton
+            </IconButton> : null}
+            { props.isLoggedIn ? <IconButton
               edge='end'
               aria-label='account of current user'
               aria-controls={menuId}
@@ -298,7 +308,7 @@ export const Navbar = (props) => {
               color='inherit'
             >
               <AccountCircle />
-            </IconButton>
+            </IconButton> : null}
           </div> : null}
           { isLoggedIn ? <div className={classes.sectionMobile}>
             <IconButton

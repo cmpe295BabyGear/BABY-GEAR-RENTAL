@@ -16,6 +16,10 @@ header.MuiAppBar-colorPrimary {
 .capitalize {
   text-transform: capitalize;
 }
+.loginButton {
+  background-color: #8b6c52 !important;
+  color: #fff !important;
+}
 /*Banner CSS*/
 .bannerContent {
   xbackground: peachpuff;

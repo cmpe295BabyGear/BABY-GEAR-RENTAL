@@ -41,7 +41,7 @@ function App() {
   return (
     <Router>
       <div>
-        <Navbar checkCartStatus={checkCartStatus} checkIsLoggedIn={isLoggedIn}/>
+        <Navbar checkCartStatus={checkCartStatus} isLoggedIn={isLoggedIn} onIsLoggedIn={onIsLoggedIn}/>
         <Container maxWidth={false}>
           <Switch>
             <Route path='/' exact component={Buy} />
