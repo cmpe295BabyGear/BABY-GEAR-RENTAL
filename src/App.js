@@ -26,6 +26,7 @@ import AddAddress from './Components/UserProfile/AddAddress';
 import Payment from './Components/Payment';
 import MyOrders from './Components/MyOrders';
 import MyListings from './Components/MyListings';
+import Admin from './Components/Admin/Admin';
 
 Amplify.configure(awsconfig);
 function App() {
@@ -48,6 +49,7 @@ function App() {
             <Route path='/signUp' exact component={() => <SignUp />} /> 
             {/* <Route path='/signUp' exact component={SignUp } /> */}
             <Route path='/confirmSignUp/:email' exact component={ConfirmSignUp} />
+            <Route path='/admin' exact component={Admin} />
             <Route path='/buy' exact component={() => <Buy purchaseType='buy'/>} />
             <Route path='/rent' exact component={() => <Buy purchaseType='rent'/>} />
             <Route path='/buyList/:categoryName' exact component={() => <BuyList />} />

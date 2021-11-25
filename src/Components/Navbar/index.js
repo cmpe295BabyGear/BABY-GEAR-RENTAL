@@ -94,29 +94,26 @@ export const Navbar = (props) => {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   useEffect(() => {
-    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
-    if(custDetails != null) {
-      const custId = custDetails.custId;
-      GetCartDetails(custId).then(function (response) {
-        setNumberOfCartItems(response.cartList.length);
-      })
-      .catch(function (error) {
-        console.log('GetCartDetails error', error);
-      }); 
-    }   
+    // const customerId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
+    GetCartDetails(customerId).then(function (response) {
+      setNumberOfCartItems(response.cartList.length);
+    })
+    .catch(function (error) {
+      console.log('GetCartDetails error', error);
+    }); 
   }, []);
   useEffect(() => { 
     const customerDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
     if (customerDetails != null){
-      const custId = customerDetails.custId;
-      GetCartDetails(custId).then(function (response) {
-        setNumberOfCartItems(response.cartList.length);
-      })
-      .catch(function (error) {
-        console.log('GetCartDetails error', error);
-      });
+      setCustomerId(customerDetails.custId);
     }
-  }, [props.checkCartStatus, props.checkIsLoggedIn]);
+    GetCartDetails(customerId).then(function (response) {
+      setNumberOfCartItems(response.cartList.length);
+    })
+    .catch(function (error) {
+      console.log('GetCartDetails error', error);
+    }); 
+  }, [props.checkCartStatus]);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -269,6 +266,7 @@ export const Navbar = (props) => {
                   Rent
               </Button>
             </Link>
+
 
             <Link to="/sell" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}>
               <Button
