@@ -26,13 +26,14 @@ import AddAddress from './Components/UserProfile/AddAddress';
 import Payment from './Components/Payment';
 import MyOrders from './Components/MyOrders';
 import MyListings from './Components/MyListings';
+import Admin from './Components/Admin/Admin';
 
 Amplify.configure(awsconfig);
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [checkCartStatus, setCheckCartStatus] = React.useState(0);
-  const onIsLoggedIn = (isLoggedIn) => {
-    setIsLoggedIn(isLoggedIn);
+  const onIsLoggedIn = (checkIsLoggedIn) => {
+    setIsLoggedIn(checkIsLoggedIn);
   }
   const onUpdateCartCount = (status) => {
     setCheckCartStatus(status);
@@ -40,14 +41,15 @@ function App() {
   return (
     <Router>
       <div>
-        <Navbar checkCartStatus={checkCartStatus} />
+        <Navbar checkCartStatus={checkCartStatus} isLoggedIn={isLoggedIn} onIsLoggedIn={onIsLoggedIn}/>
         <Container maxWidth={false}>
           <Switch>
             <Route path='/' exact component={Buy} />
-            <Route path='/signIn' exact component={() => <SignIn onIsLoggedIn={onIsLoggedIn} />} />
+            <Route path='/signIn' exact component={() => <SignIn onIsLoggedIn={onIsLoggedIn} updateCartCount={(status) => onUpdateCartCount(status)}/>} />
             <Route path='/signUp' exact component={() => <SignUp />} /> 
             {/* <Route path='/signUp' exact component={SignUp } /> */}
             <Route path='/confirmSignUp/:email' exact component={ConfirmSignUp} />
+            <Route path='/admin' exact component={Admin} />
             <Route path='/buy' exact component={() => <Buy purchaseType='buy'/>} />
             <Route path='/rent' exact component={() => <Buy purchaseType='rent'/>} />
             <Route path='/buyList/:categoryName' exact component={() => <BuyList />} />

@@ -30,9 +30,11 @@ export const Cart = (props) => {
 
   useEffect(() => {    
     
-    const customerId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
-    setCustId(customerId);
-    GetCartDetails(customerId).then(function (response) {
+    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
+    if (custDetails != null) {
+      setCustId(custDetails.custId)
+    }
+    GetCartDetails(custDetails.custId).then(function (response) {
       setCartDetails(response.cartList);
       console.log('GetCartDetails', response);
 
@@ -63,7 +65,7 @@ export const Cart = (props) => {
 
   const getTotalPrice = (cartDetails) => {
     const itemPrice = cartDetails.map(cartItem => {
-      return cartItem.price;
+      return cartItem.purchaseType === 'Rent' ? cartItem.displayPrice : cartItem.price;
     }).reduce(function(a, b){
       return a + b;
     }, 0);
@@ -129,7 +131,7 @@ export const Cart = (props) => {
     cartDetails.forEach(function (item) {
       itemlist.push(item.item_id);
     })
-    
+
     setCartItemsId(itemlist.join(','));
   }
 
@@ -191,7 +193,7 @@ export const Cart = (props) => {
                 <Payment totalPrice={total} customerId={custId} itemList={cartItemsId}/>
               </PayPalScriptProvider>
               :
-              <Button variant='contained' color='secondary' onClick={handlePay}>
+              <Button disabled={total == 0} variant='contained' color='secondary' onClick={handlePay}>
                 Pay Now
               </Button>
             }

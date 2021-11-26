@@ -10,7 +10,7 @@ import { GetStoreDetails } from '../../../services/GetStoreDetails';
 import AddItemToCart from '../../../services/AddItemToCart';
 import { DateRangePicker } from "materialui-daterange-picker";
 
-import GetCustomerAddresses from '../../../services/GetCustomerAddresses';
+import GetCartDetails from '../../../services/GetCartDetails';
 
 export const ProductDetails = (props) => {
 
@@ -24,7 +24,7 @@ export const ProductDetails = (props) => {
   const [rentStartDate, setRentStartDate] = React.useState(new Date().getTime())
   const [rentEndDate, setRentEndDate] = React.useState(new Date().getTime())
   const [deliveryType, setDeliveryType] = React.useState('pickup');
-    
+  const [custId, setCustId] = React.useState(0)
 
   const onDateRangeChange = (range) => {
     setDateRange(range);
@@ -56,13 +56,11 @@ export const ProductDetails = (props) => {
     const path = window.location.pathname;
     const itemId = path.split('/').pop();
 
-    const custId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
-
     GetProductDetails(itemId).then(function (response) {
       setProductDetails(response);
       console.log('GetProductDetails', response);
       if(response.seller_preference === 'RENT') {
-        setOpen(true);
+         setOpen(true);
       }
       GetStoreDetails(response.store_zipcode).then(function (store_response) {
         setStoreDetails(store_response);
@@ -78,40 +76,51 @@ export const ProductDetails = (props) => {
         console.log('GetProductDetails error', error);
     });
     
-    GetCustomerAddresses(custId)
-      .then(function (res) {
-        setCustAddress(res)
-    })
-    .catch(function (err) {
-      setCustAddress([])
-    })
-    
   }, []);
 
-  const addToCart = (productDetails, price, purchaseType) => {
+  const addToCart = (productDetails, price, purchaseType, storeDetails) => {
     const path = window.location.pathname;
     const itemId = path.split('/').pop();
-    const custId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
-    const itemDetails = {
-      "customer_id" :custId,
-      "item_id" : itemId,
-      "item_name" : productDetails.item_name,
-      "categoryName" : productDetails.categoryName,
-      "quantity" :1,
-      "displayPrice" : price,
-      "purchaseType" : productDetails.seller_preference === 'SELL' ? 'Buy' : 'Rent',
-      "deliveryOption": deliveryType === 'pickup' ? 0 : 1,
-      "rentStartDate": rentStartDate,
-      "rentEndDate": rentEndDate,
-      "rentalPrice": productDetails.rental_price
+    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
+    if (custDetails == null) {
+      alert("Please login to view cart");
+      return;
     }
-    AddItemToCart(itemDetails).then(function (response) {
-      alert("Item added to cart");
-      props.updateCartCount(Math.random());
+    const customerId = custDetails.custId;
+    GetCartDetails(customerId).then(function (res) {
+      const cartList = res.cartList.filter(function(item){
+        return item.item_id == itemId;
+      });
+      if (cartList.length === 0) { // Item not present in cart
+        const itemDetails = {
+          "customer_id" :customerId,
+          "item_id" : itemId,
+          "item_name" : productDetails.item_name,
+          "categoryName" : productDetails.categoryName,
+          "quantity" :1,
+          "displayPrice" : price,
+          "purchaseType" : productDetails.seller_preference === 'SELL' ? 'Buy' : 'Rent',
+          "deliveryOption": deliveryType === 'pickup' ? 0 : 1,
+          "rentStartDate": rentStartDate,
+          "rentEndDate": rentEndDate,
+          "rentalPrice": productDetails.rental_price,
+          "storeAddress": storeDetails && storeDetails.address ? storeDetails.address : ''
+        }
+        AddItemToCart(itemDetails).then(function (response) {
+          alert("Item added to cart");
+          props.updateCartCount(Math.random());
+        })
+        .catch(function (error) {
+          console.log('addItemToCart error', error);
+        });
+      } else {
+        alert("Item is already present in the cart");
+      }
     })
     .catch(function (error) {
-      console.log('addItemToCart error', error);
-    }); 
+      console.log('GetCartDetails error', error);
+    });
+ 
   }
 
   const getRentalPrice = () => {
@@ -123,7 +132,7 @@ export const ProductDetails = (props) => {
     return price;
   }
   
-  const buyPrice = productDetails.price ? productDetails.price : 0;
+  const buyPrice = productDetails && productDetails.price ? productDetails.price : 0;
   
   return (
     <Container maxWidth="md" className="productDetails">
@@ -139,7 +148,7 @@ export const ProductDetails = (props) => {
           
         </Grid>
         <Grid item xs={12} sm={7}>
-          <h2 className="productName">{productDetails.item_name}</h2>
+          <h2 className="productName">{productDetails && productDetails.item_name ? productDetails.item_name : ''}</h2>
 
           {/* <ToggleButtonGroup
             color="secondary"
@@ -151,17 +160,16 @@ export const ProductDetails = (props) => {
             <ToggleButton value="rent" disabled={!productDetails.rental_price}>Rent</ToggleButton>
           </ToggleButtonGroup> */}
 
-          { productDetails.seller_preference === 'SELL' ? <div className="productPrice">
+          { productDetails && productDetails.seller_preference === 'SELL' ? <div className="productPrice">
             <span>Buy Price </span>
             <span>${productDetails.price ? productDetails.price : 0}</span>
 
             <div className="buttonWrap">
               <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails, buyPrice, "buy")}>ADD TO CART</Button>
-              <Button>ADD TO WISHLIST</Button>
             </div>
           </div> : null }
 
-          {productDetails.seller_preference === 'RENT' ? <div className="productRentPriceWrap">
+          {productDetails && productDetails.seller_preference === 'RENT' ? <div className="productRentPriceWrap">
             <span>Select Rent Duration </span>
             {/* Date Range Selector */}
             <DateRangePicker
@@ -187,8 +195,8 @@ export const ProductDetails = (props) => {
             </div>
 
             <div className="buttonWrap">
-              <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails, getRentalPrice(), "rent")}>ADD TO CART</Button>
-              <Button>ADD TO WISHLIST</Button>
+              <Button variant="contained" className="addToCart" color="secondary" onClick={() => addToCart(productDetails, getRentalPrice(), "rent", storeDetails)}>ADD TO CART</Button>
+              {/* <Button>ADD TO WISHLIST</Button> */}
             </div>
           </div> : null }
           
@@ -223,24 +231,24 @@ export const ProductDetails = (props) => {
           <h3>Details</h3>
           <div className="productGrid">
             <span>Brand</span>
-            <span>{productDetails.brand}</span>
+            <span>{productDetails && productDetails.brand}</span>
           </div>
           <div className="productGrid">
             <span>Category</span>
-            <span>{productDetails.categoryName}</span>
+            <span>{productDetails && productDetails.categoryName}</span>
           </div>
-          { productDetails.seller_preference === 'SELL' ? <div className="productGrid">
+          { productDetails && productDetails.seller_preference === 'SELL' ? <div className="productGrid">
             <span>Condition</span>
-            <span>{productDetails.condition}</span>
+            <span>{productDetails && productDetails.condition}</span>
           </div> : null}
           <div className="productGrid">
             <span>Baby Age</span>
-            <span>{productDetails.baby_age} Months</span>
+            <span>{productDetails && productDetails.baby_age} Months</span>
           </div>
           <div className="bottomBorder"></div>
           <h3>Description</h3>
           <div>
-            <span>{productDetails.description}</span>
+            <span>{productDetails && productDetails.description}</span>
           </div>
 
         </Grid> 

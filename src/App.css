@@ -16,6 +16,10 @@ header.MuiAppBar-colorPrimary {
 .capitalize {
   text-transform: capitalize;
 }
+.loginButton {
+  background-color: #8b6c52 !important;
+  color: #fff !important;
+}
 /*Banner CSS*/
 .bannerContent {
   xbackground: peachpuff;
@@ -143,7 +147,7 @@ header.MuiAppBar-colorPrimary {
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+    -webkit-box-orient: vertical;
 }
 /* Product Details Page*/
 .productDetails {
@@ -210,7 +214,7 @@ header.MuiAppBar-colorPrimary {
   font-size: 0.8em;
 }
 .productRentPriceWrap .materialui-daterange-picker-makeStyles-daysContainer-16 {
-  margin-bottom: 5px;;
+  margin-bottom: 5px;
 }
 .productRentPriceWrap .materialui-daterange-picker-makeStyles-header-4 {
   padding: 5px 40px;
@@ -231,7 +235,7 @@ header.MuiAppBar-colorPrimary {
 .productRentPriceWrap .materialui-daterange-picker-makeStyles-root-14 {
   width: 220px;
 }
-.productRentPriceWrap .materialui-daterange-picker-makeStyles-dateRangePicker-2 ul{
+.materialui-daterange-picker-makeStyles-dateRangePicker-2 ul{
   display: none;
 }
 .productRentPriceWrap .materialui-daterange-picker-makeStyles-dateRangeBackdrop-3 {
@@ -312,6 +316,7 @@ header.MuiAppBar-colorPrimary {
   font-weight: bold;
   margin: 0 0 15px 0;
   font-size: 18px;
+  display: flex;
 }
 .DeliverAddresses {
   background: #f6eef9;
@@ -362,6 +367,32 @@ header.MuiAppBar-colorPrimary {
 }
 .cartItem img {
   border: 1px solid #77624f;
+}
+.cartItem .materialui-daterange-picker-makeStyles-dateRangePicker-2 {
+  width: 585px;
+}
+.cartItemDetails .cartRentalDetails, .cartRentalDetails .rentalDateIconWrap {
+  display: flex;
+}
+.cartRentalDetails svg {
+  margin: 10px 0 0 10px;
+  cursor: pointer;
+}
+.editRentalChanges {
+  font-size: 14px !important;
+  color: white;
+  border: 1px solid #77624f;
+  border-radius: 13px;
+  background: #8f7e73;
+  padding: 1px;
+}
+.applyRentalChange {
+  color: green;
+  font-size: 20px !important;
+}
+.cancelRentalChange {
+  color: red;
+  font-size: 20px !important;
 }
 .cartItemPrice {
   font-size: 1.2em;

@@ -54,6 +54,8 @@ const SignIn = (props) => {
       console.log('response signin ...', response)
       sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId : emailid, custId : response.id}));
       console.log('GetCustomerDetails values are - ', response);
+      props.onIsLoggedIn(true);
+      props.updateCartCount(Math.random());
       })
       .catch(function (error) {
         setCustomerDetails(null);
@@ -64,7 +66,7 @@ const SignIn = (props) => {
       
      
       history.push("/buy"); 
-      props.onIsLoggedIn(true);
+      
     } catch (error) {
       setErrorMessage(error.message);
       console.log(errorMessage);
@@ -84,6 +86,7 @@ const SignIn = (props) => {
       props.onIsLoggedIn(true)
       await FbLoginInsert(response.email, response.name).then(function (resp) {
         sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId: response.email, custId: resp.data[0][0]['id'] }));
+        props.updateCartCount(Math.random());
         })
         .catch(function (error) {
           setCustomerDetails(null);

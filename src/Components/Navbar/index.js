@@ -94,25 +94,26 @@ export const Navbar = (props) => {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   useEffect(() => {
-    // const customerId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
-    GetCartDetails(customerId).then(function (response) {
-      setNumberOfCartItems(response.cartList.length);
-    })
-    .catch(function (error) {
-      console.log('GetCartDetails error', error);
-    }); 
+    const customerDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
+    if (customerDetails != null){
+      GetCartDetails(customerDetails.custId).then(function (response) {
+        setNumberOfCartItems(response.cartList.length);
+      })
+      .catch(function (error) {
+        console.log('GetCartDetails error', error);
+      });
+    }
   }, []);
   useEffect(() => { 
     const customerDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
     if (customerDetails != null){
-      setCustomerId(customerDetails.custId);
+      GetCartDetails(customerDetails.custId).then(function (response) {
+        setNumberOfCartItems(response.cartList.length);
+      })
+      .catch(function (error) {
+        console.log('GetCartDetails error', error);
+      });
     }
-    GetCartDetails(customerId).then(function (response) {
-      setNumberOfCartItems(response.cartList.length);
-    })
-    .catch(function (error) {
-      console.log('GetCartDetails error', error);
-    }); 
   }, [props.checkCartStatus]);
 
   const handleProfileMenuOpen = (event) => {
@@ -136,7 +137,7 @@ export const Navbar = (props) => {
     //props.setAnchorEl(null);
     await Auth.signOut();
     sessionStorage.clear();
-    //props.onIsLoggedIn(false);
+    props.onIsLoggedIn(false);
   }
 
   const menuId = 'primary-search-account-menu';
@@ -154,8 +155,8 @@ export const Navbar = (props) => {
       <Link to='/userAddress' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>My Addresses</MenuItem></Link>
       {/* <Link to='/paymentOptions' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>Payment Options</MenuItem></Link> */}
       <Link to='/myOrders' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>My Orders</MenuItem></Link>
-      <Link to='/myListings' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>My Listings</MenuItem></Link>
-      <MenuItem onClick={handleMenuClose}>My Wishlist</MenuItem>
+      <Link to='/myListings' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}><MenuItem onClick={handleMenuClose}>My Listings</MenuItem></Link> 
+      {/* <MenuItem onClick={handleMenuClose}>My Wishlist</MenuItem> */}
       <Link to="/signIn" style={{ textDecoration: 'none', display: 'block', color: "inherit" }}
         onClick={handleLogout}>
         <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
@@ -190,14 +191,14 @@ export const Navbar = (props) => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      {/* <MenuItem>
         <IconButton aria-label='show wishlist' color='inherit'>
           <Badge badgeContent={4} color='secondary'>
             <FavoriteIcon />
           </Badge>
         </IconButton>
         <p>My Wishlist</p>
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem>
         <IconButton aria-label='show cart items' color='inherit'>
           <Badge badgeContent={11} color='secondary'>
@@ -267,20 +268,39 @@ export const Navbar = (props) => {
               </Button>
             </Link>
 
-            <Link to="/sell" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}><Button >Sell </Button></Link>
-            <Button color='inherit'>About Us</Button>
+
+            <Link to="/sell" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}>
+              <Button
+                onClick={() => setSelected('sell')}
+                variant={ selected==='sell' ? 'contained' : ''} 
+                color={ selected==='sell' ? 'secondary' : 'inherit'}
+              >
+                Sell 
+              </Button>
+            </Link>
+            {/* <Button color='inherit'>About Us</Button>
             <IconButton aria-label='show wishlist' color='inherit'>
               <Badge badgeContent={4} color='secondary'>
                 
                 <FavoriteIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label='show cart items' color='inherit'>
+              </Badge> */}
+            {/* </IconButton> */}
+            { !props.isLoggedIn ? <Link to="/signIn" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}>
+              <Button
+                // onClick={() => setSelected('sell')}
+                variant='contained'
+                // color='secondary'
+                className="loginButton"
+              >
+                Login 
+              </Button>
+            </Link> : null}
+            { props.isLoggedIn ? <IconButton aria-label='show cart items' color='inherit'>
               <Badge badgeContent={numberOfCartItems} color='secondary'>
                 <Link to='/cart' style={{ textDecoration: 'none', display: 'block', color:'inherit' }}><ShoppingCartIcon /></Link>
               </Badge>
-            </IconButton>
-            <IconButton
+            </IconButton> : null}
+            { props.isLoggedIn ? <IconButton
               edge='end'
               aria-label='account of current user'
               aria-controls={menuId}
@@ -289,7 +309,7 @@ export const Navbar = (props) => {
               color='inherit'
             >
               <AccountCircle />
-            </IconButton>
+            </IconButton> : null}
           </div> : null}
           { isLoggedIn ? <div className={classes.sectionMobile}>
             <IconButton

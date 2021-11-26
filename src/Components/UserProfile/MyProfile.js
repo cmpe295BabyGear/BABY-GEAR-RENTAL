@@ -111,7 +111,7 @@ export default function MyProfile () {
                   </CardActionArea>
                 </Card>
               </Grid>
-              <Grid item xs={12} sm={6} md={4}>
+              {/* <Grid item xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardActionArea underline='none' component={RouterLink} to='/userAddress'>
                     <CardContent sx={{ flexGrow: 1 }}>
@@ -121,7 +121,7 @@ export default function MyProfile () {
                     </CardContent>
                   </CardActionArea>
                 </Card>
-              </Grid>
+              </Grid> */}
               <Grid item xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardActionArea underline='none' component={RouterLink} to='/changePwd'>

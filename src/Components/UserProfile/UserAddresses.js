@@ -53,9 +53,11 @@ const UserAddresses = () => {
   useEffect(() => {
     // get customer address
     // To-do : set customer id
-    const cid = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
-    setCustomerId(cid);
-    GetCustomerAddresses(cid)
+    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
+    if (custDetails != null) {
+      setCustomerId(custDetails.custId)
+    }
+    GetCustomerAddresses(customerId)
       .then(function (res) {
         console.log('get response ----')
         console.log(res)

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -33,18 +33,22 @@ const DeliveryAddresses = (props) => {
   const [moreAddresses, setMoreAddresses] = React.useState(false)
   const [defaultAddress, setDefaultAddress] = React.useState('');
   const [selectedCustAddress, setSelectedCustAddress] = React.useState();
+  const [custId, setCustId] = React.useState(0)
   const classes = useStyles();
 
 
   useEffect(() => {
-    const custId = JSON.parse(sessionStorage.getItem('customerDetails')).custId;
-    GetCustomerAddresses(custId)
+    const custDetails = JSON.parse(sessionStorage.getItem('customerDetails'))
+    if (custDetails != null) {
+      setCustId(custDetails.custId)
+    }
+    GetCustomerAddresses(custDetails.custId)
       .then(function (res) {
         setCustAddresses(res)
         const itemList = res.filter(function(item){
           return item.isDefault === 1;
         });
-        setDefaultAddress(itemList[0].formatted_address);
+        setDefaultAddress(itemList.length > 0 ? itemList[0].formatted_address : '');
       })
       .catch(function (err) {
         console.log("GetCustomerAddresses" + err)
@@ -59,7 +63,12 @@ const DeliveryAddresses = (props) => {
   return (
     <div className="DeliverAddresses">
       <h4>Shipping to <span>{defaultAddress}</span>
-        <span className="link" onClick={() => setMoreAddresses(true)}>CHANGE</span>
+        {defaultAddress !== '' ?
+          <span className="link" onClick={() => setMoreAddresses(true)}>CHANGE</span> :
+          <Link to='/userAddress' style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
+            <span className="link" onClick={() => setMoreAddresses(true)}>Add Address</span>
+          </Link>
+        }
       </h4>
       { moreAddresses ? <Container style={{ marginTop: 20 }} className={classes.marginspacing}>
         <Grid container spacing={3} className="deleveryAddressWrap">
