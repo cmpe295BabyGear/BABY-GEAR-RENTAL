@@ -9,7 +9,7 @@ import getCustomerItems from '../../services/ServiceAdmin';
 import { postCustItem } from '../../services/ServiceAdmin';
 import { ProgressSpinner } from 'primereact/progressspinner';
 
-
+import { InputText } from 'primereact/inputtext';
 
 function Admin() {
 
@@ -35,11 +35,17 @@ function Admin() {
     //
     const approveBtnTemplate=(rowData)=> {
         const status=rowData.admin_status
-        return <div disabled={(status.toString().toLowerCase())==="approved"} className={`aprove-action`} data-itemid={rowData.id} onClick={postCustItemAproveHandler}>{labelAproved}</div>
+       // return <div disabled={(status.toString().toLowerCase())==="approved"} className={`aprove-action`} 
+       //data-itemid={rowData.id} onClick={postCustItemAproveHandler}>{labelAproved}</div>
+       return <Button label={labelAproved} className="p-button-primary aprove-action" 
+       disabled={(status.toString().toLowerCase())==="approved"} onClick={postCustItemAproveHandler} data-itemid={rowData.id} onClick={postCustItemAproveHandler} />
     }
 
     const rejectBtnTemplate=(rowData)=> {
-        return <div className={`reject-action`} data-itemid={rowData.id} onClick={postCustItemAproveHandler}>{labelPending}</div>
+        const status=rowData.admin_status;
+        //return <div disabled className={`reject-action`} data-itemid={rowData.id} onClick={postCustItemAproveHandler}>{labelPending}</div>
+        return <Button label={labelPending} className="p-button-warning reject-action" disabled={(status.toString().toLowerCase())==="rejected"} data-itemid={rowData.id} />
+     //   return <div className={`reject-action`} data-itemid={rowData.id} onClick={postCustItemAproveHandler}>{labelPending}</div>
     }
 
     //refetch records from customer_items table on successful response
@@ -56,11 +62,13 @@ function Admin() {
     }
 
     const postCustItemAproveHandler=(e)=>{
-        if(e.target.dataset && e.target.dataset.itemid){
+        if(e.currentTarget.dataset && e.currentTarget.dataset.itemid){
             if(custListsWrapper.data){
-                const custItemData = custListsWrapper.data.find(element => element.id == e.target.dataset.itemid);
-                postCustItemMutation.mutate(custItemData);
-                console.log('item data .... ',custItemData);
+                const custItemData = custListsWrapper.data.find(element => element.id == e.currentTarget.dataset.itemid);
+               postCustItemMutation.mutate(custItemData);
+                //console.log('item data .... ',custItemData);
+                // console.log("post data");
+                // console.log(custItemData);
             }
         }
         
@@ -71,13 +79,36 @@ function Admin() {
 const emptyMsgElement=<div>{emptyDataMsg}</div>
 const dataLoadingElement=<ProgressSpinner/>
 
+
+const [location, setLocation]=useState();
+function getBodyTemplate(options) {
+return <InputText value={location} onChange={(e) => setLocation(e.target.value)} />
+}
+
+const inputTextEditor = (props) => {
+    return <InputText placeholder="zip code" type="text" value={props.rowData[props.field]} onChange={(e) => onEditorValueChange(props, e.target.value)} />;
+}
+
+
+const onEditorValueChange = (props, value) => {
+   
+    let updatedProducts = [...props.value];
+    updatedProducts[props.rowIndex][props.field] = value;
+    setCustItemsData(updatedProducts);
+}
+
+const getNameTemplate=(rowData)=> {
+    return <span>{`${rowData.first_name} ${rowData.last_name}`}</span>
+}
+
 const dataTable=<DataTable value={custItemsData} stripedRows  selectionMode="single" responsiveLayout="scroll"
-paginator rows={5} first={first} onPage={(e) => setFirst(e.first)}
-selection={custItemSelected} onSelectionChange={e => setCustItemSelected(e.value)} dataKey="id">
-            <Column field="id" header="CustomerId" ></Column>
+paginator rows={10} first={first} onPage={(e) => setFirst(e.first)}
+selection={custItemSelected} onSelectionChange={e => setCustItemSelected(e.value)} dataKey="id" editMode='cell'>
+        <Column field="id" header="CustomerId" ></Column>
+            <Column header="Name" body={getNameTemplate} ></Column>
             <Column field="item_name" header="Item" ></Column>
             <Column field="category_name" header="Category" ></Column>
-            <Column field="item_category" header="Item_category" ></Column>
+            {/* <Column field="item_category" header="Item_category" ></Column> */}
             <Column field="description" header="Description"></Column>
             <Column field="condition" header="Condition"></Column>
             <Column field="brand" header="Brand" ></Column>
@@ -87,7 +118,8 @@ selection={custItemSelected} onSelectionChange={e => setCustItemSelected(e.value
             <Column field="baby_age" header="Age (in Months) "></Column>
             <Column field="rental_price" header="Rental Price" ></Column>
             <Column field="customer_email" header="Email"></Column>
-            {/* <Column field="availability_status" header="Availability"></Column> */}
+            {/* <Column field="availability_status" header="Availability"></Column>  */}
+            <Column field="store_location" header="Location" editor={inputTextEditor} ></Column>
             <Column body={approveBtnTemplate}></Column>
             <Column body={rejectBtnTemplate}></Column>
         </DataTable>

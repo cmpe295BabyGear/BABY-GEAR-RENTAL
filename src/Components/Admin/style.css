@@ -20,6 +20,12 @@ body{
     font-size: 68%;
 }
 
+.admin-datatable-view .p-datatable .p-datatable-tbody > tr > td .p-inputtext{
+    padding: 5px;
+    border: 0px;
+     width: 80px
+ }
+
 .admin-datatable-view .p-datatable .p-button {
 
    
@@ -31,21 +37,26 @@ body{
     padding: 7px 14px;
     font-size: 95%;
     color: #ffffff;
-    background: #6366F1;
-    border: 1px solid #6366F1;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
     border-radius: 5px;
 }
+
 
 .admin-datatable-view .p-datatable .reject-action {
     padding: 7px 14px;
     font-size: 95%;
     color: #ffffff;
     background: #f44336;;
-    border: 1px solid #f44336;;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
     border-radius: 5px;
 }   
+
+
+.admin-datatable-view .p-datatable .p-button:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: none;
+}
 
 @keyframes ui-progress-spinner-color {
     100%,
