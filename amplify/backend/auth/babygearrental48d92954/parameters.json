@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "babygearrental58f51476_identitypool_58f51476",
+    "identityPoolName": "babygearrental48d92954_identitypool_48d92954",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "babyge58f51476",
-    "userPoolName": "babygearrental58f51476_userpool_58f51476",
+    "resourceNameTruncated": "babyge48d92954",
+    "userPoolName": "babygearrental48d92954_userpool_48d92954",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -20,6 +20,9 @@
     "requiredAttributes": [
         "email"
     ],
+    "aliasAttributes": [
+        "email"
+    ],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
@@ -28,10 +31,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "babyge58f51476_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "babyge48d92954_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "58f51476",
-    "resourceName": "babygearrental58f51476",
+    "sharedId": "48d92954",
+    "resourceName": "babygearrental48d92954",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,11 +49,14 @@
         ]
     },
     "useDefault": "default",
-    "usernameAttributes": [
-        "email"
-    ],
+    "triggers": "{}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "breakCircularDependency": true,
+    "permissions": [],
     "dependsOn": []
 }

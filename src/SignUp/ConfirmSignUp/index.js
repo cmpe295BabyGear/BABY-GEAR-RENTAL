@@ -82,15 +82,17 @@ const ConfirmSignUp = (props) => {
       const firstName = location.state.fname;
       const lastName = location.state.lname;
       const phoneNo = location.state.phone;
+      const email = location.state.email;
 
       await Auth.confirmSignUp(username, code);
       console.log('User confirmed !')
       const addSignUpDetails = () => {
         const custDetails = {
-          "email_id"  :username,
+          "email_id"  :email,
           "first_name" : firstName,
           "last_name" : lastName,
-          "phone_no" : phoneNo
+          "phone_no" : phoneNo,
+          "user_name":username
         }
         AddSignUpDetails(custDetails).then(function (response) {
          alert("Customer details added");

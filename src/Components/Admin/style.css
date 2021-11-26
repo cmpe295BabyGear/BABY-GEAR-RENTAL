@@ -22,7 +22,7 @@ body{
 
 .admin-datatable-view .p-datatable .p-datatable-tbody > tr > td .p-inputtext{
     padding: 5px;
-    border: 0px;
+    /* border: 0px; */
      width: 80px
  }
 

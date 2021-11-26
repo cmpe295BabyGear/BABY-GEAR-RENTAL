@@ -6,7 +6,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import './style.css';
 import getCustomerItems from '../../services/ServiceAdmin';
-import { postCustItem } from '../../services/ServiceAdmin';
+import { postCustItem, postRejectCustItem } from '../../services/ServiceAdmin';
 import { ProgressSpinner } from 'primereact/progressspinner';
 
 import { InputText } from 'primereact/inputtext';
@@ -21,6 +21,8 @@ function Admin() {
     const [custItemsData, setCustItemsData]=useState([]);
     const custListsWrapper =useQuery(['customerLists'],getCustomerItems, { refetchOnWindowFocus: false });
     const postCustItemMutation = useMutation(postCustItem, {onSuccess: postCustItemSuccessHandler,onError: postCustItemErrorHandler});
+
+    const postRejectCustItemMutation = useMutation(postRejectCustItem , {onSuccess: postRejectCustItemSuccessHandler,onError: postRejectCustItemErrorHandler});
 
     useEffect(() => {
         if(custListsWrapper && custListsWrapper.data){
@@ -38,18 +40,28 @@ function Admin() {
        // return <div disabled={(status.toString().toLowerCase())==="approved"} className={`aprove-action`} 
        //data-itemid={rowData.id} onClick={postCustItemAproveHandler}>{labelAproved}</div>
        return <Button label={labelAproved} className="p-button-primary aprove-action" 
-       disabled={(status.toString().toLowerCase())==="approved"} onClick={postCustItemAproveHandler} data-itemid={rowData.id} onClick={postCustItemAproveHandler} />
+       disabled={(status.toString().toLowerCase())==="approved" || (status.toString().toLowerCase())==="rejected"} 
+       onClick={postCustItemAproveHandler} data-itemid={rowData.id} 
+       />
     }
 
     const rejectBtnTemplate=(rowData)=> {
         const status=rowData.admin_status;
-        //return <div disabled className={`reject-action`} data-itemid={rowData.id} onClick={postCustItemAproveHandler}>{labelPending}</div>
-        return <Button label={labelPending} className="p-button-warning reject-action" disabled={(status.toString().toLowerCase())==="rejected"} data-itemid={rowData.id} />
-     //   return <div className={`reject-action`} data-itemid={rowData.id} onClick={postCustItemAproveHandler}>{labelPending}</div>
+        return <Button label={labelPending} className="p-button-warning reject-action" 
+        disabled={(status.toString().toLowerCase())==="rejected" || (status.toString().toLowerCase())==="approved"} data-itemid={rowData.id} 
+         onClick={postRejectCustItemAproveHandler}
+        />
     }
 
     //refetch records from customer_items table on successful response
     function postCustItemSuccessHandler(data){
+    
+        console.log("response from the server")
+        console.log(data);
+        custListsWrapper.refetch();
+    }
+
+    function postRejectCustItemSuccessHandler(data){
     
         console.log("response from the server")
         console.log(data);
@@ -61,11 +73,28 @@ function Admin() {
         console.log("Error while posting customer item for aproval!");
     }
 
+    function postRejectCustItemErrorHandler(){
+        console.log("Error while posting customer item for rejection!");
+    }
+
     const postCustItemAproveHandler=(e)=>{
         if(e.currentTarget.dataset && e.currentTarget.dataset.itemid){
             if(custListsWrapper.data){
                 const custItemData = custListsWrapper.data.find(element => element.id == e.currentTarget.dataset.itemid);
                postCustItemMutation.mutate(custItemData);
+                //console.log('item data .... ',custItemData);
+                // console.log("post data");
+                // console.log(custItemData);
+            }
+        }
+        
+    }
+
+    const postRejectCustItemAproveHandler=(e)=>{
+        if(e.currentTarget.dataset && e.currentTarget.dataset.itemid){
+            if(custListsWrapper.data){
+                const custItemData = custListsWrapper.data.find(element => element.id == e.currentTarget.dataset.itemid);
+               postRejectCustItemMutation.mutate(custItemData);
                 //console.log('item data .... ',custItemData);
                 // console.log("post data");
                 // console.log(custItemData);
@@ -86,7 +115,10 @@ return <InputText value={location} onChange={(e) => setLocation(e.target.value)}
 }
 
 const inputTextEditor = (props) => {
-    return <InputText placeholder="zip code" type="text" value={props.rowData[props.field]} onChange={(e) => onEditorValueChange(props, e.target.value)} />;
+return <div>
+<InputText placeholder="zip code" type="text" value={props.rowData[props.field]} onChange={(e) => onEditorValueChange(props, e.target.value)} />;
+</div>
+     
 }
 
 
