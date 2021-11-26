@@ -166,12 +166,11 @@ useEffect(() => {
   if (open) {
     if(redirect) {
       setTimeout(() => {
-        history.push('/');
+        history.push('/myListings');
       }, 7000);
     }
   }
 }, [open, redirect]);
-
 useEffect(() => {
 
   if(uploadStatus) {
@@ -326,7 +325,7 @@ const listItemOnline = async () => {
     listItems.baby_age =babyAge;
     listItems.s3_label = s3label; 
     listItems.customer_id= customerId;
-    listItems.admin_status='pending'
+    listItems.admin_status='PENDING'
   
     if(sellerPreferrence === "RENT" && (condition === "new" || condition === "like new")) {
       if(category === 1) {
