@@ -59,7 +59,7 @@ export const FilteredBuyList = (props) => {
     };
 
     return (
-        <Container maxWidth={false} className="filteredBuyList">
+        <Container maxWidth={false} className="filteredBuyList" data-testid="FilteredBuyList">
           <Grid container item spacing={3}>
             {productList.map((product, index) => (
               <Grid item spacing={2} xs={12} sm={4}>

@@ -6,7 +6,7 @@ import { Container } from '@material-ui/core';
 
 export const Buy = () => {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" data-testid="Buy">
     <div className="Buy">
       <Banner />
       <Categories />
