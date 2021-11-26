@@ -28,7 +28,8 @@ const SignUp = () => {
   const [lastname, setLastName] = React.useState("");
   const [username, setUserName] = React.useState('');
   const [password, setPassword] = React.useState("");
-
+  const [email, setEmail] = React.useState('');
+  
   const [phonenumber, setPhonenumber] = React.useState(''); 
   const [open, setOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
@@ -38,14 +39,14 @@ const SignUp = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    if (firstname === "" || password === "" || username ===""|| phonenumber ==="") {
-      setErrorMessage("Please fill in all the details");
+    if (firstname === "" || password === "" || username ===""|| phonenumber ===""|| email==="") {
+      setErrorMessage("Please fill in all the details"); 
       setOpen(true);
     } else {
       try {
         const dataEmail = {
           Name: "email",
-          Value: username,
+          Value: email,
         };
         const dataName = {
           Name: "preferred_username",
@@ -56,25 +57,30 @@ const SignUp = () => {
         //   Value: phonenumber,
         // };
 
-        const attributeList = [
-          new CognitoUserAttribute(dataEmail),
-          new CognitoUserAttribute(dataName)
-        //  new CognitoUserAttribute(dataPhone)
-        ];
+        // const attributeList = [
+        //   new CognitoUserAttribute(dataEmail),
+        //   new CognitoUserAttribute(dataName)
+        // //  new CognitoUserAttribute(dataPhone)
+        // ];
 
         const { user } = await Auth.signUp({
           username,
           password,
-          attributeList
-        });
+          attributes: {
+              email
+          },
+      });
+      const details = {};
+      details.username = username;
+      const path = '/confirmSignUp/:' + details;
         console.log(user);
         // pathQuery = ;
-        const path = "/confirmSignUp/:" + username;
+       // const path = "/confirmSignUp/:" + username;
 
         // history.push(path);
         history.push({
           pathname: path,
-          state: { uname: username , fname: firstname, lname: lastname, phone: phonenumber},
+          state: { uname: username , fname: firstname, lname: lastname, phone: phonenumber,email:email},
         });
       } catch (error) {
         setErrorMessage(error.message);
@@ -134,17 +140,28 @@ const SignUp = () => {
                   name="lastName"
                   autoComplete="lname"
                   onChange={(e, lastname) => setLastName(e.target.value)}
-                />
-              </Grid>
+                  />
+                  </Grid> 
+              <Grid item xs={12}>
+                                <TextField
+                                    variant='outlined'
+                                    required
+                                    fullWidth
+                                    id='username'
+                                    label='Username'
+                                    name='username'
+                                    onChange={(e, username) => setUserName(e.target.value)}
+                                    />
+                                    </Grid> 
                <Grid item xs={12}>
                <TextField
                   variant='outlined'
                   required
                   fullWidth
-                  id='username'
-                  label='Email'
-                  name='username'
-                  onChange={(e, username) => setUserName(e.target.value)}
+                  id='email'
+                  label='Email Address'
+                  name='email'
+                  onChange={(e, email) => setEmail(e.target.value)}
                 />
               </Grid> 
               <Grid item xs={12}>
@@ -155,7 +172,7 @@ const SignUp = () => {
                   id='phonenumber'
                   label='Phone Number'
                   name='phonenumber'                 
-                  onChange={(e, email) => setPhonenumber(e.target.value)}
+                  onChange={(e, phonenumber) => setPhonenumber(e.target.value)}
                 />
               </Grid> 
               
