@@ -122,17 +122,20 @@ export default function MyProfile () {
                   </CardActionArea>
                 </Card>
               </Grid> */}
-              <Grid item xs={12} sm={6} md={4}>
-                <Card className={classes.card}>
-                  <CardActionArea underline='none' component={RouterLink} to='/changePwd'>
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      <Typography gutterBottom variant='h6' component='h2'>
-                        <PasswordIcon fontSize='large' color='secondary' /> Change Password
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
+              {sessionStorage.getItem('isSSO') == 1 
+                ? <Grid item xs={12} sm={6} md={4}>
+                  <Card className={classes.card}>
+                    <CardActionArea underline='none' component={RouterLink} to='/changePwd'>
+                      <CardContent sx={{ flexGrow: 1 }}>
+                        <Typography gutterBottom variant='h6' component='h2'>
+                          <PasswordIcon fontSize='large' color='secondary' /> Change Password
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </Grid>
+                :  null
+              }
             </Grid>
           </Container>
         </main>

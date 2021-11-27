@@ -86,6 +86,7 @@ const SignIn = (props) => {
       props.onIsLoggedIn(true)
       await FbLoginInsert(response.email, response.name).then(function (resp) {
         sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId: response.email, custId: resp.data[0][0]['id'] }));
+        sessionStorage.setItem('isSSO', 1);
         props.updateCartCount(Math.random());
         })
         .catch(function (error) {

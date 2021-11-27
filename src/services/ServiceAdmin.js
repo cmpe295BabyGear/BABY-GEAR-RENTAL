@@ -21,3 +21,14 @@ export default async function getCustomerItems({queryKey}){
 
     //return {};
   }
+
+  export async function postRejectCustItem(custItem){
+    // Temporarily commented below code as API to aprove customer item is not ready yet.
+    const postCustItemEndpoint='https://hzq9uznkj8.execute-api.us-east-2.amazonaws.com/dev/rejectcustomerlistings';
+    console.log("reject Item");
+    console.log(custItem);
+    const { data } = await axios.post(postCustItemEndpoint, custItem);
+    return data;
+
+    //return {};
+  }

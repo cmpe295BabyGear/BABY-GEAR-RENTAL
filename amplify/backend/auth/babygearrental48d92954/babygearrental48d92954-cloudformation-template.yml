@@ -1,3 +1,4 @@
+
 AWSTemplateFormatVersion: 2010-09-09
 
 Parameters:
@@ -71,6 +72,10 @@ Parameters:
   requiredAttributes:
     Type: CommaDelimitedList
       
+        
+  aliasAttributes:
+    Type: CommaDelimitedList
+      
   
   userpoolClientGenerateSecret:
     Type: String
@@ -113,10 +118,10 @@ Parameters:
     Type: String
   
             
-        
-  usernameAttributes:
-    Type: CommaDelimitedList
-      
+  triggers:
+    Type: String
+  
+            
         
   userPoolGroupList:
     Type: CommaDelimitedList
@@ -130,6 +135,18 @@ Parameters:
   usernameCaseSensitive:
     Type: String
             
+      
+  parentStack:
+    Type: String
+        
+  
+  breakCircularDependency:
+    Type: String
+            
+        
+  permissions:
+    Type: CommaDelimitedList
+      
         
   dependsOn:
     Type: CommaDelimitedList
@@ -148,7 +165,7 @@ Resources:
   # Created to allow the UserPool SMS Config to publish via the Simple Notification Service during MFA Process
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, 'babyge58f51476_sns-role', !Join ['',[ 'sns', '58f51476', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, 'babyge48d92954_sns-role', !Join ['',[ 'sns', '48d92954', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -160,10 +177,10 @@ Resources:
               - "sts:AssumeRole"
             Condition:
               StringEquals:
-                sts:ExternalId: babyge58f51476_role_external_id
+                sts:ExternalId: babyge48d92954_role_external_id
       Policies:
         -
-          PolicyName: babyge58f51476-sns-policy
+          PolicyName: babyge48d92954-sns-policy
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -195,7 +212,10 @@ Resources:
       
       
       
-      AutoVerifiedAttributes: !Ref autoVerifiedAttributes
+      AutoVerifiedAttributes:
+      
+        - email
+      
       
       
       EmailVerificationMessage: !Ref emailVerificationMessage
@@ -209,14 +229,15 @@ Resources:
           RequireSymbols: false
           RequireUppercase: false
       
-      UsernameAttributes: !Ref usernameAttributes
+      
+      AliasAttributes: !Ref aliasAttributes
       
       MfaConfiguration: !Ref mfaConfiguration
       SmsVerificationMessage: !Ref smsVerificationMessage
       SmsAuthenticationMessage: !Ref smsAuthenticationMessage
       SmsConfiguration:
         SnsCallerArn: !GetAtt SNSRole.Arn
-        ExternalId: babyge58f51476_role_external_id
+        ExternalId: babyge48d92954_role_external_id
     
   
   UserPoolClientWeb:
@@ -224,7 +245,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: babyge58f51476_app_clientWeb
+      ClientName: babyge48d92954_app_clientWeb
       
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
       UserPoolId: !Ref UserPool
@@ -234,7 +255,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: babyge58f51476_app_client
+      ClientName: babyge48d92954_app_client
       
       GenerateSecret: !Ref userpoolClientGenerateSecret
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
@@ -245,7 +266,7 @@ Resources:
   # Created to execute Lambda which gets userpool app client config values
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',['upClientLambdaRole', '58f51476', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',['upClientLambdaRole', '48d92954', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -288,7 +309,7 @@ Resources:
             - '};'
       Handler: index.handler
       Runtime: nodejs12.x
-      Timeout: '300'
+      Timeout: 300
       Role: !GetAtt
         - UserPoolClientRole
         - Arn
@@ -299,7 +320,7 @@ Resources:
   # Marked as depending on UserPoolClientRole for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: babyge58f51476_userpoolclient_lambda_iam_policy
+      PolicyName: babyge48d92954_userpoolclient_lambda_iam_policy
       Roles:
         - !Ref UserPoolClientRole
       PolicyDocument:
@@ -316,7 +337,7 @@ Resources:
   # Marked as depending on UserPoolClientLambdaPolicy for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: babyge58f51476_userpoolclient_lambda_log_policy
+      PolicyName: babyge48d92954_userpoolclient_lambda_log_policy
       Roles:
         - !Ref UserPoolClientRole
       PolicyDocument:
@@ -356,7 +377,7 @@ Resources:
   # Always created
     Type: AWS::Cognito::IdentityPool
     Properties:
-      IdentityPoolName: !If [ShouldNotCreateEnvResources, 'babygearrental58f51476_identitypool_58f51476', !Join ['',['babygearrental58f51476_identitypool_58f51476', '__', !Ref env]]]
+      IdentityPoolName: !If [ShouldNotCreateEnvResources, 'babygearrental48d92954_identitypool_48d92954', !Join ['',['babygearrental48d92954_identitypool_48d92954', '__', !Ref env]]]
       
       CognitoIdentityProviders:
         - ClientId:  !Ref UserPoolClient
