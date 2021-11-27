@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders CartItem 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiGrid-root cartItem MuiGrid-container"
+  >
+    <div
+      class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-4 MuiGrid-grid-sm-3"
+    >
+      <img
+        alt="Product Details"
+        class="productImage"
+        height="120"
+        width="120"
+      />
+    </div>
+    <div
+      class="MuiGrid-root cartItemDetails MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-6"
+    >
+      <a
+        href="/productDetails/undefined"
+        style="text-decoration: none; display: block;"
+      >
+        <h3 />
+      </a>
+      <span>
+        Purchase Type: 
+      </span>
+      <div
+        class="cartShipment"
+      >
+        <span>
+          Shipment: Get it delivered
+        </span>
+        <span
+          class="changeShipping"
+        >
+          Change to Self Pickup
+        </span>
+      </div>
+      <div
+        class="materialui-daterange-picker-makeStyles-dateRangePickerContainer-1"
+      >
+        <div
+          class="materialui-daterange-picker-makeStyles-dateRangePicker-2"
+        />
+      </div>
+    </div>
+    <div
+      class="MuiGrid-root cartItemPrice MuiGrid-item MuiGrid-grid-xs-2 MuiGrid-grid-sm-3"
+    >
+      <span>
+        $
+      </span>
+      <span
+        class="link"
+      >
+        Remove
+      </span>
+    </div>
+  </div>
+</DocumentFragment>
+`;

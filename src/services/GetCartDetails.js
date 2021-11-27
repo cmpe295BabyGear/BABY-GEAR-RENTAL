@@ -21,12 +21,12 @@ const GetCartDetails = (event) => {
               displayPrice: element.display_price,
               rentalPrice: element.rental_price,
               storeAddress: element.store_address,
-              image: 'https://d1d6i97vlsh97n.cloudfront.net/' + element.seller_email + '/' + element.categoryName + '/' + element.s3_label
+              image: 'https://d1d6i97vlsh97n.cloudfront.net/' + element.seller_email + '/' + element.categoryName + '/' + element.s3_label + '.jpg'
             });
           });
           console.log("response.................x", response);
-          resolve({ cartList });
         }
+        resolve({ cartList });
       })
       .catch(function (error) {
         reject(error);

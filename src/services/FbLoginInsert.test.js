@@ -10,7 +10,7 @@ describe('FbLoginInsert API Call()', () => {
       data: { results: "Fb login credentials inserted successfully" }
     })
   );
-  FbLoginInsert(43, {email_id: 'test@gmail.com'});
+  FbLoginInsert({email_id: 'test@gmail.com', last_name: 'test last name'});
   expect(await mockAxios.get).toBeCalled();
   });
 });

@@ -18,7 +18,7 @@ const GetItemsOnFilterCriteria = (event) => {
               categoryName: element.categoryName,
               brand: element.brand,
               rental_price: element.rental_price,
-              image: 'https://d1d6i97vlsh97n.cloudfront.net/' + element.email_id + '/' + element.categoryName + '/' + element.s3_label
+              image: 'https://d1d6i97vlsh97n.cloudfront.net/' + element.email_id + '/' + element.categoryName + '/' + element.s3_label + '.jpg'
             });
           });
           console.log("response.................x", response);
