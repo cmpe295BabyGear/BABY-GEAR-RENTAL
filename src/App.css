@@ -216,27 +216,33 @@ header.MuiAppBar-colorPrimary {
 .productRentPriceWrap .materialui-daterange-picker-makeStyles-daysContainer-16 {
   margin-bottom: 5px;
 }
-.productRentPriceWrap .materialui-daterange-picker-makeStyles-header-4 {
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-header-4,
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-header-7 {
   padding: 5px 40px;
 }
 .productRentPriceWrap .materialui-daterange-picker-makeStyles-dateRangePicker-5,
 .productRentPriceWrap .materialui-daterange-picker-makeStyles-dateRangePicker-2 {
   width: 445px;
 }
-.productRentPriceWrap .materialui-daterange-picker-makeStyles-button-22 {
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-button-22,
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-button-68 {
   width: 25px;
   height: 25px;
 }
-.productRentPriceWrap .materialui-daterange-picker-makeStyles-buttonText-23 {
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-buttonText-23,
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-buttonText-69 {
   font-size: 0.5em;
 }
-.productRentPriceWrap .MuiSelect-select.MuiSelect-select {
+.productRentPriceWrap .MuiSelect-select.MuiSelect-select,
+.materialui-daterange-picker-MuiSelect-select-23 {
   font-size: 0.8em;
 }
-.productRentPriceWrap .materialui-daterange-picker-makeStyles-root-14 {
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-root-14,
+.productRentPriceWrap .materialui-daterange-picker-makeStyles-root-17 {
   width: 220px;
 }
-.materialui-daterange-picker-makeStyles-dateRangePickerContainer-1 ul{
+.materialui-daterange-picker-makeStyles-dateRangePickerContainer-1 ul,
+.materialui-daterange-picker-makeStyles-dateRangePickerContainer-4 ul{
   display: none;
 }
 .productRentPriceWrap .materialui-daterange-picker-makeStyles-dateRangeBackdrop-3 {
