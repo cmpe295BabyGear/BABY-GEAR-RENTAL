@@ -48,19 +48,25 @@ const SignIn = (props) => {
       console.log(user);
       console.log("user signedIn");    
       const getCustByEmailid = (emailid) => {
-      sessionStorage.setItem('isSSO', 0);
-      GetCustomerDetails(emailid).then(function (response) {
-      setCustomerDetails(response);
-      console.log('response signin ...', response)
-      sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId : emailid, custId : response.id}));
-      console.log('GetCustomerDetails values are - ', response);
-      props.onIsLoggedIn(true);
-      props.updateCartCount(Math.random());
-      })
-      .catch(function (error) {
-        setCustomerDetails(null);
-        console.log('GetCustomerDetails error', error);
-      });  
+        sessionStorage.setItem('isSSO', 0);
+        if (emailid != 'uma031987@gmail.com') {
+          GetCustomerDetails(emailid).then(function (response) {
+          setCustomerDetails(response);
+          console.log('response signin ...', response)
+          sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId : emailid, custId : response.id}));
+          console.log('GetCustomerDetails values are - ', response);
+          props.onIsLoggedIn(true);
+          props.updateCartCount(Math.random());
+          })
+          .catch(function (error) {
+            setCustomerDetails(null);
+            console.log('GetCustomerDetails error', error);
+          });  
+        } else {
+          sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId: emailid }));
+          props.onIsLoggedIn(true);
+        }
+        
      }
       getCustByEmailid(emailid);
       
