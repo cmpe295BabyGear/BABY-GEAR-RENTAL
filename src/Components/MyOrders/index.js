@@ -11,6 +11,8 @@ import Stack from '@mui/material/Stack';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { Link as RouterLink } from 'react-router-dom'
 import ButtonBase from '@mui/material/ButtonBase';
+import Button from '@mui/material/Button';
+import CancelItemOrder from '../../services/CancelItemOrder'
 
 const Img = styled('img')({
   margin: 'auto',
@@ -64,7 +66,24 @@ const MyOrders = () => {
       setFilterData(custOrders.filter(custOrder => custOrder.orderType === type));
       setSelected(type);
     }
-   
+  }
+
+  const handleCancelOrder = (oId, iId) => {
+    CancelItemOrder(oId, iId).then(function (response) {
+      console.log('Item cancelled successfully')
+      GetCustomerOrders(custId).then(function (response) {
+        setCustOrders(response.orderList);
+        setFilterData(response.orderList)
+        console.log('GetOrders', response);
+      })
+        .catch(function (error) {
+          setCustOrders(null);
+          setFilterData(custOrders)
+          console.log('Get Order Details', error);
+        });
+    }).catch(function (err){
+      console.log('unable to cancel order')
+    })
   }
   return (
     <div>
@@ -120,6 +139,9 @@ const MyOrders = () => {
                     <Typography variant='body2' color='text.secondary'>
                       Order Type: {custOrder.orderType}
                     </Typography>
+                    <Typography variant='body2' color='text.secondary'>
+                      Order Status   :{custOrder.OrderStatus}
+                    </Typography>
                   </Grid>
                   <Grid item xs>
                     {custOrder.orderType === 'rent'
@@ -130,6 +152,7 @@ const MyOrders = () => {
                           <Typography variant='body2' color='text.secondary'>
                             Lease End Date   :{ custOrder.rentEndDate}
                         </Typography>
+                        
                       </div>
                       : null}
                   </Grid>
@@ -138,7 +161,9 @@ const MyOrders = () => {
                   <Typography variant='h6' component='div'>
                     Price: $ {custOrder.price}
                   </Typography>
-                  {/*  To-do : include cancel button */}
+                  {custOrder.OrderStatus == 'Cancelled' || custOrder.totalDays > 2
+                    ? null
+                    : <span><Button onClick={() => handleCancelOrder(custOrder.orderID, custOrder.itemID)} color='primary' variant='contained'>Cancel</Button></span>}
                 </Grid>
               </Grid>
             </Grid>

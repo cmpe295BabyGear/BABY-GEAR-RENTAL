@@ -48,7 +48,7 @@ const SignIn = (props) => {
       console.log(user);
       console.log("user signedIn");    
       const getCustByEmailid = (emailid) => {
-
+      sessionStorage.setItem('isSSO', 0);
       GetCustomerDetails(emailid).then(function (response) {
       setCustomerDetails(response);
       console.log('response signin ...', response)

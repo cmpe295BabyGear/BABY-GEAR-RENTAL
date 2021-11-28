@@ -12,6 +12,7 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Stack from '@mui/material/Stack';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { Link as RouterLink } from 'react-router-dom'
+import CancelListing from '../../services/CancelListing'
 
 const Img = styled('img')({
   margin: 'auto',
@@ -67,8 +68,26 @@ const MyListings = () => {
     }
   }
 
-  const handleCancel = () => {
+  const handleCancelListing = (cid) => {
     // set availability status as 0 when customer cancels the listing
+    const cust_item = {
+      customerItemId : cid
+    }
+    CancelListing(cust_item).then(function (response) {
+      console.log('listing cancelled');
+      GetCustomerListings(custId).then(function (response) {
+        setCustListings(response.customerItemListings);
+        setFilterData(response.customerItemListings)
+        console.log('GetCustomer Listings', response);
+      })
+        .catch(function (error) {
+          setCustListings(null);
+          setFilterData(null)
+          console.log('GetCustomer Listings', error);
+        });
+    }).catch(function (error) {
+      console.log('unable to cancel the listing due to error')
+    })
     console.log('cancel')
   }
   return (
@@ -123,16 +142,18 @@ const MyListings = () => {
                       Listing Status : {curr.adminStatus}
                     </Typography>
                     <Typography variant='body2' color='text.secondary'>
-                      Item Status : {curr.availabilityStatus}
+                      Item Status : {curr.adminStatus == 'Cancelled' ? 'Cancelled' : curr.availabilityStatus}
                     </Typography>
                   </Grid>
                 </Grid>
                 <Grid item>
-                  <Typography variant='h6' component='div'>
-                    Price: $ {curr.sellerPreference === 'RENT' ? curr.rentalPrice : curr.price}
-                  </Typography>
-                  {curr.availabilityStatus === 'AVAILABLE'
-                    ? <span><Button onClick={handleCancel} color='primary' variant='contained'>Cancel</Button></span>
+                 
+                  {curr.sellerPreference === 'RENT' ? null :
+                    <Typography variant='h6' component='div'>
+                      Price : {curr.price}
+                    </Typography>}
+                  {curr.availabilityStatus === 'AVAILABLE' && curr.totalDays < 2
+                    ? <span><Button onClick={() => handleCancelListing(curr.id)} color='primary' variant='contained'>Cancel</Button></span>
                     : null}
                 </Grid>
               </Grid>
