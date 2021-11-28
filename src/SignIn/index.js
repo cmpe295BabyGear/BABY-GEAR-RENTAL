@@ -56,7 +56,8 @@ const SignIn = (props) => {
           sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId : emailid, custId : response.id}));
           console.log('GetCustomerDetails values are - ', response);
           props.onIsLoggedIn(true);
-          props.updateCartCount(Math.random());
+            props.updateCartCount(Math.random());
+            history.push("/buy"); 
           })
           .catch(function (error) {
             setCustomerDetails(null);
@@ -65,13 +66,15 @@ const SignIn = (props) => {
         } else {
           sessionStorage.setItem("customerDetails", JSON.stringify({ userEmailId: emailid }));
           props.onIsLoggedIn(true);
+          props.updateCartCount(Math.random());
+          history.push('/admin')
         }
         
      }
       getCustByEmailid(emailid);
       
      
-      history.push("/buy"); 
+      
       
     } catch (error) {
       setErrorMessage(error.message);
