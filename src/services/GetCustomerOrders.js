@@ -19,7 +19,8 @@ const GetCustomerOrders = (customerId) => {
               rentStartDate: element.lease_startDT,
               rentEndDate: element.lease_endDT,
               item_name: element.item_name,
-              OrderStatus: element.orderStatus,
+              OrderStatus: element.order_status,
+              totalDays : element.totalDays,
               image: 'https://d1d6i97vlsh97n.cloudfront.net/' + element.seller_email + '/' + element.item_category + '/' + element.s3_label + '.jpg'
             });
           });
