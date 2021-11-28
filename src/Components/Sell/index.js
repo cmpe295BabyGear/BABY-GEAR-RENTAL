@@ -331,15 +331,15 @@ const listItemOnline = async () => {
       if(category === 1) {
         listItems.rental_price = 10;
       } else if(category === 2) {
-        listItems.rental_price = 20;
+        listItems.rental_price = 15;
       } else if(category === 3) {
-        listItems.rental_price = 30;
+        listItems.rental_price = 5;
       } else if(category === 4) {
-        listItems.rental_price = 40;
+        listItems.rental_price = 10;
       } else if(category === 5) {
-        listItems.rental_price = 50;
+        listItems.rental_price = 6;
       } else if(category === 6) {
-        listItems.rental_price = 60;
+        listItems.rental_price = 3;
       } else {
         listItems.rental_price = -1;
       } 
@@ -359,7 +359,7 @@ const listItemOnline = async () => {
         setOpen(true);
       }).catch(function (error) {
           setSeverity('error');
-          setMessage('Failed to post item');
+          setMessage('Failed to List item, Please do in sometime');
           setOpen(true);
           console.log(error)
       })
@@ -568,7 +568,10 @@ return(
               3. We do not accept damaged or nonfunctional items. 
             </Typography>
             <Typography gutterBottom>
-              4. We reserve the right to accept or reject the item.
+              4. Listed Items can only be cancelled within 24 hours of listing. Once Approved by Admin, no cancellation is possible. 
+            </Typography>
+            <Typography gutterBottom>
+              5. We reserve the right to accept or reject the item.
             </Typography>
           </DialogContent>
           <DialogActions>
@@ -593,7 +596,7 @@ return(
     <Grid container spacing={1} direction="column" item xs={12} sm={5} >
       <div className="buttonWrap">
         <Stack direction="row" spacing={2}>
-            <Button variant="contained" color="secondary" onClick={handleEstimate}  > GET ESTIMATE </Button>
+            <Button variant="contained" disabled={!checked} color="secondary" onClick={handleEstimate}  > GET ESTIMATE </Button>
             <Button type='submit' disabled={!checked} variant="contained" color="secondary" 
                 onClick={handleSubmit} > SUBMIT </Button>
             <Button variant="contained" color="secondary" onClick={handleCancel}  > CANCEL </Button> 
