@@ -189,9 +189,7 @@ header.MuiAppBar-colorPrimary {
   border: 1px solid #f50057;
 } */
 .productRentPriceWrap {
-  padding: 20px;
-  border-bottom: 1px solid #ded5df;
-  margin-bottom: 10px;
+  padding: 0 20px;
   background: #f6eef9;
   border-left: 1px solid #ded5df;
   border-right: 1px solid #ded5df
@@ -208,7 +206,7 @@ header.MuiAppBar-colorPrimary {
 }
 .productRentPriceWrap > span{
   display: block;
-  padding-bottom: 20px;
+  padding: 20px 0;
 }
 .productRentPriceWrap .MuiTypography-subtitle1 {
   font-size: 0.8em;
@@ -257,7 +255,7 @@ header.MuiAppBar-colorPrimary {
   border-bottom: none;
 }
 .productDetails .buttonWrap {
-  margin-top: 20px;
+  padding: 20px 0;
 }
 .productDetails .buttonWrap button {
   border: 1px solid #77624f;

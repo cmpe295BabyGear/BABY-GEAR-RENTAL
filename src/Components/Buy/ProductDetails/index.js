@@ -169,16 +169,22 @@ export const ProductDetails = (props) => {
             </div>
           </div> : null }
 
-          {productDetails && productDetails.seller_preference === 'RENT' ? <div className="productRentPriceWrap">
-            <span>Select Rent Duration </span>
+          {productDetails && productDetails.seller_preference === 'RENT' ?
+            <div className="productRentPriceWrap">
+              <span>Select Rent Duration </span>
+            </div> : null}
             {/* Date Range Selector */}
-            <DateRangePicker
-                open={open}
-                // toggle={toggle}
-                onChange={(range) => onDateRangeChange(range)}
-                // closeOnClickOutside={false}
-            
-            />
+            <div className="productRentPriceWrap">
+              <DateRangePicker
+                  open={open}
+                  // toggle={toggle}
+                  onChange={(range) => onDateRangeChange(range)}
+                  // closeOnClickOutside={false}
+              
+              />
+            </div>
+          {productDetails && productDetails.seller_preference === 'RENT' ?
+            <div className="productRentPriceWrap">
             <div className="rentDetails">
               <div>
                 <span>Price per day</span>
