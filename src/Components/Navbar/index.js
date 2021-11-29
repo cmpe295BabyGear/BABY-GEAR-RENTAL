@@ -90,12 +90,20 @@ export const Navbar = (props) => {
   const [numberOfCartItems, setNumberOfCartItems] = React.useState(0);
   const [selected, setSelected] = React.useState('buy');
   const [customerId, setCustomerId] = React.useState('')
+  const [isAdmin, setIsAdmin] = React.useState(JSON.parse(sessionStorage.getItem('customerDetails')) == null ? false : (JSON.parse(sessionStorage.getItem('customerDetails')).userEmailId === "uma031987@gmail.com" ? true : false));
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   useEffect(() => {
+   
     const customerDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
-    if (customerDetails != null){
+    if (customerDetails != null && customerDetails.userEmailId === 'uma031987@gmail.com') {
+      setIsAdmin(true)
+    } else {
+      setIsAdmin(false)
+    }
+    console.log('isadmin', isAdmin)
+    if (customerDetails != null && customerDetails.userEmailId != 'uma031987@gmail.com') {
       GetCartDetails(customerDetails.custId).then(function (response) {
         setNumberOfCartItems(response.cartList.length);
       })
@@ -105,8 +113,15 @@ export const Navbar = (props) => {
     }
   }, []);
   useEffect(() => { 
+    
     const customerDetails = JSON.parse(sessionStorage.getItem('customerDetails'));
-    if (customerDetails != null){
+    if (customerDetails != null && customerDetails.userEmailId === 'uma031987@gmail.com') {
+      setIsAdmin(true)
+    } else {
+      setIsAdmin(false)
+    }
+    console.log('isadmin', isAdmin)
+    if (customerDetails != null && customerDetails.userEmailId != 'uma031987@gmail.com'){
       GetCartDetails(customerDetails.custId).then(function (response) {
         setNumberOfCartItems(response.cartList.length);
       })
@@ -134,10 +149,12 @@ export const Navbar = (props) => {
   };
 
   const handleLogout = async () => {
-    //props.setAnchorEl(null);
-    await Auth.signOut();
     sessionStorage.clear();
     props.onIsLoggedIn(false);
+    //props.setAnchorEl(null);
+    await Auth.signOut();
+   
+   
   }
 
   const menuId = 'primary-search-account-menu';
@@ -241,51 +258,49 @@ export const Navbar = (props) => {
             </Typography>
           </Link>
           <div className={classes.grow} />
-          { !isLoggedIn ? <Button color='inherit'>Login</Button> : null}
+          {/* { !isLoggedIn ? <Button color='inherit'>Login</Button> : null} */}
           { isLoggedIn ? <div className={classes.sectionDesktop}>
-            {/* <ButtonGroup variant='contained' color='secondary' aria-label='contained primary button group'>
-              <Button>Buy</Button>
-              <Button>Sell</Button>
-            </ButtonGroup> */}
-            
-            <Link to='/buyList/buy' style={{ textDecoration: 'none', display: 'block', color:'inherit', marginTop: '8px' }}>
-              <Button
-                onClick={() => setSelected('buy')}
-                variant={ selected==='buy' ? 'contained' : ''} 
-                color={ selected==='buy' ? 'secondary' : 'inherit'} 
-              >
+            <div>
+            {isAdmin  ? null :
+              <Link to='/buyList/buy' style={{ textDecoration: 'none', display: 'block', color: 'inherit', marginTop: '8px' }}>
+                <Button
+                  onClick={() => setSelected('buy')}
+                  variant={selected === 'buy' ? 'contained' : ''}
+                  color={selected === 'buy' ? 'secondary' : 'inherit'}
+                >
                   Buy
-              </Button>
-            </Link>
-
-            <Link to='/buyList/rent' style={{ textDecoration: 'none', display: 'block', color:'inherit', marginTop: '8px' }}>
-              <Button
-                onClick={() => setSelected('rent')}
-                variant={ selected==='rent' ? 'contained' : ''} 
-                color={ selected==='rent' ? 'secondary' : 'inherit'} 
-              >
-                  Rent
-              </Button>
-            </Link>
-
-
-            <Link to="/sell" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}>
-              <Button
-                onClick={() => setSelected('sell')}
-                variant={ selected==='sell' ? 'contained' : ''} 
-                color={ selected==='sell' ? 'secondary' : 'inherit'}
-              >
-                Sell 
-              </Button>
-            </Link>
-            {/* <Button color='inherit'>About Us</Button>
-            <IconButton aria-label='show wishlist' color='inherit'>
-              <Badge badgeContent={4} color='secondary'>
-                
-                <FavoriteIcon />
-              </Badge> */}
-            {/* </IconButton> */}
-            { !props.isLoggedIn ? <Link to="/signIn" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}>
+                </Button>
+              </Link>
+            }
+          </div>
+            <div>
+              {isAdmin ? null :
+                <Link to='/buyList/rent' style={{ textDecoration: 'none', display: 'block', color: 'inherit', marginTop: '8px' }}>
+                  <Button
+                    onClick={() => setSelected('rent')}
+                    variant={selected === 'rent' ? 'contained' : ''}
+                    color={selected === 'rent' ? 'secondary' : 'inherit'}
+                  >
+                    Rent
+                  </Button>
+                </Link>
+              }
+              </div>
+              <div>
+                {isAdmin  ? null :
+                  <Link to="/sell" style={{ textDecoration: 'none', display: 'block', color: "inherit", marginTop: '8px' }}>
+                    <Button
+                      onClick={() => setSelected('sell')}
+                      variant={selected === 'sell' ? 'contained' : ''}
+                      color={selected === 'sell' ? 'secondary' : 'inherit'}
+                    >
+                      Sell
+                    </Button>
+                  </Link>
+                }
+            </div>
+            <div>
+            { !props.isLoggedIn ?< Link to="/signIn" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}>
               <Button
                 // onClick={() => setSelected('sell')}
                 variant='contained'
@@ -294,22 +309,33 @@ export const Navbar = (props) => {
               >
                 Login 
               </Button>
-            </Link> : null}
-            { props.isLoggedIn ? <IconButton aria-label='show cart items' color='inherit'>
-              <Badge badgeContent={numberOfCartItems} color='secondary'>
-                <Link to='/cart' style={{ textDecoration: 'none', display: 'block', color:'inherit' }}><ShoppingCartIcon /></Link>
-              </Badge>
-            </IconButton> : null}
-            { props.isLoggedIn ? <IconButton
-              edge='end'
-              aria-label='account of current user'
-              aria-controls={menuId}
-              aria-haspopup='true'
-              onClick={handleProfileMenuOpen}
-              color='inherit'
-            >
-              <AccountCircle />
-            </IconButton> : null}
+              </Link> :
+            <Link to="/signIn" style={{ textDecoration: 'none', display: 'block', color:"inherit", marginTop: '8px' }}>
+                <Button
+                onClick={() => handleLogout()}
+                variant='contained'
+              >
+                Logout
+              </Button>
+              </Link>}
+            </div>
+            <div>
+              { props.isLoggedIn && !isAdmin ? <IconButton aria-label='show cart items' color='inherit'>
+                <Badge badgeContent={numberOfCartItems} color='secondary'>
+                  <Link to='/cart' style={{ textDecoration: 'none', display: 'block', color:'inherit' }}><ShoppingCartIcon /></Link>
+                </Badge>
+              </IconButton> : null}
+              { props.isLoggedIn ? <IconButton
+                edge='end'
+                aria-label='account of current user'
+                aria-controls={menuId}
+                aria-haspopup='true'
+                onClick={handleProfileMenuOpen}
+                color='inherit'
+              >
+                <AccountCircle />
+              </IconButton> : null}
+            </div>
           </div> : null}
           { isLoggedIn ? <div className={classes.sectionMobile}>
             <IconButton
@@ -324,8 +350,8 @@ export const Navbar = (props) => {
           </div> : null }
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+      {isAdmin ? null : renderMobileMenu }
+      {isAdmin ? null : renderMenu}
     </div>
   );
 }
